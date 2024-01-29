@@ -22,5 +22,13 @@ public class Hexagon {
         return this.startY;
     }
 
+    protected void setStartX(float x){
+        this.startX = x;
+    }
+
+    protected void setStartY (float y){
+        this.startY = y;
+    }
+
 
 }

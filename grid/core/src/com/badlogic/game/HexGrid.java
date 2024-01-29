@@ -29,8 +29,8 @@ public class HexGrid extends Hexagon{
     }
 
     public float[] setHexPoints(float X, float Y) {
-        this.startX = X;
-        this.startY = Y;
+        this.setStartX(X);
+        this.setStartY(Y);
         float[] hexPoints = {
                 startX, startY,
                 startX+=43.3F, startY+=25,
