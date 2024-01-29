@@ -19,6 +19,7 @@ public class HexGrid extends Hexagon{
                     shape.polygon(setHexPoints(startX, startY)); // make polygon
                     // change starting vals
                     //hello
+                    //trying commit
                     startX+=86.6F;
                     startY+=50F;
 
