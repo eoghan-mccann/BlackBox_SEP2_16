@@ -66,6 +66,7 @@ public class HexGrid extends Hexagon{
             startY+=50;
 
         } // line drawn must change xy
+        //test
     }
 
 }
