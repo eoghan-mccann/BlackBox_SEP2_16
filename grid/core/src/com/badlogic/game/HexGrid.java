@@ -54,6 +54,7 @@ public class HexGrid extends Hexagon{
 
         } // line drawn must change xy
     }
+    //comment
 
     private void more5(int i, ShapeRenderer shape){
         startX+=((4*(i-5))*43.3F + (2*43.3F));
