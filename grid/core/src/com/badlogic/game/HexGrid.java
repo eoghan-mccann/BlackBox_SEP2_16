@@ -13,31 +13,11 @@ public class HexGrid extends Hexagon{
         {
             if(i<5) // growing bigger
             {
-                for(int j=0;j<5+i;j++)
-                {
-
-                    shape.polygon(setHexPoints(startX, startY)); // make polygon
-                    // change starting vals
-                    //hello
-                    //trying commit
-                    //:(
-                    startX+=86.6F;
-                    startY+=50F;
-
-                } // line drawn must change xy
-
+                less5(i, shape);
             }
-            else {
-                startX+=((4*(i-5))*43.3F + (2*43.3F));
-                for(int j=0;j<13-i;j++)
-                {
-                    shape.polygon(setHexPoints(startX, startY)); // make polygon
-                    // change starting vals
-                    startX+=86.6F;
-                    startY+=50;
-
-                } // line drawn must change xy
-
+            else
+            {
+                more5(i, shape);
             }
             startX-=((11+(i*2))*43.3f);
             startY-=75;
@@ -48,8 +28,7 @@ public class HexGrid extends Hexagon{
         startY = 750F;
     }
 
-    public float[] setHexPoints(float X, float Y)
-    {
+    public float[] setHexPoints(float X, float Y) {
         this.startX = X;
         this.startY = Y;
         float[] hexPoints = {
@@ -63,4 +42,29 @@ public class HexGrid extends Hexagon{
 
         return hexPoints;
     }
+
+    private void less5(int i, ShapeRenderer shape) {
+        for(int j=0;j<5+i;j++)
+        {
+
+            shape.polygon(setHexPoints(startX, startY)); // make polygon
+            // change starting vals
+            startX+=86.6F;
+            startY+=50F;
+
+        } // line drawn must change xy
+    }
+
+    private void more5(int i, ShapeRenderer shape){
+        startX+=((4*(i-5))*43.3F + (2*43.3F));
+        for(int j=0;j<13-i;j++)
+        {
+            shape.polygon(setHexPoints(startX, startY)); // make polygon
+            // change starting vals
+            startX+=86.6F;
+            startY+=50;
+
+        } // line drawn must change xy
+    }
+
 }
