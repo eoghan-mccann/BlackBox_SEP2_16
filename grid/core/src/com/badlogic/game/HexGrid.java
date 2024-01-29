@@ -20,6 +20,7 @@ public class HexGrid extends Hexagon{
                     // change starting vals
                     //hello
                     //trying commit
+                    //:(
                     startX+=86.6F;
                     startY+=50F;
 
