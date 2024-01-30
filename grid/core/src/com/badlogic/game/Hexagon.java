@@ -1,7 +1,7 @@
 package com.badlogic.game;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Hexagon {
+public class Hexagon implements Entities{
     float startX;
     float startY;
     private static final float RADIUS = 50;
@@ -31,4 +31,28 @@ public class Hexagon {
     }
 
 
+    @Override
+    public void getCentre() {
+
+    }
+
+    @Override
+    public float[] getCoordinates() {
+        return new float[0];
+    }
+
+    @Override
+    public void getPosition() {
+
+    }
+
+    @Override
+    public void getCollision() {
+
+    }
+
+    @Override
+    public void Draw() {
+
+    }
 }
