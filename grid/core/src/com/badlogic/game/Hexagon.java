@@ -1,55 +1,69 @@
 package com.badlogic.game;
+
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Hexagon implements Entities{
-    float startX, startY;
-    float centreX, centreY;
-    private static final float RADIUS = 50;
-    boolean atomPlaced = false;
-    boolean auraActive = false;
+public class Hexagon implements Entities {
 
+    private float centerX;
+    private float centerY;
+    private float radius;
 
-    public Hexagon(float x, float y) {
-        this.startX = x;
-        this.startY = y;
-        setCentre(x, y);
+    private float[] hexPoints;
+    private final double angle = Math.toRadians(60);
+
+    Hexagon(float x, float y, float r) {
+        this.centerX = x;
+        this.centerY = y;
+        this.radius = r;
+
+        setHexagonPos(this.centerX,this.centerY);
     }
 
+    private float[] calculateXpoints(float x) {
 
+        float[] tempX = new float[6];
 
+        for (int i = 0; i < 6; i++) {
+            tempX[i] = (float)(x + (this.radius * Math.cos(angle * i)));
+        }
 
-    public float getStartX()
-    {
-        return this.startX;
+        return tempX;
+
     }
 
-    public float getStartY()
-    {
-        return this.startY;
+    private float[] calculateYpoints(float y) {
+
+        float[] tempY = new float[6];
+
+        for (int i = 0; i < 6; i++) {
+            tempY[i] = (float)(y + (this.radius * Math.sin(angle * i)));
+        }
+
+        return tempY;
     }
 
-    public void setStartX(float x){
-        this.startX = x;
-    }
+    public void setHexagonPos(float x, float y) {
+        float[] xPoints = this.calculateXpoints(x);
+        float[] yPoints = this.calculateYpoints(y);
+        float[] flattenedPoints = new float[12];
 
-    public void setStartY (float y){
-        this.startY = y;
-    }
+        // flattens array to work with polygon [x1,y1,x2,y2,...]
+        for (int i = 0; i < xPoints.length; i++) {
+            flattenedPoints[2 * i] = xPoints[i];
+            flattenedPoints[2 * i + 1] = yPoints[i];
+        }
 
-    public void setCentre(float x, float y) {
-        centreX = x+43.3f;
-        centreY = y-25f;
+        this.hexPoints = flattenedPoints;
     }
-
 
     @Override
-    public void getCentre() {
-
+    public float[] getCentre() {
+        return new float[] {this.centerX, this.centerY};
     }
 
     @Override
     public float[] getCoordinates() {
-        return new float[0];
+        return this.hexPoints;
     }
 
     @Override
@@ -64,6 +78,8 @@ public class Hexagon implements Entities{
 
     @Override
     public void Draw(ShapeRenderer shape) {
+
+        shape.polygon(hexPoints);
 
     }
 

@@ -3,7 +3,7 @@ package com.badlogic.game;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public interface Entities {
-    public void getCentre();
+    public float[] getCentre();
     public float[] getCoordinates();
     public void getPosition();
     public void getCollision();
