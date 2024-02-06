@@ -8,7 +8,7 @@ import com.badlogic.game.Main;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode(1000, 1000); // (0,0) in bottom left
+		config.setWindowedMode(1600, 900); // (0,0) in bottom left
 		config.setForegroundFPS(60);
 		config.setTitle("Black Box!");
 

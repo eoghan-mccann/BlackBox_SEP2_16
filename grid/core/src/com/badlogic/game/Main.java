@@ -17,7 +17,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create () { // on start
         shape = new ShapeRenderer();
-        hex = new Hexagon(100,200,500);
+        hex = new Hexagon(300,300,250);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class Hexagon implements Entities {
         float[] tempX = new float[6];
 
         for (int i = 0; i < 6; i++) {
-            tempX[i] = (float)(x + (this.radius * Math.cos(angle * i)));
+            tempX[i] = (float)(x + (this.radius * Math.sin(angle * i)));
         }
 
         return tempX;
@@ -36,7 +36,7 @@ public class Hexagon implements Entities {
         float[] tempY = new float[6];
 
         for (int i = 0; i < 6; i++) {
-            tempY[i] = (float)(y + (this.radius * Math.sin(angle * i)));
+            tempY[i] = (float)(y + (this.radius * Math.cos(angle * i)));
         }
 
         return tempY;
