@@ -2,15 +2,21 @@ package com.badlogic.game;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Hexagon implements Entities{
-    float startX;
-    float startY;
+    float startX, startY;
+    float centreX, centreY;
     private static final float RADIUS = 50;
+    boolean atomPlaced = false;
+    boolean auraActive = false;
+
 
     public Hexagon(float x, float y) {
         this.startX = x;
         this.startY = y;
-
+        setCentre(x, y);
     }
+
+
+
 
     public float getStartX()
     {
@@ -22,12 +28,17 @@ public class Hexagon implements Entities{
         return this.startY;
     }
 
-    protected void setStartX(float x){
+    public void setStartX(float x){
         this.startX = x;
     }
 
-    protected void setStartY (float y){
+    public void setStartY (float y){
         this.startY = y;
+    }
+
+    public void setCentre(float x, float y) {
+        centreX = x+43.3f;
+        centreY = y-25f;
     }
 
 
@@ -52,7 +63,12 @@ public class Hexagon implements Entities{
     }
 
     @Override
-    public void Draw() {
+    public void Draw(ShapeRenderer shape) {
+
+    }
+
+    @Override
+    public void update() {
 
     }
 }
