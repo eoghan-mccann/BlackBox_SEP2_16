@@ -1,5 +1,7 @@
 package com.badlogic.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Hexagon implements Entities {
@@ -43,6 +45,9 @@ public class Hexagon implements Entities {
     }
 
     public void setHexagonPos(float x, float y) {
+        centerX = x;
+        centerY = y;
+
         float[] xPoints = this.calculateXpoints(x);
         float[] yPoints = this.calculateYpoints(y);
         float[] flattenedPoints = new float[12];
@@ -55,6 +60,48 @@ public class Hexagon implements Entities {
 
         this.hexPoints = flattenedPoints;
     }
+
+    public float getWidth() {
+        return (hexPoints[2] - centerX) * 2;
+    }
+
+    public float getHeight() {
+        return (hexPoints[1] - centerY) * 2;
+    }
+
+    public void isClicked()
+    {
+        boolean clickToggle = false;
+
+        if(Gdx.input.justTouched() && isHoveredOver())
+        {
+            clickToggle = !clickToggle;
+        }
+    }
+
+    public boolean isHoveredOver()
+    {
+        float curX = Gdx.input.getX();
+        float curY = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+        return contains(curX, curY);
+    }
+
+    private boolean contains(float x, float y) { // Point in polygon algorithm.
+        int i, j;
+        boolean isInside = false;
+        float[] vertices = this.getCoordinates();
+
+        for (i = 0, j = vertices.length - 2; i < vertices.length; j = i, i += 2) {
+            if ((vertices[i + 1] > y) != (vertices[j + 1] > y) && (x < (vertices[j] - vertices[i]) * (y - vertices[i + 1]) / (vertices[j + 1] - vertices[i + 1]) + vertices[i])) {
+                isInside = !isInside;
+            }
+        }
+
+        return isInside;
+
+    }
+
 
     @Override
     public float[] getCentre() {
@@ -78,9 +125,14 @@ public class Hexagon implements Entities {
 
     @Override
     public void Draw(ShapeRenderer shape) {
+        if (isHoveredOver()) {
+            return;
+        }
 
-        shape.polygon(hexPoints);
-
+        shape.begin(ShapeRenderer.ShapeType.Line);
+            shape.setColor(Color.WHITE);
+            shape.polygon(hexPoints);
+        shape.end();
     }
 
     @Override
