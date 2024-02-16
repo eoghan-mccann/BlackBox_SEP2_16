@@ -12,12 +12,18 @@ import com.badlogic.gdx.graphics.GL20;
 public class Main extends ApplicationAdapter {
 
     ShapeRenderer shape;
-    Hexagon hex;
+    HexagonGrid hex;
+
+    public static int windowWidth = 1600;
+    public static int windowHeight = 900;
+    public static float hexRadius = 50;
+
 
     @Override
     public void create () { // on start
         shape = new ShapeRenderer();
-        hex = new Hexagon(300,300,250);
+        hex = new HexagonGrid();
+        hex.buildHexBoard();
     }
 
     @Override
@@ -27,9 +33,8 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        shape.begin(ShapeRenderer.ShapeType.Line);
         hex.Draw(shape);
-        shape.end();
+        hex.update();
     }
 
     @Override
