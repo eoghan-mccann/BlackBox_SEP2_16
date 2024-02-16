@@ -7,10 +7,11 @@ import java.util.List;
 
 import static com.badlogic.game.Main.*;
 
-public class HexagonGrid {
+public class HexagonGrid implements Clickable{
     List<List<Hexagon>> hexBoard = new ArrayList<>(); // list of rows of hexagons where the rows are lists of hexagons
     int minNoHex = 5;
     int maxNoHex = 9;
+    //Atom atom = new Atom();
     private void addHexRow(int n, float y, boolean isOffset) {
         List<Hexagon> hexRow = new ArrayList<>();
 
@@ -90,9 +91,9 @@ public class HexagonGrid {
 
                 hexagon.Draw(shape);
 
-                if (hexagon.isClickToggled) {
-                    hexagon.atom.Draw(shape);
-                }
+                //if (hexagon.isClicked()) {
+                   // hexagon.atom.Draw(shape);
+                //}
             }
         }
     }
@@ -107,5 +108,20 @@ public class HexagonGrid {
 
     public List<Hexagon> getRow(int i) {
         return hexBoard.get(i);
+    }
+
+    @Override
+    public void onClick() {
+
+    }
+
+    @Override
+    public boolean isClicked() {
+        return true;
+    }
+
+    @Override
+    public boolean isHoveredOver() {
+        return false;
     }
 }

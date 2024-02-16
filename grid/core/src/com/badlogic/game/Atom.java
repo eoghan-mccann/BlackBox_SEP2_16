@@ -121,8 +121,8 @@ public class Atom implements Entities, Clickable{
     }
 
     @Override
-    public void isClicked() {
-
+    public boolean isClicked() {
+        return true;
     }
 
     @Override
