@@ -10,8 +10,12 @@ public class Hexagon implements Entities {
     private float centerY;
     private float radius;
 
+    public boolean isClickToggled = false;
+
     private float[] hexPoints;
     private final double angle = Math.toRadians(60);
+
+    Atom atom = null;
 
     Hexagon(float x, float y, float r) {
         this.centerX = x;
@@ -69,15 +73,15 @@ public class Hexagon implements Entities {
         return (hexPoints[1] - centerY) * 2;
     }
 
-    public void isClicked()
+    private void CheckClicked()
     {
-        boolean clickToggle = false;
-
         if(Gdx.input.justTouched() && isHoveredOver())
         {
-            clickToggle = !clickToggle;
+            isClickToggled = !isClickToggled;
         }
     }
+
+    public boolean isClicked() { return isClickToggled; }
 
     public boolean isHoveredOver()
     {
@@ -125,9 +129,6 @@ public class Hexagon implements Entities {
 
     @Override
     public void Draw(ShapeRenderer shape) {
-        if (isHoveredOver()) {
-            return;
-        }
 
         shape.begin(ShapeRenderer.ShapeType.Line);
             shape.setColor(Color.WHITE);
@@ -137,6 +138,12 @@ public class Hexagon implements Entities {
 
     @Override
     public void update() {
+        CheckClicked();
 
+        if (isClicked()) {
+            atom = new Atom(getCentre()[0], getCentre()[1], 10, 25);
+        } else {
+            atom = null;
+        }
     }
 }

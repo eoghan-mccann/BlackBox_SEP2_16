@@ -93,7 +93,6 @@ public class HexagonGrid {
                 if (hexagon.isClickToggled) {
                     hexagon.atom.Draw(shape);
                 }
-
             }
         }
     }
