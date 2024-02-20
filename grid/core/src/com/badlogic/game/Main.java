@@ -63,7 +63,7 @@ public class Main extends ApplicationAdapter {
         cam.update();
         hex.update();
 
-
+ // AAAAAA PNLEASE FUCKING WORK
         hex.Draw(shape);
 
     }
