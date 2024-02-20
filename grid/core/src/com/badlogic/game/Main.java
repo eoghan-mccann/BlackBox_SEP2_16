@@ -67,15 +67,20 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        shape.setProjectionMatrix(camera.combined);
         hex.update();
 
  // AAAAAA PNLEASE FUCKING WORK
         hex.Draw(shape);
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 
     }
 
+    @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        camera.setToOrtho(false, width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
