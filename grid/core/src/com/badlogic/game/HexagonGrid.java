@@ -26,7 +26,7 @@ public class HexagonGrid implements Clickable{
     }
 
     public void moveAtom(Hexagon hex) // when a hexagon is clicked, move next free atom to hexagon
-    {
+    { // bruh
         for (int i = 0; i < 5; i++) // loop through array of atoms
         {
             if (!atoms[i].isPlaced) // find first unplaced atom in array
