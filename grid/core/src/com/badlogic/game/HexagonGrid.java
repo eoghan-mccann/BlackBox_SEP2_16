@@ -39,16 +39,6 @@ public class HexagonGrid implements Clickable{
             if (i == 4 && atoms[i].isPlaced) // if all placed
             {
                 // do nothinG? or move the first placed one
-                atoms[0].setAtomPoints(hex.getCenterX(), hex.getCenterY());
-                Atom temp = atoms[0];
-
-                for(int j=1;j<4;j++)
-                {
-                    atoms[j-1] = atoms[j];
-
-                }
-                atoms[3] = atoms[4];
-                atoms[4] = temp;
             }
         }
 
