@@ -3,15 +3,18 @@ package com.badlogic.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Main extends ApplicationAdapter {
-
+    private OrthographicCamera camera;
     ShapeRenderer shape;
     HexagonGrid hex;
 
@@ -22,17 +25,32 @@ public class Main extends ApplicationAdapter {
     private Viewport viewport;
     private Camera cam;
 
+    BitmapFont font;
+    SpriteBatch batch;
+    private Stage stage;
+    private Skin skin;
+
     @Override
     public void create () { // on start
-        float scrW = Gdx.graphics.getWidth();
-        float scrH =  Gdx.graphics.getHeight();
+        float w = Gdx.graphics.getWidth();
+        float h =  Gdx.graphics.getHeight();
 
-        cam = new PerspectiveCamera();
-        viewport = new FitViewport(windowWidth, windowHeight, cam);
-        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
-        cam.update();
+        //cam = new PerspectiveCamera();
+        //viewport = new FitViewport(windowWidth, windowHeight, cam);
+        //cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
+        //cam.update();
 
+        camera = new OrthographicCamera(800, 800 * (h / w));
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera.update();
+
+        batch = new SpriteBatch();
         shape = new ShapeRenderer();
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+
         hex = new HexagonGrid();
         hex.buildHexBoard();
     }
