@@ -24,7 +24,7 @@ public class Main extends ApplicationAdapter {
 
 
     private Viewport viewport;
-    private Camera cam;
+    private OrthographicCamera camera;
 
     BitmapFont font;
     SpriteBatch batch;
@@ -33,11 +33,16 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create () { // on start
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
 
-        cam = new PerspectiveCamera();
-        viewport = new FitViewport(windowWidth, windowHeight, cam);
-        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
-        cam.update();
+        //cam = new PerspectiveCamera();
+        camera = new OrthographicCamera(800, 800 * (h / w));
+        //viewport = new FitViewport(windowWidth, windowHeight, cam);
+        //cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
+        //cam.update();
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera.update();
 
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -61,7 +66,7 @@ public class Main extends ApplicationAdapter {
         // ------ Update ------
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        cam.update();
+        camera.update();
         hex.update();
 
  // AAAAAA PNLEASE FUCKING WORK
