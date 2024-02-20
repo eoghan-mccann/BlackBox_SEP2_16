@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Hexagon implements Entities {
+public class Hexagon implements Entities{
 
     private float centerX;
     private float centerY;
@@ -12,6 +12,10 @@ public class Hexagon implements Entities {
 
     private float[] hexPoints;
     private final double angle = Math.toRadians(60);
+
+    private boolean clickToggle = false;
+
+    Atom atom = null;
 
     Hexagon(float x, float y, float r) {
         this.centerX = x;
@@ -71,10 +75,7 @@ public class Hexagon implements Entities {
 
     public void isClicked()
     {
-        boolean clickToggle = false;
-
-        if(Gdx.input.justTouched() && isHoveredOver())
-        {
+        if(Gdx.input.justTouched() && isHoveredOver()) {
             clickToggle = !clickToggle;
         }
     }
@@ -125,8 +126,9 @@ public class Hexagon implements Entities {
 
     @Override
     public void Draw(ShapeRenderer shape) {
-        if (isHoveredOver()) {
-            return;
+
+        if( atom != null) {
+            atom.Draw(shape);
         }
 
         shape.begin(ShapeRenderer.ShapeType.Line);
@@ -137,6 +139,12 @@ public class Hexagon implements Entities {
 
     @Override
     public void update() {
+        isClicked();
 
+        if (clickToggle) {
+            atom = new Atom(this.getCentre()[0], this.getCentre()[1], (float)(radius * 0.75), (float)(radius * 1.5));
+        } else {
+            atom = null;
+        }
     }
 }
