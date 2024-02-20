@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Main extends ApplicationAdapter {
-    private OrthographicCamera camera;
+
     ShapeRenderer shape;
     HexagonGrid hex;
 
@@ -33,17 +33,11 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create () { // on start
-        float w = Gdx.graphics.getWidth();
-        float h =  Gdx.graphics.getHeight();
 
-        //cam = new PerspectiveCamera();
-        //viewport = new FitViewport(windowWidth, windowHeight, cam);
-        //cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
-        //cam.update();
-
-        camera = new OrthographicCamera(800, 800 * (h / w));
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.update();
+        cam = new PerspectiveCamera();
+        viewport = new FitViewport(windowWidth, windowHeight, cam);
+        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
+        cam.update();
 
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -74,6 +68,7 @@ public class Main extends ApplicationAdapter {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         shape.setProjectionMatrix(camera.combined);
+
 
         hex.Draw(shape);
         hex.update();
