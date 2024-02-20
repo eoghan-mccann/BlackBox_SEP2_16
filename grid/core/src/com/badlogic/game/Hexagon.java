@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Hexagon implements Entities{
+public class Hexagon implements Entities, Clickable {
 
     private float centerX;
     private float centerY;
@@ -13,16 +13,19 @@ public class Hexagon implements Entities{
     private float[] hexPoints;
     private final double angle = Math.toRadians(60);
 
-    private boolean clickToggle = false;
+    boolean clickToggle = false;
+    HexagonGrid grid;
 
-    Atom atom = null;
+    Atom atom; // related atom
 
-    Hexagon(float x, float y, float r) {
+    Hexagon(float x, float y, float r, HexagonGrid hGrid) {
         this.centerX = x;
         this.centerY = y;
         this.radius = r;
+        this.grid = hGrid;
 
         setHexagonPos(this.centerX,this.centerY);
+        this.atom = null;
     }
 
     private float[] calculateXpoints(float x) {
@@ -73,11 +76,24 @@ public class Hexagon implements Entities{
         return (hexPoints[1] - centerY) * 2;
     }
 
-    public void isClicked()
+    @Override
+    public void onClick() {
+
+    }
+
+    @Override
+    public boolean isClicked()
     {
-        if(Gdx.input.justTouched() && isHoveredOver()) {
-            clickToggle = !clickToggle;
+        if(Gdx.input.justTouched() && isHoveredOver())
+        {
+            if(atom == null) // if adding an atom
+            {
+                grid.moveAtom(this);
+                return !clickToggle;
+            }
         }
+
+        return clickToggle;
     }
 
     public boolean isHoveredOver()
@@ -101,6 +117,15 @@ public class Hexagon implements Entities{
 
         return isInside;
 
+    }
+
+    public float getCenterX()
+    {
+        return this.centerX;
+    }
+    public float getCenterY()
+    {
+        return this.centerY;
     }
 
 
@@ -127,24 +152,16 @@ public class Hexagon implements Entities{
     @Override
     public void Draw(ShapeRenderer shape) {
 
-        if( atom != null) {
-            atom.Draw(shape);
-        }
-
-        shape.begin(ShapeRenderer.ShapeType.Line);
-            shape.setColor(Color.WHITE);
-            shape.polygon(hexPoints);
+        shape.begin(ShapeRenderer.ShapeType.Line);;
+        shape.polygon(hexPoints);
         shape.end();
     }
 
     @Override
     public void update() {
         isClicked();
+        isHoveredOver();
 
-        if (clickToggle) {
-            atom = new Atom(this.getCentre()[0], this.getCentre()[1], (float)(radius * 0.75), (float)(radius * 1.5));
-        } else {
-            atom = null;
-        }
+
     }
 }

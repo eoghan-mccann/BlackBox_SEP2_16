@@ -17,6 +17,8 @@ public class Atom implements Entities, Clickable{
     //radius for the field of influence
     private float atomLayerRadius;
 
+    public boolean isPlaced;
+
     //a point on the layer that is directly to the right of the center
     //Y coord is the same as for the center
     //X coord is centreX + radius
@@ -35,26 +37,44 @@ public class Atom implements Entities, Clickable{
         this.atomCentreY = y;
         this.atomCentreRadius = r1;
         this.atomLayerRadius = r2;
+
+
         //the X coordinate of the point is center + the radius
         this.layerPoint[0] = (this.atomCentreX + atomCentreRadius);
         //the Y coordinate of the point is the same
         this.layerPoint[1] = this.atomCentreY;
+
+
         this.centrePoint[0] = this.atomCentreX;
         this.centrePoint[1] = this.atomCentreY;
 
+
+        this.isPlaced = false;
+    }
+
+    public float setCenterX(float x)
+    {
+        this.atomCentreX = x;
+        return atomCentreX;
+    }
+
+    public float setCenterY(float y)
+    {
+        this.atomCentreY = y;
+        return atomCentreY;
     }
 
 
     //setter method
-    public float[] setAtomPoints(float x1, float y1){
-        //takes the new centre, sets the centre to be the new centre
-        //sets the layer point to be x of new centre + radius, y of new centre
-        float[] atomPoints = {
-                x1, y1,
-                x1+this.atomCentreRadius, y1
-        };
-        return atomPoints;
+    public void setAtomPoints(float x, float y){ // sets all values relative to the given center
+        this.atomCentreX = x;
+        this.atomCentreY = y;
+
+        this.centrePoint[0] = x;
+        this.centrePoint[1] = y;
     }
+
+
 
     @Override
     public float[] getCentre() {
@@ -65,6 +85,7 @@ public class Atom implements Entities, Clickable{
     public float[] getCoordinates() {
         return this.atomPoints;
     }
+
 
     @Override
     public void getPosition() {
