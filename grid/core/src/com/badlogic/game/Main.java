@@ -61,19 +61,33 @@ public class Main extends ApplicationAdapter {
         // ------ Update ------ //test
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        cam.update();
+        //cam.update();
+
+
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        shape.setProjectionMatrix(camera.combined);
 
         hex.Draw(shape);
         hex.update();
+
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
 
+    @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        camera.setToOrtho(false, width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void dispose () {
         shape.dispose();
+        batch.dispose();
+        font.dispose();
+        stage.dispose();
+        skin.dispose();
     }
 
 }
