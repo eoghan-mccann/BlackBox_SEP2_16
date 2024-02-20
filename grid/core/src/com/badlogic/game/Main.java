@@ -29,6 +29,7 @@ public class Main extends ApplicationAdapter {
     SpriteBatch batch;
     private Stage stage;
     private Skin skin;
+    private UserMessage userMessage;
 
     @Override
     public void create () { // on start
@@ -53,6 +54,12 @@ public class Main extends ApplicationAdapter {
 
         hex = new HexagonGrid();
         hex.buildHexBoard();
+
+        skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
+
+        userMessage = new UserMessage(stage, skin);
+
+        userMessage.showMessage("Welcome", "Press OK to start game");
     }
 
     @Override
