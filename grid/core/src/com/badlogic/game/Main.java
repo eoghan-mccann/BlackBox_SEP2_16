@@ -14,13 +14,15 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Main extends ApplicationAdapter {
-    private OrthographicCamera camera;
+
     ShapeRenderer shape;
     HexagonGrid hex;
+    public Atom[] atoms;
 
     public static int windowWidth = 1600;
     public static int windowHeight = 900;
     public static float hexRadius = 50;
+
 
     private Viewport viewport;
     private Camera cam;
@@ -29,21 +31,14 @@ public class Main extends ApplicationAdapter {
     SpriteBatch batch;
     private Stage stage;
     private Skin skin;
-    private UserMessage userMessage;
 
     @Override
     public void create () { // on start
-        float w = Gdx.graphics.getWidth();
-        float h =  Gdx.graphics.getHeight();
 
-        //cam = new PerspectiveCamera();
-        //viewport = new FitViewport(windowWidth, windowHeight, cam);
-        //cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
-        //cam.update();
-
-        camera = new OrthographicCamera(800, 800 * (h / w));
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.update();
+        cam = new PerspectiveCamera();
+        viewport = new FitViewport(windowWidth, windowHeight, cam);
+        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
+        cam.update();
 
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -57,47 +52,29 @@ public class Main extends ApplicationAdapter {
         hex.initAtoms();
 
 
-        skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
-
-        userMessage = new UserMessage(stage, skin);
-
-        userMessage.showMessage("Welcome", "Press OK to start game");
     }
 
     @Override
     public void render () {
 
-        // ------ Update ------ //test
+        // ------ Update ------
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //cam.update();
-
-
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        shape.setProjectionMatrix(camera.combined);
+        cam.update();
         hex.update();
 
 
         hex.Draw(shape);
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
     }
 
-    @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false, width, height);
-        stage.getViewport().update(width, height, true);
+        viewport.update(width, height);
     }
 
     @Override
     public void dispose () {
         shape.dispose();
-        batch.dispose();
-        font.dispose();
-        stage.dispose();
-        skin.dispose();
     }
 
 }
