@@ -6,7 +6,7 @@ Cian Cockerill
 
 SPRINT 1
 + <s>hexagon grid</s>
-+ atom placing
++ <s>atom placing</s>
 + basic rays
 + hiding toggle for debugging
 + debug menu
