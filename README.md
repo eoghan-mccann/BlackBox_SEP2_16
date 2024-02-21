@@ -16,6 +16,5 @@ SPRINT 1
 
 TO-DO:
 
-- Grid (Kinda done)
-- Atoms
-- Rays
+- user message
+- rays
