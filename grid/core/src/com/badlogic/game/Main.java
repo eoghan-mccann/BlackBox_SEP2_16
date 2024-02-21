@@ -16,7 +16,7 @@ public class Main extends ApplicationAdapter {
 
     ShapeRenderer shape;
     HexagonGrid hex;
-    public Atom[] atoms;
+
 
     public static int windowWidth = 1600;
     public static int windowHeight = 900;
@@ -71,7 +71,8 @@ public class Main extends ApplicationAdapter {
         shape.setProjectionMatrix(camera.combined);
         hex.update();
 
- // AAAAAA PNLEASE FUCKING WORK
+
+        // ------ Render ------
         hex.Draw(shape);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 

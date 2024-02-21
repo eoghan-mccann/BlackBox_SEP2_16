@@ -91,6 +91,10 @@ public class Hexagon implements Entities, Clickable {
                 grid.moveAtom(this);
                 return !clickToggle;
             }
+            else // if removing an atom
+            {
+                grid.resetAtom(this);
+            }
         }
 
         return clickToggle;

@@ -15,6 +15,10 @@ public class HexagonGrid implements Clickable{
 
     Atom[] atoms = new Atom[5];
 
+    // just for testing
+
+
+
     public void initAtoms() // initial placement of 5 atoms on the right side
     {
         float startEx = Gdx.graphics.getWidth() - 100;
@@ -23,6 +27,7 @@ public class HexagonGrid implements Clickable{
             atoms[i] = new Atom(startEx, startWhy, .75f*hexRadius, 1.5f*hexRadius);
             startWhy -= 100;
         }
+
     }
 
     public void moveAtom(Hexagon hex) // when a hexagon is clicked, move next free atom to hexagon
@@ -42,6 +47,19 @@ public class HexagonGrid implements Clickable{
             }
         }
 
+    }
+
+    public void resetAtom(Hexagon hex)
+    {
+        for(int i =0;i<5;i++)
+        {
+            if(atoms[i].equals(hex.atom))
+            {
+                atoms[i].setAtomPoints((Gdx.graphics.getWidth() -100), (Gdx.graphics.getHeight() - 100 - (100*i)));
+                atoms[i].isPlaced = false;
+                hex.atom = null;
+            }
+        }
     }
 
 
@@ -133,6 +151,8 @@ public class HexagonGrid implements Clickable{
         {
             at.Draw(shape);
         }
+
+
     }
 
     public void update() {
@@ -141,17 +161,20 @@ public class HexagonGrid implements Clickable{
         for (List<Hexagon> hexRow : hexBoard) {
             for (Hexagon hexagon : hexRow) {
                 hexagon.update();
-                if(hexagon.isClicked())
-                {
-
-                }
             }
         }
+
+        for(Atom at: atoms)
+        {
+            at.update();
+        }
+
     }
 
     public List<Hexagon> getRow(int i) {
         return hexBoard.get(i);
     }
+
 
 
 
