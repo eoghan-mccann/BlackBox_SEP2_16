@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -30,6 +31,8 @@ public class Main extends ApplicationAdapter {
     SpriteBatch batch;
     private Stage stage;
     private Skin skin;
+    private UserMessage userMessage;
+    private Label outputLabel;
 
     @Override
     public void create () { // on start
@@ -50,10 +53,22 @@ public class Main extends ApplicationAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
+
+        outputLabel = new Label("Label", skin);
+        outputLabel.setPosition(Gdx.graphics.getWidth(), 100);
+        stage.addActor(outputLabel);
+
 
         hex = new HexagonGrid();
         hex.buildHexBoard();
         hex.initAtoms();
+
+        userMessage = new UserMessage(stage, skin);
+
+        userMessage.showMessage("Welcome, time traveller!",
+                "The Pookies welcome you to a refreshing game of BlackBox. " +
+                        "\n Press Enter on your keyboard to start the game :) ");
 
 
 
@@ -87,6 +102,8 @@ public class Main extends ApplicationAdapter {
     @Override
     public void dispose () {
         shape.dispose();
+        stage.dispose();
+        skin.dispose();
     }
 
 }
