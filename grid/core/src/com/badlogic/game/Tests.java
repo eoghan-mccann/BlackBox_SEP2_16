@@ -133,6 +133,12 @@ public class Tests {
     }
 
     @Test
+    public void testRay(){
+        Ray r1 = new Ray(10, 10, 65, 10);
+        System.out.println(r1.getCoordinates()[0] + " " + r1.getCoordinates()[1] + " " + r1.getCoordinates()[2] + " " + r1.getCoordinates()[3]);
+    }
+
+    @Test
     public void testHexagonGridMethods(){
         try {
             HexagonGrid.class.getDeclaredMethod("initAtoms");
