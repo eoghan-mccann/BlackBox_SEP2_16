@@ -5,8 +5,8 @@ Kristina Skutilova
 Cian Cockerill
 
 SPRINT 1
-+ hexagon grid
-+ atom placing
++ <s>hexagon grid</s>
++ <s>atom placing</s>
 + basic rays
 + hiding toggle for debugging
 + debug menu
@@ -16,6 +16,5 @@ SPRINT 1
 
 TO-DO:
 
-- Grid (Kinda done)
-- Atoms
-- Rays
+- user message
+- rays
