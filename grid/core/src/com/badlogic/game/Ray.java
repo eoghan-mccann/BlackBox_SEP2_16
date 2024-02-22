@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Ray implements Entities{
+public class Ray implements Entities, Clickable, Viewable{
     //left 19
     //top 10
     //technically 10 options per hexagon side
@@ -84,6 +84,21 @@ public class Ray implements Entities{
     @Override
     public void update() {
 
+    }
+
+    @Override
+    public void onClick() {
+
+    }
+
+    @Override
+    public boolean isClicked() {
+        return false;
+    }
+
+    @Override
+    public boolean isHoveredOver() {
+        return false;
     }
 }
 
