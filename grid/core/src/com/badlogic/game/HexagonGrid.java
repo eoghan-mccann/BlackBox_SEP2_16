@@ -18,6 +18,13 @@ public class HexagonGrid implements Clickable{
     // just for testing
 
 
+    public void toggleAtom()
+    {
+        for(Atom at: atoms)
+        {
+            at.toggled = !at.toggled;
+        }
+    }
 
     public void initAtoms() // initial placement of 5 atoms on the right side
     {
@@ -61,6 +68,7 @@ public class HexagonGrid implements Clickable{
             }
         }
     }
+
 
 
     private void addHexRow(int n, float y, boolean isOffset) {

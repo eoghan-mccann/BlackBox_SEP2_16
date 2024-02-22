@@ -43,6 +43,8 @@ public class Main extends ApplicationAdapter {
     private UserMessage userMessage;
     private Label outputLabel;
 
+    Button atomTog;
+
     @Override
     public void create () { // on start
         float w = Gdx.graphics.getWidth();
@@ -73,6 +75,8 @@ public class Main extends ApplicationAdapter {
         userMessage.showMessage("Welcome, time traveller!",
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
+
+        atomTog = new Button(50, 50, 100, 75);
     }
 
     @Override
@@ -85,10 +89,15 @@ public class Main extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         shape.setProjectionMatrix(camera.combined);
         hex.update();
-
+        atomTog.update();
+        if(atomTog.isClicked())
+        {
+            hex.toggleAtom();
+        }
 
         // ------ Render ------
         hex.Draw(shape);
+        atomTog.Draw(shape);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 

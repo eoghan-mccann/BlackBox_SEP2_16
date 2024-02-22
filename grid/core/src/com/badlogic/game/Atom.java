@@ -18,6 +18,7 @@ public class Atom implements Entities, Clickable{
     private float atomLayerRadius;
 
     public boolean isPlaced;
+    public boolean toggled;
 
     //a point on the layer that is directly to the right of the center
     //Y coord is the same as for the center
@@ -50,6 +51,7 @@ public class Atom implements Entities, Clickable{
 
 
         this.isPlaced = false;
+        this.toggled = false;
     }
 
     public float setCenterX(float x)
@@ -99,28 +101,22 @@ public class Atom implements Entities, Clickable{
 
     @Override
     public void Draw(ShapeRenderer shape) {
-        shape.begin(ShapeRenderer.ShapeType.Line);
+        if(!toggled)
+        {
+            shape.begin(ShapeRenderer.ShapeType.Line);
+            // Drawing aura
+            shape.setColor(Color.WHITE);
+            shape.circle(this.getCentre()[0], this.getCentre()[1], atomLayerRadius);
+            shape.end();
+            // Drawing atom
+            shape.begin(ShapeRenderer.ShapeType.Filled);
+            shape.setColor(Color.PINK);
+            shape.circle(atomCentreX, atomCentreY, atomCentreRadius);
 
-        // Set color for the layer (default color)
-        shape.setColor(Color.WHITE);
+            shape.setColor(Color.WHITE);
+            shape.end();
+        }
 
-        // Draw the layer circle unfilled
-        shape.circle(this.getCentre()[0], this.getCentre()[1], atomLayerRadius);
-
-        shape.end();
-
-        // Begin a new batch for filled shapes
-        shape.begin(ShapeRenderer.ShapeType.Filled);
-
-        // Set color for the center (red in this case)
-        shape.setColor(Color.PINK);
-
-        // Draw the center circle filled with red color
-        shape.circle(atomCentreX, atomCentreY, atomCentreRadius);
-
-        shape.setColor(Color.WHITE);
-
-        shape.end();
 
     }
 
