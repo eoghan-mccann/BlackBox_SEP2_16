@@ -12,6 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+
+/*
+        Make a toggle button for atoms in the bottom left.
+        When clicked, hides / shows atoms that's kinda it tbh
+
+
+ */
+
+
 public class Main extends ApplicationAdapter {
 
 
@@ -64,10 +73,6 @@ public class Main extends ApplicationAdapter {
         userMessage.showMessage("Welcome, time traveller!",
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
-
-
-
-
     }
 
     @Override
