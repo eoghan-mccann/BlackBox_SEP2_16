@@ -194,4 +194,93 @@ public class Tests {
             fail("isHoveredOver() method signature incorrect");
         }
     }
+
+    @Test
+    void testHexagonMethods(){
+        try {
+            Hexagon.class.getDeclaredMethod("calculateXpoints", float.class);
+        } catch (NoSuchMethodException ex) {
+            fail("calculateXPoints() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("calculateYpoints", float.class);
+        } catch (NoSuchMethodException ex) {
+            fail("calculateYPoints() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("setHexagonPos", float.class, float.class);
+        } catch (NoSuchMethodException ex) {
+            fail("setHexagonPos() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("getWidth");
+        } catch (NoSuchMethodException ex) {
+            fail("getWidth() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("getHeight");
+        } catch (NoSuchMethodException ex) {
+            fail("getHeight() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("onClick");
+        } catch (NoSuchMethodException ex) {
+            fail("onClick() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("isClicked");
+        } catch (NoSuchMethodException ex) {
+            fail("isClicked() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("isHoveredOver");
+        } catch (NoSuchMethodException ex) {
+            fail("isHoveredOver() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("contains", float.class, float.class);
+        } catch (NoSuchMethodException ex) {
+            fail("contains() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("getCenterX");
+        } catch (NoSuchMethodException ex) {
+            fail("getCenterX() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("getCenterY");
+        } catch (NoSuchMethodException ex) {
+            fail("getCenterY() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("getCentre");
+        } catch (NoSuchMethodException ex) {
+            fail("getCentre() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("getCoordinates");
+        } catch (NoSuchMethodException ex) {
+            fail("getCoordinates() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("getPosition");
+        } catch (NoSuchMethodException ex) {
+            fail("getPosition() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("getCollision");
+        } catch (NoSuchMethodException ex) {
+            fail("getCollision() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("Draw", ShapeRenderer.class);
+        } catch (NoSuchMethodException ex) {
+            fail("Draw() method signature incorrect");
+        }
+        try {
+            Hexagon.class.getDeclaredMethod("update");
+        } catch (NoSuchMethodException ex) {
+            fail("update() method signature incorrect");
+        }
+    }
 }
