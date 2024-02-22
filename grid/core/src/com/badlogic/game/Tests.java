@@ -16,7 +16,17 @@ public class Tests {
     @Test
     void testAtomMethods(){
         try {
-            Atom.class.getDeclaredMethod("setAtomPoints");
+            Atom.class.getDeclaredMethod("setCenterX", float.class);
+        } catch (NoSuchMethodException ex) {
+            fail("setCenterX() method signature incorrect");
+        }
+        try {
+            Atom.class.getDeclaredMethod("setCenterY", float.class);
+        } catch (NoSuchMethodException ex) {
+            fail("setCenterY() method signature incorrect");
+        }
+        try {
+            Atom.class.getDeclaredMethod("setAtomPoints", float.class, float.class);
         } catch (NoSuchMethodException ex) {
             fail("setAtomPoints() method signature incorrect");
         }
@@ -46,11 +56,6 @@ public class Tests {
             fail("Draw() method signature incorrect");
         }
         try {
-            Atom.class.getDeclaredMethod("display");
-        } catch (NoSuchMethodException ex) {
-            fail("display() method signature incorrect");
-        }
-        try {
             Atom.class.getDeclaredMethod("update");
         } catch (NoSuchMethodException ex) {
             fail("update() method signature incorrect");
@@ -69,11 +74,6 @@ public class Tests {
             Atom.class.getDeclaredMethod("atomRow", int.class, ShapeRenderer.class);
         } catch (NoSuchMethodException ex) {
             fail("atomRow() method signature incorrect");
-        }
-        try {
-            Atom.class.getDeclaredMethod("atomToggle", ShapeRenderer.class);
-        } catch (NoSuchMethodException ex) {
-            fail("atomToggle() method signature incorrect");
         }
         try {
             Atom.class.getDeclaredMethod("onClick");
@@ -120,14 +120,78 @@ public class Tests {
             fail("Draw() method signature incorrect");
         }
         try {
-            Atom.class.getDeclaredMethod("display");
-        } catch (NoSuchMethodException ex) {
-            fail("display() method signature incorrect");
-        }
-        try {
             Atom.class.getDeclaredMethod("update");
         } catch (NoSuchMethodException ex) {
             fail("update() method signature incorrect");
+        }
+    }
+
+    @Test
+    void testHexagonGridMethods(){
+        try {
+            HexagonGrid.class.getDeclaredMethod("initAtoms");
+        } catch (NoSuchMethodException ex) {
+            fail("initAtoms() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("moveAtom", Hexagon.class);
+        } catch (NoSuchMethodException ex) {
+            fail("moveAtom() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("resetAtom", Hexagon.class);
+        } catch (NoSuchMethodException ex) {
+            fail("resetAtom() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("addHexRow", int.class, float.class, boolean.class);
+        } catch (NoSuchMethodException ex) {
+            fail("addHexRow() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("buildHexBoard");
+        } catch (NoSuchMethodException ex) {
+            fail("buildHexBoard() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("getBorderHexagons");
+        } catch (NoSuchMethodException ex) {
+            fail("getBorderHexagons() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("isBorderHexagon", Hexagon.class);
+        } catch (NoSuchMethodException ex) {
+            fail("isBorderHexagon() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("Draw", ShapeRenderer.class);
+        } catch (NoSuchMethodException ex) {
+            fail("Draw() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("update");
+        } catch (NoSuchMethodException ex) {
+            fail("update() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("getRow", int.class);
+        } catch (NoSuchMethodException ex) {
+            fail("getRow() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("onClick");
+        } catch (NoSuchMethodException ex) {
+            fail("onClick() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("isClicked");
+        } catch (NoSuchMethodException ex) {
+            fail("isClicked() method signature incorrect");
+        }
+        try {
+            HexagonGrid.class.getDeclaredMethod("isHoveredOver");
+        } catch (NoSuchMethodException ex) {
+            fail("isHoveredOver() method signature incorrect");
         }
     }
 }
