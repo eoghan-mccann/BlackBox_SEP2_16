@@ -55,11 +55,6 @@ public class Main extends ApplicationAdapter {
 
         skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
 
-        outputLabel = new Label("Label", skin);
-        outputLabel.setPosition(Gdx.graphics.getWidth(), 100);
-        stage.addActor(outputLabel);
-
-
         hex = new HexagonGrid();
         hex.buildHexBoard();
         hex.initAtoms();
@@ -90,6 +85,7 @@ public class Main extends ApplicationAdapter {
         // ------ Render ------
         hex.Draw(shape);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
 
     }
 
