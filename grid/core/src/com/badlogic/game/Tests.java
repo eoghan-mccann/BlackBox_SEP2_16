@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.GL20;
 public class Tests {
 
     @Test
-    void testAtomMethods(){
+    public void testAtomMethods(){
         try {
             Atom.class.getDeclaredMethod("setCenterX", float.class);
         } catch (NoSuchMethodException ex) {
@@ -91,9 +91,15 @@ public class Tests {
             fail("isHoveredOver() method signature incorrect");
         }
     }
+    @Test
+    public void testAtom(){
+        Atom a1 = new Atom(50, 50, 25, 75);
+        System.out.println("X coord:"+a1.getCentre()[0] + " Y coord:" + a1.getCentre()[1] + " centre radius:" + a1.getCentreRadius() + " layer radius:" + a1.getLayerRadius());
+        assertEquals("X coord:50.0 Y coord:50.0 centre radius:25.0 layer radius:75.0", "X coord:"+a1.getCentre()[0] + " Y coord:" + a1.getCentre()[1] + " centre radius:" + a1.getCentreRadius() + " layer radius:" + a1.getLayerRadius());
+    }
 
     @Test
-    void testRayMethods(){
+    public void testRayMethods(){
         try {
             Ray.class.getDeclaredMethod("getCentre");
         } catch (NoSuchMethodException ex) {
@@ -127,7 +133,7 @@ public class Tests {
     }
 
     @Test
-    void testHexagonGridMethods(){
+    public void testHexagonGridMethods(){
         try {
             HexagonGrid.class.getDeclaredMethod("initAtoms");
         } catch (NoSuchMethodException ex) {
@@ -196,7 +202,7 @@ public class Tests {
     }
 
     @Test
-    void testHexagonMethods(){
+    public void testHexagonMethods(){
         try {
             Hexagon.class.getDeclaredMethod("calculateXpoints", float.class);
         } catch (NoSuchMethodException ex) {
