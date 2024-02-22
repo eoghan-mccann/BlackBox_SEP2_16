@@ -135,7 +135,8 @@ public class Tests {
     @Test
     public void testRay(){
         Ray r1 = new Ray(10, 10, 65, 10);
-        System.out.println(r1.getCoordinates()[0] + " " + r1.getCoordinates()[1] + " " + r1.getCoordinates()[2] + " " + r1.getCoordinates()[3]);
+        //System.out.println(r1.getCoordinates()[0] + " " + r1.getCoordinates()[1] + " " + r1.getCoordinates()[2] + " " + r1.getCoordinates()[3]);
+        assertEquals("10 10 65 10", r1.getCoordinates()[0] + " " + r1.getCoordinates()[1] + " " + r1.getCoordinates()[2] + " " + r1.getCoordinates()[3]);
     }
 
     @Test
