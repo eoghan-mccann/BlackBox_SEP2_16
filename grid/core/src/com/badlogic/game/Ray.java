@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Ray implements Entities{
+public class Ray implements Entities, Viewable {
     //left 19
     //top 10
     //technically 10 options per hexagon side
@@ -23,13 +23,13 @@ public class Ray implements Entities{
     float[] rayPoints = new float[4];
 
 
-    public Ray(float enterPointX, float enterPointY, float exitPointX, float exitPointY){
+    public Ray(float enterPointX, float enterPointY, float exitPointX, float exitPointY) {
         this.enterPointX = enterPointX;
         this.enterPointY = enterPointY;
         this.exitPointX = exitPointX;
         this.exitPointY = exitPointY;
 
-        this.rayPoints[0]=enterPointX;
+        this.rayPoints[0] = enterPointX;
         this.rayPoints[1] = enterPointY;
         this.rayPoints[2] = exitPointX;
         this.rayPoints[3] = exitPointY;
@@ -42,12 +42,11 @@ public class Ray implements Entities{
         return new float[0];
     }
 
-    public void setCoordinates(float x1, float y1, float x2, float y2){
-        if (x1<0 || x2<0 || y1<0 || y2<0){
+    public void setCoordinates(float x1, float y1, float x2, float y2) {
+        if (x1 < 0 || x2 < 0 || y1 < 0 || y2 < 0) {
             throw new IllegalArgumentException("Arguments cant be negative");
-        }
-        else {
-            this.rayPoints[0]=x1;
+        } else {
+            this.rayPoints[0] = x1;
             this.rayPoints[1] = y1;
             this.rayPoints[2] = x2;
             this.rayPoints[3] = y2;

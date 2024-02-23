@@ -8,10 +8,13 @@ import com.badlogic.game.Main;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode(1600, 900); // (0,0) in bottom left
+		//camera = new OrthographicCamera();
+		//camera.setToOrtho(false,800,400);
+		config.setTitle("A refreshing game of blackbox hexagon made by the Pookies (tm)");
+		config.setWindowedMode(1000, 1000);
+		//config.setResizable(true);
 		config.setForegroundFPS(60);
-		config.setTitle("Black Box!");
-
+		config.setTitle("BlackBoxGame");
 		new Lwjgl3Application(new Main(), config);
 	}
 }

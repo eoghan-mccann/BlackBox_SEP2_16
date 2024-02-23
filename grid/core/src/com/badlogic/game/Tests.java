@@ -296,4 +296,11 @@ public class Tests {
             fail("update() method signature incorrect");
         }
     }
+
+    @Test
+    public void testHexagonAndGrid(){
+        HexagonGrid g1 = ();
+        Hexagon h1 = new Hexagon(50, 50, 55, g1);
+        assertEquals();
+    }
 }
