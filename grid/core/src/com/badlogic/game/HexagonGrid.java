@@ -14,6 +14,7 @@ public class HexagonGrid {
     int maxNoHex = 9;
 
     Atom[] atoms = new Atom[5];
+    List<Ray2> rays = new ArrayList<>();
 
 
       /*
@@ -45,7 +46,13 @@ public class HexagonGrid {
         {
             at.toggled = !at.toggled;
         }
+        for(int i=0;i<rays.size();i++)
+        {
+            rays.get(i).toggle = !rays.get(i).toggle;
+        }
     }
+
+
 
     public void initAtoms() // initial placement of 5 atoms on the right side
     {

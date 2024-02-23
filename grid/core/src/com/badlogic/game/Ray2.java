@@ -3,10 +3,13 @@ package com.badlogic.game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Ray2 implements Entities{
+public class Ray2 implements Entities, Clickable{
     /*
     Alternate ray idea
      */
+
+    public boolean toggle;
+
 
     enum Direction  { // enum of ray's directions
         NE,
@@ -22,7 +25,7 @@ public class Ray2 implements Entities{
     float[] enterPos; // coords of start of ray
     float[] headPos; // coords of the head of the ray
 
-    float[] endPoint; // where the ray ends
+    float[] endPoint; // where the ray ends (future thing prob if even used)
     boolean isInside;
 
     float xSpeed;
@@ -34,6 +37,7 @@ public class Ray2 implements Entities{
         headPos = midPoint(x1, y1, x2, y2);
 
         setSpeed(dir);
+        toggle = false;
 
     }
 
@@ -72,28 +76,25 @@ public class Ray2 implements Entities{
         }
     }
 
-    @Override
-    public float[] getCentre() {
-        return new float[0];
-    }
+    public float[] midPoint(float x1, float y1, float x2, float y2)
+    {
+        float midX = (x1 + x2)/2;
+        float midY = (y1 + y2)/2;
 
-    @Override
-    public float[] getCoordinates() {
-        return new float[0];
-    }
-
-    @Override
-    public void getCollision() {
-
+        return new float[]{midX, midY};
     }
 
     @Override
     public void Draw(ShapeRenderer shape)
     {
-        shape.begin(ShapeRenderer.ShapeType.Line);
-        shape.setColor(Color.GREEN);
-        shape.line(enterPos[0], enterPos[1], headPos[0], headPos[1]);
-        shape.end();
+        if(toggle)
+        {
+            shape.begin(ShapeRenderer.ShapeType.Line);
+            shape.setColor(Color.GREEN);
+            shape.line(enterPos[0], enterPos[1], headPos[0], headPos[1]);
+            shape.end();
+        }
+
 
     }
 
@@ -107,11 +108,40 @@ public class Ray2 implements Entities{
     }
 
 
-    public float[] midPoint(float x1, float y1, float x2, float y2)
-    {
-        float midX = (x1 + x2)/2;
-        float midY = (y1 + y2)/2;
 
-        return new float[]{midX, midY};
+
+
+
+
+    @Override
+    public void onClick() {
+
+    }
+
+    @Override
+    public boolean isClicked() {
+        return false;
+    }
+
+    @Override
+    public boolean isHoveredOver() {
+        return false;
+    }
+
+
+
+    @Override
+    public float[] getCentre() {
+        return new float[0];
+    }
+
+    @Override
+    public float[] getCoordinates() {
+        return new float[0];
+    }
+
+    @Override
+    public void getCollision() {
+
     }
 }

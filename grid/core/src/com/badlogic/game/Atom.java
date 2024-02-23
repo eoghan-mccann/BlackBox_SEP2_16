@@ -95,7 +95,7 @@ public class Atom implements Entities, Clickable{
 
     @Override
     public void Draw(ShapeRenderer shape) {
-        if(!toggled)
+        if(!toggled) // if toggle is off (set to atom)
         {
             shape.begin(ShapeRenderer.ShapeType.Line);
             // Drawing aura

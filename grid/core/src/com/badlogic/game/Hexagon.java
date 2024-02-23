@@ -104,6 +104,7 @@ public class Hexagon implements Entities, Clickable {
     {
         if(Gdx.input.justTouched() && isHoveredOver())
         {
+
             if(atom == null) // if adding an atom
             {
                 grid.moveAtom(this);
@@ -184,12 +185,5 @@ public class Hexagon implements Entities, Clickable {
     public void update() {
         isClicked();
         isHoveredOver();
-
-        if(isBorder)
-        {
-
-        }
-
-
     }
 }

@@ -69,7 +69,12 @@ public class Game {
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
 
+
+
+
+        // temp (just showing how rays work)
         ray = new Ray2(400, 450, 600, 650, 2);
+        hexagonGrid.rays.add(ray);
     }
 
     public void update() {
