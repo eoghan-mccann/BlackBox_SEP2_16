@@ -88,12 +88,6 @@ public class Atom implements Entities, Clickable{
         return this.atomPoints;
     }
 
-
-    @Override
-    public void getPosition() {
-
-    }
-
     @Override
     public void getCollision() {
 

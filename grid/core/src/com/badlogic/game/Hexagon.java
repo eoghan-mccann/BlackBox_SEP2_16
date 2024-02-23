@@ -16,7 +16,7 @@ public class Hexagon implements Entities, Clickable {
     boolean clickToggle = false;
     HexagonGrid grid;
 
-    Atom atom; // related atom
+    private Atom atom; // related atom
 
     Hexagon(float x, float y, float r, HexagonGrid hGrid) {
         this.centerX = x;
@@ -28,11 +28,12 @@ public class Hexagon implements Entities, Clickable {
         this.atom = null;
     }
 
+    // Method calculates the X coordinates of the vertices of the hexagon
     private float[] calculateXpoints(float x) {
 
         float[] tempX = new float[6];
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) { // calculates the x-coordinate of hexagon points using circle
             tempX[i] = (float)(x + (this.radius * Math.sin(angle * i)));
         }
 
@@ -40,17 +41,19 @@ public class Hexagon implements Entities, Clickable {
 
     }
 
+    // Method calculates the Y coordinates of the vertices of the hexagon
     private float[] calculateYpoints(float y) {
 
         float[] tempY = new float[6];
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) { // calculates the x-coordinate of hexagon points using circle
             tempY[i] = (float)(y + (this.radius * Math.cos(angle * i)));
         }
 
         return tempY;
     }
 
+    // Sets the position of hexagon in the window.
     public void setHexagonPos(float x, float y) {
         centerX = x;
         centerY = y;
@@ -70,11 +73,11 @@ public class Hexagon implements Entities, Clickable {
 
     public float getWidth() {
         return (hexPoints[2] - centerX) * 2;
-    }
+    } // Accessor for hexagon width
 
     public float getHeight() {
         return (hexPoints[1] - centerY) * 2;
-    }
+    } // Accessor for hexagon height
 
     @Override
     public void onClick() {
@@ -108,7 +111,8 @@ public class Hexagon implements Entities, Clickable {
         return contains(curX, curY);
     }
 
-    private boolean contains(float x, float y) { // Point in polygon algorithm.
+    // Uses point in polygon algorithm to check whether the mouseclick was inside the hexagon
+    private boolean contains(float x, float y) {
         int i, j;
         boolean isInside = false;
         float[] vertices = this.getCoordinates();
@@ -123,49 +127,48 @@ public class Hexagon implements Entities, Clickable {
 
     }
 
-    public float getCenterX()
-    {
-        return this.centerX;
-    }
-    public float getCenterY()
-    {
-        return this.centerY;
-    }
-
-
+    // Accessor for center coordinates
     @Override
     public float[] getCentre() {
         return new float[] {this.centerX, this.centerY};
     }
+    public float getCenterX() {
+        return getCentre()[0];
+    }
 
+    public float getCenterY() {
+        return getCentre()[1];
+    }
+
+    // Accessor for coordinates of the hexagon
     @Override
     public float[] getCoordinates() {
         return this.hexPoints;
     }
-
-    @Override
-    public void getPosition() {
-
-    }
-
     @Override
     public void getCollision() {
 
     }
+    public void setAtom(Atom atom) {
+        this.atom = atom;
+    }
 
+    public Atom getAtom() {
+        return atom;
+    }
+
+    // Creates a non-filled polygon with coordinates in hexPoints
     @Override
     public void Draw(ShapeRenderer shape) {
-
         shape.begin(ShapeRenderer.ShapeType.Line);;
-        shape.polygon(hexPoints);
+            shape.polygon(hexPoints);
         shape.end();
     }
 
+    // Updates whether the hexagon is clicked or hovered over
     @Override
     public void update() {
         isClicked();
         isHoveredOver();
-
-
     }
 }
