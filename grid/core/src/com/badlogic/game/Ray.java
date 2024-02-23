@@ -67,9 +67,9 @@ public class Ray implements Entities, Viewable {
 
     @Override
     public void Draw(ShapeRenderer shape) {
-        shape.begin(ShapeRenderer.ShapeType.Line);
+        shape.begin(ShapeRenderer.ShapeType.Filled);
         shape.setColor(Color.BLUE);
-        shape.line(enterPointX, enterPointY, exitPointX, exitPointY);
+        shape.rect(enterPointX, enterPointY, exitPointX, exitPointY);
         shape.setColor(Color.WHITE);
         shape.end();
 

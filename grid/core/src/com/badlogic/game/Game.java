@@ -35,6 +35,7 @@ public class Game {
     private List<Atom> placedAtoms;
     private List<Ray> placedRays;
     private GamePhase currentPhase;
+    private Ray2 ray;
 
 
     public Game() {
@@ -67,6 +68,8 @@ public class Game {
         userMessage.showMessage("Welcome, time traveller!",
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
+
+        ray = new Ray2(400, 450, 600, 650, 2);
     }
 
     public void update() {
@@ -104,6 +107,10 @@ public class Game {
             atom.Draw(shape);
         }
 
+        hexagonGrid.rayCheck(ray);
+        ray.update();
+        ray.Draw(shape);
+
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
@@ -117,5 +124,6 @@ public class Game {
         stage.dispose();
         skin.dispose();
     }
+
 
 }

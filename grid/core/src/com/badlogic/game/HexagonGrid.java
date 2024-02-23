@@ -15,6 +15,30 @@ public class HexagonGrid {
 
     Atom[] atoms = new Atom[5];
 
+
+      /*
+    rayCheck method -> takes a ray, iterates through hexgrid
+                    -> if ray head is somewhere inside the grid, update
+                    -> otherwise, dont update
+
+                    method in hexgrid -> called in game
+     */
+    public void rayCheck(Ray2 ray)
+    {
+        for(List<Hexagon> hexList: hexBoard)
+        {
+            for(Hexagon hex: hexList)
+            {
+                if(hex.contains(ray.headPos[0], ray.headPos[1]))
+                {
+                    ray.isInside = true;
+                    return;
+                }
+            }
+        }
+        ray.isInside = false;
+    }
+
     public void toggleAtom()
     {
         for(Atom at: atoms)

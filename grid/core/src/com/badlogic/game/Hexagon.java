@@ -126,7 +126,7 @@ public class Hexagon implements Entities, Clickable {
         return contains(curX, curY);
     }
 
-    private boolean contains(float x, float y) { // Point in polygon algorithm.
+    public boolean contains(float x, float y) { // Point in polygon algorithm.
         int i, j;
         boolean isInside = false;
         float[] vertices = this.getCoordinates();
