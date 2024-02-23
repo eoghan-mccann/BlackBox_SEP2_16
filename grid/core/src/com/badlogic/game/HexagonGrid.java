@@ -15,6 +15,7 @@ public class HexagonGrid implements Clickable{
 
     Atom[] atoms = new Atom[5];
 
+
     // just for testing
 
 
@@ -114,6 +115,7 @@ public class HexagonGrid implements Clickable{
 
             descending = currNoHex >= maxNoHex;
         }
+        getBorderHexagons();
     }
 
     private List<Hexagon> getBorderHexagons() {
@@ -125,13 +127,61 @@ public class HexagonGrid implements Clickable{
             List<Hexagon> rowElements = getRow(rowNo);
 
             // If it's the last row or first row add all the elements to the border list
-            if (rowNo == 0 || rowNo == hexBoardRows - 1) {
+            if (rowNo == 0) { // remember, from bottom to top
                 returnList.addAll(rowElements);
-            }
 
-            // add first and last element of each row to the border list
-            returnList.add(rowElements.get(0));
-            returnList.add(rowElements.get(rowElements.size() - 1));
+                // set borders
+                for(Hexagon hex: rowElements)
+                {
+                    hex.isBorder = true;
+                    hex.sideBorders[2] = 1;
+                    hex.sideBorders[3] = 1;
+                }
+                rowElements.get(0).sideBorders[4] = 1;
+                rowElements.get(rowElements.size()-1).sideBorders[1] = 1;
+
+            }
+            else if(rowNo == hexBoardRows - 1) // top row
+            {
+                for(Hexagon hex: rowElements)
+                {
+                    hex.isBorder = true;
+                    hex.sideBorders[0] = 1;
+                    hex.sideBorders[5] = 1;
+                }
+                rowElements.get(0).sideBorders[4] = 1;
+                rowElements.get(rowElements.size()-1).sideBorders[1] = 1;
+            }
+            else
+            {
+                if(rowNo < 5) // if ascending in count
+                {
+                    rowElements.get(0).sideBorders[3] = 1;
+                    rowElements.get(0).sideBorders[4] = 1;
+                    rowElements.get(0).isBorder = true;
+
+
+                    rowElements.get(rowElements.size()-1).sideBorders[1] = 1;
+                    rowElements.get(rowElements.size()-1).sideBorders[2] = 1;
+                    rowElements.get(rowElements.size()-1).isBorder = true;
+                }
+                if(rowNo > 3) // row 4 is counted twice since it is the middle (this is already too long)
+                {
+                    rowElements.get(0).sideBorders[4] = 1;
+                    rowElements.get(0).sideBorders[5] = 1;
+                    rowElements.get(0).isBorder = true;
+
+
+                    rowElements.get(rowElements.size()-1).sideBorders[0] = 1;
+                    rowElements.get(rowElements.size()-1).sideBorders[1] = 1;
+                    rowElements.get(rowElements.size()-1).isBorder = true;
+                }
+
+
+                // add first and last element of each row to the border list
+                returnList.add(rowElements.get(0));
+                returnList.add(rowElements.get(rowElements.size() - 1));
+            }
         }
 
         return returnList;

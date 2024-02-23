@@ -16,6 +16,10 @@ public class Hexagon implements Entities, Clickable {
     boolean clickToggle = false;
     HexagonGrid grid;
 
+    boolean isBorder;
+    int[] sideBorders;
+    Color color;
+
     Atom atom; // related atom
 
     Hexagon(float x, float y, float r, HexagonGrid hGrid) {
@@ -23,9 +27,13 @@ public class Hexagon implements Entities, Clickable {
         this.centerY = y;
         this.radius = r;
         this.grid = hGrid;
+        color = Color.WHITE;
+
 
         setHexagonPos(this.centerX,this.centerY);
         this.atom = null;
+        this.isBorder = false;
+        sideBorders = new int[]{0, 0, 0, 0, 0, 0}; // for rays: starting in the top right, each side gets number index// clockwise
     }
 
     private float[] calculateXpoints(float x) {
@@ -157,6 +165,11 @@ public class Hexagon implements Entities, Clickable {
     public void Draw(ShapeRenderer shape) {
 
         shape.begin(ShapeRenderer.ShapeType.Line);;
+        if(isBorder)
+        {
+            color = Color.VIOLET;
+        }
+        shape.setColor(color);
         shape.polygon(hexPoints);
         shape.end();
     }
@@ -165,6 +178,11 @@ public class Hexagon implements Entities, Clickable {
     public void update() {
         isClicked();
         isHoveredOver();
+
+        if(isBorder)
+        {
+
+        }
 
 
     }
