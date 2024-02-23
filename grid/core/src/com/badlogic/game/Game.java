@@ -43,6 +43,7 @@ public class Game {
 
         hexagonGrid = new HexagonGrid();
         hexagonGrid.buildHexBoard();
+        hexagonGrid.getBorderHexagons();
         hexagonGrid.initAtoms();
 
         placedAtoms = new ArrayList<>();

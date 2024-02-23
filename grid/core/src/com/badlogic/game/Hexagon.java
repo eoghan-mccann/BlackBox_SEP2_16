@@ -172,6 +172,7 @@ public class Hexagon implements Entities, Clickable {
         shape.begin(ShapeRenderer.ShapeType.Line);;
         if(isBorder)
         {
+            System.out.println("a");
             color = Color.VIOLET;
         }
         shape.setColor(color);
