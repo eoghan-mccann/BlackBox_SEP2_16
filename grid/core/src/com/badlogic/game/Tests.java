@@ -1,15 +1,10 @@
 package com.badlogic.game;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import java.util.List;
 
 public class Tests {
 
@@ -39,11 +34,6 @@ public class Tests {
             Atom.class.getDeclaredMethod("getCoordinates");
         } catch (NoSuchMethodException ex) {
             fail("getCoordinates() method signature incorrect");
-        }
-        try {
-            Atom.class.getDeclaredMethod("getPosition");
-        } catch (NoSuchMethodException ex) {
-            fail("getPosition() method signature incorrect");
         }
         try {
             Atom.class.getDeclaredMethod("getCollision");
@@ -111,11 +101,6 @@ public class Tests {
             fail("getCoordinates() method signature incorrect");
         }
         try {
-            Atom.class.getDeclaredMethod("getPosition");
-        } catch (NoSuchMethodException ex) {
-            fail("getPosition() method signature incorrect");
-        }
-        try {
             Atom.class.getDeclaredMethod("getCollision");
         } catch (NoSuchMethodException ex) {
             fail("getCollision() method signature incorrect");
@@ -157,9 +142,9 @@ public class Tests {
             fail("resetAtom() method signature incorrect");
         }
         try {
-            HexagonGrid.class.getDeclaredMethod("addHexRow", int.class, float.class, boolean.class);
+            HexagonGrid.class.getDeclaredMethod("buildHexRow", int.class, float.class, boolean.class);
         } catch (NoSuchMethodException ex) {
-            fail("addHexRow() method signature incorrect");
+            fail("buildHexRow() method signature incorrect");
         }
         try {
             HexagonGrid.class.getDeclaredMethod("buildHexBoard");
@@ -190,21 +175,6 @@ public class Tests {
             HexagonGrid.class.getDeclaredMethod("getRow", int.class);
         } catch (NoSuchMethodException ex) {
             fail("getRow() method signature incorrect");
-        }
-        try {
-            HexagonGrid.class.getDeclaredMethod("onClick");
-        } catch (NoSuchMethodException ex) {
-            fail("onClick() method signature incorrect");
-        }
-        try {
-            HexagonGrid.class.getDeclaredMethod("isClicked");
-        } catch (NoSuchMethodException ex) {
-            fail("isClicked() method signature incorrect");
-        }
-        try {
-            HexagonGrid.class.getDeclaredMethod("isHoveredOver");
-        } catch (NoSuchMethodException ex) {
-            fail("isHoveredOver() method signature incorrect");
         }
     }
 
@@ -276,11 +246,6 @@ public class Tests {
             fail("getCoordinates() method signature incorrect");
         }
         try {
-            Hexagon.class.getDeclaredMethod("getPosition");
-        } catch (NoSuchMethodException ex) {
-            fail("getPosition() method signature incorrect");
-        }
-        try {
             Hexagon.class.getDeclaredMethod("getCollision");
         } catch (NoSuchMethodException ex) {
             fail("getCollision() method signature incorrect");
@@ -298,9 +263,17 @@ public class Tests {
     }
 
     @Test
-    public void testHexagonAndGrid(){
-        //HexagonGrid g1 = ();
-        //Hexagon h1 = new Hexagon(50, 50, 55, g1);
-        //assertEquals();
+    public void testHexagonGrid(){
+        HexagonGrid hexG = new HexagonGrid();
+        hexG.buildHexBoard();
+
+        int hexcount = 0;
+        List<List<Hexagon>> hexagons = hexG.getHexBoard();
+
+        for (List<Hexagon> rows : hexagons) {
+            hexcount += rows.size();
+        }
+
+        assertEquals(61,hexcount);
     }
 }

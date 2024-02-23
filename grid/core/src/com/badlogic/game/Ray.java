@@ -13,14 +13,14 @@ public class Ray implements Entities, Viewable {
 
     //centre coordinates of the hexagon where the ray starts
     //at least 5 hex in a row at most 9
-    float enterPointX;
-    float enterPointY;
+    private float enterPointX;
+    private float enterPointY;
 
     //centre coordinates of the hexagon where the ray ends
-    float exitPointX;
-    float exitPointY;
+    private float exitPointX;
+    private float exitPointY;
 
-    float[] rayPoints = new float[4];
+    private float[] rayPoints = new float[4];
 
 
     public Ray(float enterPointX, float enterPointY, float exitPointX, float exitPointY) {
@@ -58,11 +58,6 @@ public class Ray implements Entities, Viewable {
     @Override
     public float[] getCoordinates() {
         return this.rayPoints;
-    }
-
-    @Override
-    public void getPosition() {
-
     }
 
     @Override

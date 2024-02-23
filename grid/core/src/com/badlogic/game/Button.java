@@ -20,11 +20,6 @@ public class Button implements Clickable, Entities{
         color = Color.PINK;
     }
 
-
-
-
-
-
     @Override
     public void onClick() {
 
@@ -78,9 +73,6 @@ public class Button implements Clickable, Entities{
 
     }
 
-
-
-
     @Override
     public float[] getCentre() {
         return new float[0];
@@ -91,10 +83,6 @@ public class Button implements Clickable, Entities{
         return new float[0];
     }
 
-    @Override
-    public void getPosition() {
-
-    }
 
     @Override
     public void getCollision() {
