@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		//camera = new OrthographicCamera();
 		//camera.setToOrtho(false,800,400);
 		config.setTitle("A refreshing game of blackbox hexagon made by the Pookies (tm)");
-		config.setWindowedMode(1000, 1000);
+		config.setWindowedMode(1600, 1000);
 		//config.setResizable(true);
 		config.setForegroundFPS(60);
 		config.setTitle("BlackBoxGame");
