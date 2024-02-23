@@ -84,6 +84,16 @@ public class Hexagon implements Entities, Clickable {
         return (hexPoints[1] - centerY) * 2;
     }
 
+    public Atom getAtom()
+    {
+        return this.atom;
+    }
+
+    public void setAtom(Atom at)
+    {
+        this.atom = at;
+    }
+
     @Override
     public void onClick() {
 
@@ -149,11 +159,6 @@ public class Hexagon implements Entities, Clickable {
     @Override
     public float[] getCoordinates() {
         return this.hexPoints;
-    }
-
-    @Override
-    public void getPosition() {
-
     }
 
     @Override
