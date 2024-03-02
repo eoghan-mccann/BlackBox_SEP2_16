@@ -2,6 +2,7 @@ package com.badlogic.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import sun.tools.jconsole.inspector.XSheet;
 
 public class Ray2 implements Entities, Clickable{
     /*
@@ -47,31 +48,38 @@ public class Ray2 implements Entities, Clickable{
     {
         switch(dir)
         {
-            case 1:
+            case 0:
                 direction = Direction.NE;
+                xSpeed = 2;
+                ySpeed = -12;
                 break;
 
-            case 2:
+            case 1:
                 direction = Direction.E;
 
                 xSpeed = 5;
                 ySpeed = 0;
                 break;
-            case 3:
+            case 2:
                 direction = Direction.SE;
+                xSpeed = -2;
+                ySpeed = 12;
+                break;
+
+            case 3:
+                direction = Direction.SW;
+
                 break;
 
             case 4:
-                direction = Direction.SW;
-                break;
-
-            case 5:
                 direction = Direction.W;
                 xSpeed = -5;
                 ySpeed = 0;
                 break;
-            case 6:
+            case 5:
                 direction = Direction.NW;
+                ySpeed = -12;
+                xSpeed = 2;
                 break;
             default:
 

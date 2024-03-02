@@ -74,7 +74,7 @@ public class Game {
 
 
         // temp (just showing how rays work)
-        ray = new Ray2(400, 450, 600, 650, 2);
+        ray = new Ray2(400, 450, 600, 650, 5);
         hexagonGrid.rays.add(ray);
     }
 

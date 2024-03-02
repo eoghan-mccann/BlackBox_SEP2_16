@@ -52,11 +52,11 @@ public class HexagonGrid {
                 {
                     if(i == 5) // if last
                     {
-                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1]));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1], i));
                     }
                     else
                     {
-                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3]));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3], i));
                     }
                 }
             }
