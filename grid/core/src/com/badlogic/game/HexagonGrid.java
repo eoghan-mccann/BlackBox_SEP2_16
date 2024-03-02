@@ -220,6 +220,8 @@ public class HexagonGrid {
             }
             else if(rowNo == hexBoardRows - 1) // top row
             {
+                returnList.addAll(rowElements);
+
                 for(Hexagon hex: rowElements)
                 {
                     hex.isBorder = true;
