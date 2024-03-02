@@ -44,21 +44,19 @@ public class HexagonGrid {
     public void activateBorders()
     {
         List<Hexagon> bordering = getBorderHexagons();
-        Hexagon curr;
         for(Hexagon hex: bordering)
         {
-            curr = hex;
             for(int i=0;i<6;i++)
             {
                 if(hex.sideBorders[i] == 1) // if side is a border, add border to list
                 {
                     if(i == 5) // if last
                     {
-                        hex.borders.add(new Border(curr.hexPoints[i*2], curr.hexPoints[(i*2)+1], curr.hexPoints[0], curr.hexPoints[1]));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1]));
                     }
                     else
                     {
-                        hex.borders.add(new Border(curr.hexPoints[i*2], curr.hexPoints[(i*2)+1], curr.hexPoints[(i*2)+2], curr.hexPoints[(i*2)+3]));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3]));
                     }
                 }
             }
@@ -199,7 +197,7 @@ public class HexagonGrid {
         List<Hexagon> returnList = new ArrayList<>();
         int hexBoardRows = hexBoard.size();
 
-        for (int rowNo = 0; rowNo < hexBoardRows; rowNo++) {
+        for (int rowNo = 0; rowNo < hexBoardRows; rowNo++) { // for all rows bottom to top
 
             List<Hexagon> rowElements = getRow(rowNo);
 
@@ -217,6 +215,8 @@ public class HexagonGrid {
                 rowElements.get(0).sideBorders[4] = 1;
                 rowElements.get(rowElements.size()-1).sideBorders[1] = 1;
 
+                returnList.addAll(rowElements);
+
             }
             else if(rowNo == hexBoardRows - 1) // top row
             {
@@ -226,8 +226,10 @@ public class HexagonGrid {
                     hex.sideBorders[0] = 1;
                     hex.sideBorders[5] = 1;
                 }
-                rowElements.get(0).sideBorders[4] = 1;
+                rowElements.get(0).sideBorders[4] = 1; // first hex gets
                 rowElements.get(rowElements.size()-1).sideBorders[1] = 1;
+
+                returnList.addAll(rowElements);
             }
             else
             {
@@ -241,6 +243,8 @@ public class HexagonGrid {
                     rowElements.get(rowElements.size()-1).sideBorders[1] = 1;
                     rowElements.get(rowElements.size()-1).sideBorders[2] = 1;
                     rowElements.get(rowElements.size()-1).isBorder = true;
+
+                    returnList.addAll(rowElements);
                 }
                 if(rowNo > 3) // row 4 is counted twice since it is the middle (this is already too long)
                 {
@@ -252,12 +256,15 @@ public class HexagonGrid {
                     rowElements.get(rowElements.size()-1).sideBorders[0] = 1;
                     rowElements.get(rowElements.size()-1).sideBorders[1] = 1;
                     rowElements.get(rowElements.size()-1).isBorder = true;
+
+                    returnList.addAll(rowElements);
                 }
 
 
                 // add first and last element of each row to the border list
                 returnList.add(rowElements.get(0));
                 returnList.add(rowElements.get(rowElements.size() - 1));
+
             }
         }
 

@@ -76,7 +76,7 @@ public class Border implements Clickable, Entities{
     public void Draw(ShapeRenderer shape) {
         shape.begin(ShapeRenderer.ShapeType.Line);
         shape.setColor(color);
-        shape.line(midPoint[0], midPoint[1], midPoint[0]+10, midPoint[1]+15);
+        shape.line(midPoint[0], midPoint[1], midPoint[0]+10, midPoint[1]);
         shape.end();
     }
 
