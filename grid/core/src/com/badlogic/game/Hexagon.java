@@ -4,13 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Hexagon implements Entities, Clickable {
 
     private float centerX;
     private float centerY;
     private float radius;
 
-    private float[] hexPoints;
+    public float[] hexPoints;
     private final double angle = Math.toRadians(60);
 
     boolean clickToggle = false;
@@ -18,6 +21,8 @@ public class Hexagon implements Entities, Clickable {
 
     boolean isBorder;
     int[] sideBorders;
+    List<Border> borders;
+
     Color color;
 
     Atom atom; // related atom
@@ -34,6 +39,7 @@ public class Hexagon implements Entities, Clickable {
         this.atom = null;
         this.isBorder = false;
         sideBorders = new int[]{0, 0, 0, 0, 0, 0}; // for rays: starting in the top right, each side gets number index// clockwise
+        borders = new ArrayList<>();
     }
 
     private float[] calculateXpoints(float x) {
@@ -173,12 +179,19 @@ public class Hexagon implements Entities, Clickable {
         shape.begin(ShapeRenderer.ShapeType.Line);;
         if(isBorder)
         {
-            System.out.println("a");
             color = Color.VIOLET;
         }
         shape.setColor(color);
         shape.polygon(hexPoints);
         shape.end();
+
+        if(borders != null)
+        {
+            for (int i = 0; i < borders.size()-1; i++)
+            {
+                borders.get(i).Draw(shape);
+            }
+        }
     }
 
     @Override

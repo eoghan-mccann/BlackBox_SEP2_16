@@ -1,6 +1,7 @@
 package com.badlogic.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
@@ -9,13 +10,61 @@ import java.util.List;
 import static com.badlogic.game.Game.*;
 
 public class HexagonGrid {
-    List<List<Hexagon>> hexBoard = new ArrayList<>(); // list of rows of hexagons where the rows are lists of hexagons
-    int minNoHex = 5;
-    int maxNoHex = 9;
+    List<List<Hexagon>> hexBoard; // list of rows of hexagons where the rows are lists of hexagons
+    int minNoHex;
+    int maxNoHex;
 
-    Atom[] atoms = new Atom[5];
-    List<Ray2> rays = new ArrayList<>();
+    Atom[] atoms;
+    List<Ray2> rays;
 
+
+    public HexagonGrid()
+    {
+        hexBoard = new ArrayList<>(); // list of rows of hexagons where the rows are lists of hexagons
+        minNoHex = 5;
+        maxNoHex = 9;
+
+        atoms = new Atom[5];
+        rays = new ArrayList<>();
+    }
+
+    /*
+        How to make borders clickable
+        -> sideBorders array in each hexagon -> stores which sides are borders
+        -> activateBorders() - iterate through getBorderHexagons().
+            \-> For hexagon, create a new "border" thing for each 1 in sideborders
+                \-> update this in hexagon.update()
+
+        -> "border" thing - class?
+            \-> store its two points
+            \-> if clicked, new ray at midpoint of border going in direction specified
+
+     */
+
+    public void activateBorders()
+    {
+        List<Hexagon> bordering = getBorderHexagons();
+        Hexagon curr;
+        for(Hexagon hex: bordering)
+        {
+            curr = hex;
+            for(int i=0;i<6;i++)
+            {
+                if(hex.sideBorders[i] == 1) // if side is a border, add border to list
+                {
+                    if(i == 5) // if last
+                    {
+                        hex.borders.add(new Border(curr.hexPoints[i*2], curr.hexPoints[(i*2)+1], curr.hexPoints[0], curr.hexPoints[1]));
+                    }
+                    else
+                    {
+                        hex.borders.add(new Border(curr.hexPoints[i*2], curr.hexPoints[(i*2)+1], curr.hexPoints[(i*2)+2], curr.hexPoints[(i*2)+3]));
+                    }
+                }
+            }
+        }
+
+    }
 
       /*
     rayCheck method -> takes a ray, iterates through hexgrid
@@ -221,6 +270,7 @@ public class HexagonGrid {
         return borderHexagons.contains(hexagon);
     }
 
+
     public void Draw(ShapeRenderer shape) { // loop through all elements stored in board and call it's draw function
 
         for (List<Hexagon> hexRow : hexBoard) {
@@ -235,22 +285,24 @@ public class HexagonGrid {
         {
             at.Draw(shape);
         }
+
+
     }
 
-    public void update() {  // loop through all elements stored in board and call it's update function
-
+    // loop through all elements stored in board and call it's update function
+    public void update() {
         // update hexagons
         for (List<Hexagon> hexRow : hexBoard) {
             for (Hexagon hexagon : hexRow) {
                 hexagon.update();
             }
         }
-
         for(Atom at: atoms)
         {
             at.update();
         }
     }
+
 
     public List<List<Hexagon>> getHexBoard() { // Accessor method for hexBoard list
         return hexBoard;

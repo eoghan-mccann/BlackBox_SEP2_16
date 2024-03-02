@@ -46,6 +46,7 @@ public class Game {
         hexagonGrid.buildHexBoard();
         hexagonGrid.getBorderHexagons();
         hexagonGrid.initAtoms();
+        hexagonGrid.activateBorders();
 
         placedAtoms = new ArrayList<>();
         placedRays = new ArrayList<>();

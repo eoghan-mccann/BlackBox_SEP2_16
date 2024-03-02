@@ -39,6 +39,8 @@ public class Ray2 implements Entities, Clickable{
         setSpeed(dir);
         toggle = false;
 
+
+
     }
 
     public void setSpeed(int dir)
