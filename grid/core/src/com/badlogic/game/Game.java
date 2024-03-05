@@ -35,8 +35,6 @@ public class Game {
     private List<Atom> placedAtoms;
     private List<Ray> placedRays;
     private GamePhase currentPhase;
-    private Ray2 ray;
-
 
     public Game() {
         float w = Gdx.graphics.getWidth();
@@ -70,12 +68,6 @@ public class Game {
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
 
-
-
-
-        // temp (just showing how rays work)
-        ray = new Ray2(400, 450,  Ray2.Direction.E);
-        hexagonGrid.rays.add(ray);
     }
 
     public void update() {
@@ -113,10 +105,6 @@ public class Game {
             atom.Draw(shape);
         }
 
-        hexagonGrid.rayCheck(ray);
-        ray.update();
-        ray.Draw(shape);
-
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
@@ -139,6 +127,11 @@ public class Game {
                 border.debug = !border.debug;
             }
         }
+
+        for (Ray2 ray : hexagonGrid.rays) {
+            ray.toggle = !ray.toggle;
+        }
+
     }
 
 

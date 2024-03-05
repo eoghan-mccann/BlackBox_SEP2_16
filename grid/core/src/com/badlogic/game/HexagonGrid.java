@@ -17,7 +17,6 @@ public class HexagonGrid {
     Atom[] atoms;
     List<Ray2> rays;
 
-
     public HexagonGrid()
     {
         hexBoard = new ArrayList<>(); // list of rows of hexagons where the rows are lists of hexagons
@@ -52,11 +51,11 @@ public class HexagonGrid {
                 {
                     if(i == 5) // if last
                     {
-                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1], i));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1], Ray2.Direction.values()[i], this));
                     }
                     else
                     {
-                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3], i));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3], Ray2.Direction.values()[i], this));
                     }
                 }
             }
@@ -95,6 +94,10 @@ public class HexagonGrid {
         for (Ray2 ray : rays) {
             ray.toggle = !ray.toggle;
         }
+    }
+
+    public void addRay(float x, float y, Ray2.Direction direction) {
+        rays.add(new Ray2(x,y,direction));
     }
 
     public void initAtoms() // initial placement of 5 atoms on the right side
@@ -320,7 +323,9 @@ public class HexagonGrid {
             at.Draw(shape);
         }
 
-
+        for(Ray2 ray: rays) {
+            ray.Draw(shape);
+        }
     }
 
     // loop through all elements stored in board and call it's update function
@@ -335,6 +340,12 @@ public class HexagonGrid {
         {
             at.update();
         }
+
+        for(Ray2 ray: rays) {
+            rayCheck(ray);
+            ray.update();
+        }
+
     }
 
 

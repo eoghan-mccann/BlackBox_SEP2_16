@@ -196,12 +196,9 @@ public class Hexagon implements Entities, Clickable {
         shape.polygon(hexPoints);
         shape.end();
 
-        if(borders != null)
+        for (int i = 0; i < borders.size()-1; i++)
         {
-            for (int i = 0; i < borders.size()-1; i++)
-            {
-                borders.get(i).Draw(shape);
-            }
+            borders.get(i).Draw(shape);
         }
     }
 

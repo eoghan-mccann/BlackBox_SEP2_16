@@ -9,6 +9,8 @@ import java.util.Arrays;
 public class Border implements Clickable, Entities{
 
     public boolean debug = false;
+    boolean hasRay = false;
+    HexagonGrid hexagonGrid;
 
     float x1, y1;
     float x2, y2;
@@ -16,9 +18,10 @@ public class Border implements Clickable, Entities{
     float[] revMid;
     float[] boundingBox;
     Color color;
-    int direction;
 
-    public Border(float x1, float y1, float x2, float y2, int dir)
+    Ray2.Direction direction;
+
+    public Border(float x1, float y1, float x2, float y2, Ray2.Direction dir, HexagonGrid hex)
     {
         this.x1 = x1;
         this.y1 = y1;
@@ -26,39 +29,40 @@ public class Border implements Clickable, Entities{
         this.x2 = x2;
         this.y2 = y2;
         color = Color.WHITE;
-        midPoint = midPoint(x1, y1, x2, y2); //
+        midPoint = midPoint(x1, y1, x2, y2);
 
+        hexagonGrid = hex;
 
         //direction mirrors ray's direction and hexagon's sideBorders[] - 0 is coming from NW, 1 W, etc
         this.direction = dir; // use to print line, get revMid
-        setRevMid();
+        setRevMid(direction);
         initBoundingBox();
 
     }
 
-    public void setRevMid()
+    public void setRevMid(Ray2.Direction direction)
     { /* this method sets the second point of the line that is drawn at each side
         this val can't be calc'ed generally for any side, so it has to be done like this
         the direction indicates which side is being handled
         */
         switch(direction)
         {
-            case 0:
+            case NE:
                 revMid = new float[]{x2-2, y1+12};
                 break;
-            case 1:
+            case E:
                 revMid = new float[]{midPoint[0] + 30, midPoint[1]};
                 break;
-            case 2:
+            case SE:
                 revMid = new float[]{x1-2, y2-12};
                 break;
-            case 3:
+            case SW:
                 revMid = new float[]{x2+2, y1-12};
                 break;
-            case 4:
+            case W:
                 revMid = new float[]{midPoint[0] - 30, midPoint[1]};
                 break;
-            case 5:
+            case NW:
                 revMid = new float[]{x1+2, y2+12};
                 break;
             default:
@@ -162,8 +166,9 @@ public class Border implements Clickable, Entities{
 
     @Override
     public void update() {
-        if (isClicked()) {
-            System.out.println("CLICKED");
+        if (isClicked() && !hasRay) {
+            hexagonGrid.addRay(midPoint[0], midPoint[1], direction);
+            hasRay = true;
         }
     }
 

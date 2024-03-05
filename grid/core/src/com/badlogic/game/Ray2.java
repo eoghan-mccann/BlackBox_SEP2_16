@@ -6,14 +6,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Ray2 implements Entities, Clickable{
     public boolean toggle;
 
-
     public enum Direction  { // enum of ray's directions
-        NE(new float[]{2, -12}),
-        E(new float[]{5, 0}),
-        SE(new float[]{-2, 12}),
-        SW(new float[]{12,2}),
-        W(new float[]{-5, 0}),
-        NW(new float[]{-12, 2});
+        NE(new float[]{-5, -5}), // NE -> SW // 12, -2
+        E(new float[]{-5,0}), // E -> W // -5, 0
+        SE(new float[]{-5.2F, 9}), // SE -> NW // -12,2
+        SW(new float[]{5.2F,9}), // SW -> NE // 2,-12
+        W(new float[]{5,0}), // W -> E // 5,0
+        NW(new float[]{5.2F,-9}); // NW -> SE // -2,12
 
         public final float[] direction;
 
@@ -29,12 +28,7 @@ public class Ray2 implements Entities, Clickable{
 
     float[] enterPos; // coords of start of ray
     float[] headPos; // coords of the head of the ray
-
-    float[] endPoint; // where the ray ends (future thing prob if even used)
     boolean isInside;
-
-    float xSpeed;
-    float ySpeed;
 
     // Potentially take chosen side coords, determine direction, on update displace
     public Ray2(float x1, float y1, Direction dir) {
@@ -48,7 +42,7 @@ public class Ray2 implements Entities, Clickable{
     @Override
     public void Draw(ShapeRenderer shape)
     {
-        if(toggle)
+        if(true)
         {
             shape.begin(ShapeRenderer.ShapeType.Line);
             shape.setColor(Color.GREEN);
