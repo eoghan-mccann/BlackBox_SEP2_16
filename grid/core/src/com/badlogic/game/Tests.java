@@ -268,11 +268,8 @@ public class Tests {
         hexG.buildHexBoard();
 
         int hexcount = 0;
-        List<List<Hexagon>> hexagons = hexG.getHexBoard();
-
-        for (List<Hexagon> rows : hexagons) {
-            hexcount += rows.size();
-        }
+        List<Hexagon> hexagons = hexG.getHexBoard();
+        hexcount = hexagons.size();
 
         assertEquals(61,hexcount);
     }

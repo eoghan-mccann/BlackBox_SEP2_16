@@ -4,15 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.Arrays;
+
 public class Border implements Clickable, Entities{
-    /*
-    This is a square hitbox around the given side, i think?
-     */
+
+    public boolean debug = false;
 
     float x1, y1;
     float x2, y2;
     float[] midPoint;
     float[] revMid;
+    float[] boundingBox;
     Color color;
     int direction;
 
@@ -30,6 +32,7 @@ public class Border implements Clickable, Entities{
         //direction mirrors ray's direction and hexagon's sideBorders[] - 0 is coming from NW, 1 W, etc
         this.direction = dir; // use to print line, get revMid
         setRevMid();
+        initBoundingBox();
 
     }
 
@@ -63,8 +66,29 @@ public class Border implements Clickable, Entities{
         }
     }
 
+    private void initBoundingBox() {
+        float[] linePoints = this.getCoordinates();
 
+        float x1 = linePoints[0];
+        float x2 = linePoints[2];
+        float dX = x1 - x2;
 
+        float y1 = linePoints[1];
+        float y2 = linePoints[3];
+        float dY = y1 - y2;
+
+        float D = (float) Math.sqrt((dX * dX) + (dY * dY));
+
+        dX = 10 * dX / D;
+        dY = 10 * dY / D;
+
+        boundingBox = new float[]{
+                x1 -dY, y1 + dX,
+                x1 + dY, y1 -dX,
+                x2 + dY, y2  -dX,
+                x2 -dY, y2 + dX,
+        };
+    }
 
     @Override
     public void onClick() {
@@ -81,15 +105,26 @@ public class Border implements Clickable, Entities{
     }
 
     @Override
-    public boolean isHoveredOver() {
+    public boolean isHoveredOver()
+    {
         float curX = Gdx.input.getX();
         float curY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-        if((curX > x1  && curX < x2 )  &&  (curY > y1 &&  curY < y2)) {
-            color = Color.GREEN;
-            return true;
+        return contains(curX, curY);
+    }
+    public boolean contains(float x, float y) {
+        int i, j;
+        boolean isInside = false;
+        float[] vertices = boundingBox;
+
+        for (i = 0, j = vertices.length - 2; i < vertices.length; j = i, i += 2) {
+            if ((vertices[i + 1] > y) != (vertices[j + 1] > y) && (x < (vertices[j] - vertices[i]) * (y - vertices[i + 1]) / (vertices[j + 1] - vertices[i + 1]) + vertices[i])) {
+                isInside = !isInside;
+            }
         }
-        return false;
+
+        return isInside;
+
     }
 
     @Override
@@ -99,7 +134,7 @@ public class Border implements Clickable, Entities{
 
     @Override
     public float[] getCoordinates() {
-        return new float[0];
+        return new float[]{midPoint[0], midPoint[1], revMid[0], revMid[1]};
     }
 
     @Override
@@ -109,15 +144,27 @@ public class Border implements Clickable, Entities{
 
     @Override
     public void Draw(ShapeRenderer shape) {
+
+        color = isHoveredOver() ? Color.ROYAL : Color.WHITE;
+
         shape.begin(ShapeRenderer.ShapeType.Line);
-        shape.setColor(color);
-        shape.line(midPoint[0], midPoint[1], revMid[0], revMid[1]);
+            shape.setColor(color);
+            shape.line(midPoint[0], midPoint[1], revMid[0], revMid[1]);
         shape.end();
+
+        if (debug) { // draw bounding box
+            shape.begin(ShapeRenderer.ShapeType.Line);
+                shape.setColor(Color.GREEN);
+                shape.polygon(boundingBox);
+            shape.end();
+        }
     }
 
     @Override
     public void update() {
-
+        if (isClicked()) {
+            System.out.println("CLICKED");
+        }
     }
 
     public float[] midPoint(float x1, float y1, float x2, float y2)
@@ -127,4 +174,5 @@ public class Border implements Clickable, Entities{
 
         return new float[]{midX, midY};
     }
+
 }

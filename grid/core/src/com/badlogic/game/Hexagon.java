@@ -130,10 +130,10 @@ public class Hexagon implements Entities, Clickable {
         float curX = Gdx.input.getX();
         float curY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-        return contains(curX, curY);
+        return isInside(curX, curY);
     }
 
-    public boolean contains(float x, float y) { // Point in polygon algorithm.
+    public boolean isInside(float x, float y) { // Point in polygon algorithm.
         int i, j;
         boolean isInside = false;
         float[] vertices = this.getCoordinates();
@@ -173,6 +173,17 @@ public class Hexagon implements Entities, Clickable {
 
     }
 
+    public boolean containsVertex(float[] vertex) {
+        for (int i = 0; i < hexPoints.length; i += 2) {
+            if (vertex[0] == hexPoints[i] && vertex[1] == hexPoints[i + 1]) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
     @Override
     public void Draw(ShapeRenderer shape) {
 
@@ -198,5 +209,10 @@ public class Hexagon implements Entities, Clickable {
     public void update() {
         isClicked();
         isHoveredOver();
+
+        for (Border border : borders) {
+            border.update();
+        }
+
     }
 }

@@ -77,7 +77,7 @@ public class HexagonGrid {
         {
             for(Hexagon hex: hexList)
             {
-                if(hex.contains(ray.headPos[0], ray.headPos[1]))
+                if(hex.isInside(ray.headPos[0], ray.headPos[1]))
                 {
                     ray.isInside = true;
                     return;
@@ -86,20 +86,16 @@ public class HexagonGrid {
         }
         ray.isInside = false;
     }
-
     public void toggleAtom()
     {
         for(Atom at: atoms)
         {
             at.toggled = !at.toggled;
         }
-        for(int i=0;i<rays.size();i++)
-        {
-            rays.get(i).toggle = !rays.get(i).toggle;
+        for (Ray2 ray : rays) {
+            ray.toggle = !ray.toggle;
         }
     }
-
-
 
     public void initAtoms() // initial placement of 5 atoms on the right side
     {
@@ -279,6 +275,35 @@ public class HexagonGrid {
         return borderHexagons.contains(hexagon);
     }
 
+    public List<float[]> getOutsideVertices() {
+        List<float[]> outerVertices = new ArrayList<>();
+
+        List<Hexagon> borderHexagons = getBorderHexagons();
+
+        for (Hexagon borderHexagon : borderHexagons) {
+            float[] coordinates = borderHexagon.getCoordinates();
+
+            for (int i = 0; i < coordinates.length; i += 2) {
+                float[] currentVertex = new float[]{coordinates[i], coordinates[i + 1]};
+                int sharedPoints = 0;
+
+                for (Hexagon hexagon : getHexBoard()) {
+                    if (hexagon == borderHexagon) { continue; }
+                    if (hexagon.containsVertex(currentVertex)) {
+                        sharedPoints++;
+                    }
+                }
+
+                if (sharedPoints <= 1) {
+                    outerVertices.add(currentVertex);
+                }
+            }
+        }
+
+        return outerVertices;
+
+    }
+
 
     public void Draw(ShapeRenderer shape) { // loop through all elements stored in board and call it's draw function
 
@@ -313,8 +338,10 @@ public class HexagonGrid {
     }
 
 
-    public List<List<Hexagon>> getHexBoard() { // Accessor method for hexBoard list
-        return hexBoard;
+    public List<Hexagon> getHexBoard() { // Accessor method for hexBoard list
+        List<Hexagon> flattenedHexList = new ArrayList<>();
+        hexBoard.forEach(flattenedHexList::addAll);
+        return flattenedHexList;
     }
     public List<Hexagon> getRow(int i) {
         return hexBoard.get(i);

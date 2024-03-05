@@ -2,23 +2,27 @@ package com.badlogic.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import sun.tools.jconsole.inspector.XSheet;
 
 public class Ray2 implements Entities, Clickable{
-    /*
-    Alternate ray idea
-     */
-
     public boolean toggle;
 
 
-    enum Direction  { // enum of ray's directions
-        NE,
-        E,
-        SE,
-        SW,
-        W,
-        NW,
+    public enum Direction  { // enum of ray's directions
+        NE(new float[]{2, -12}),
+        E(new float[]{5, 0}),
+        SE(new float[]{-2, 12}),
+        SW(new float[]{12,2}),
+        W(new float[]{-5, 0}),
+        NW(new float[]{-12, 2});
+
+        public final float[] direction;
+
+        public float getXSpeed() {return direction[0];}
+        public float getYSpeed() {return direction[1];}
+
+        Direction(float[] direction) {
+            this.direction = direction;
+        }
     }
 
     Direction direction;
@@ -33,65 +37,12 @@ public class Ray2 implements Entities, Clickable{
     float ySpeed;
 
     // Potentially take chosen side coords, determine direction, on update displace
-    public Ray2(float x1, float y1, float x2, float y2, int dir) {
-        enterPos = midPoint(x1, y1, x2, y2);
-        headPos = midPoint(x1, y1, x2, y2);
+    public Ray2(float x1, float y1, Direction dir) {
+        enterPos = new float[]{x1,y1};
+        headPos = new float[]{x1,y1};
+        direction = dir;
 
-        setSpeed(dir);
         toggle = false;
-
-
-
-    }
-
-    public void setSpeed(int dir)
-    {
-        switch(dir)
-        {
-            case 0:
-                direction = Direction.NE;
-                xSpeed = 2;
-                ySpeed = -12;
-                break;
-
-            case 1:
-                direction = Direction.E;
-
-                xSpeed = 5;
-                ySpeed = 0;
-                break;
-            case 2:
-                direction = Direction.SE;
-                xSpeed = -2;
-                ySpeed = 12;
-                break;
-
-            case 3:
-                direction = Direction.SW;
-
-                break;
-
-            case 4:
-                direction = Direction.W;
-                xSpeed = -5;
-                ySpeed = 0;
-                break;
-            case 5:
-                direction = Direction.NW;
-                ySpeed = -12;
-                xSpeed = 2;
-                break;
-            default:
-
-        }
-    }
-
-    public float[] midPoint(float x1, float y1, float x2, float y2)
-    {
-        float midX = (x1 + x2)/2;
-        float midY = (y1 + y2)/2;
-
-        return new float[]{midX, midY};
     }
 
     @Override
@@ -104,24 +55,16 @@ public class Ray2 implements Entities, Clickable{
             shape.line(enterPos[0], enterPos[1], headPos[0], headPos[1]);
             shape.end();
         }
-
-
     }
 
     @Override
     public void update() {
         if(isInside)
         {
-            headPos[0] += xSpeed;
-            headPos[1] += ySpeed;
+            headPos[0] += direction.getXSpeed();
+            headPos[1] += direction.getYSpeed();
         }
     }
-
-
-
-
-
-
 
     @Override
     public void onClick() {

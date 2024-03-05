@@ -74,7 +74,7 @@ public class Game {
 
 
         // temp (just showing how rays work)
-        ray = new Ray2(400, 450, 600, 650, 5);
+        ray = new Ray2(400, 450,  Ray2.Direction.E);
         hexagonGrid.rays.add(ray);
     }
 
@@ -104,7 +104,7 @@ public class Game {
 
         if(viewToggle.isClicked())
         {
-            hexagonGrid.toggleAtom();
+            debugState();
         }
 
         hexagonGrid.Draw(shape);
@@ -129,6 +129,16 @@ public class Game {
         shape.dispose();
         stage.dispose();
         skin.dispose();
+    }
+
+    private void debugState() {
+        hexagonGrid.toggleAtom();
+
+        for (Hexagon hexagon : hexagonGrid.getHexBoard()) {
+            for (Border border : hexagon.borders) {
+                border.debug = !border.debug;
+            }
+        }
     }
 
 
