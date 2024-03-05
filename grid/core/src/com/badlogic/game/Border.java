@@ -166,8 +166,16 @@ public class Border implements Clickable, Entities{
 
     @Override
     public void update() {
-        if (isClicked() && !hasRay) {
-            hexagonGrid.addRay(midPoint[0], midPoint[1], direction);
+        if (isClicked() && !hasRay) { // Various pixel offsets due to the
+            if (direction == Ray2.Direction.NE || direction == Ray2.Direction.NW) {
+                hexagonGrid.addRay(midPoint[0], midPoint[1] - 1, direction);
+            } else if (direction == Ray2.Direction.SE){
+                hexagonGrid.addRay(midPoint[0], midPoint[1] + 1, direction);
+            } else if (direction == Ray2.Direction.E ) {
+                hexagonGrid.addRay(midPoint[0] - 1, midPoint[1], direction);
+            } else {
+                hexagonGrid.addRay(midPoint[0], midPoint[1], direction);
+            }
             hasRay = true;
         }
     }

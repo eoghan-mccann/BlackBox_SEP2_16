@@ -6,13 +6,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Ray2 implements Entities, Clickable{
     public boolean toggle;
 
-    public enum Direction  { // enum of ray's directions
-        NE(new float[]{-5, -5}), // NE -> SW // 12, -2
+    public enum Direction  { // enum of ray's directions,
+        NE(new float[]{-5.2F, -9}), // NE -> SW // 12, -2
         E(new float[]{-5,0}), // E -> W // -5, 0
         SE(new float[]{-5.2F, 9}), // SE -> NW // -12,2
         SW(new float[]{5.2F,9}), // SW -> NE // 2,-12
         W(new float[]{5,0}), // W -> E // 5,0
         NW(new float[]{5.2F,-9}); // NW -> SE // -2,12
+
+        // vectors for directions are misslabelled as i'm using directions from borders which are the opposite direction
 
         public final float[] direction;
 
