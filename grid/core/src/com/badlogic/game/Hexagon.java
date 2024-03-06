@@ -26,6 +26,7 @@ public class Hexagon implements Entities, Clickable {
     Color color;
 
     Atom atom; // related atom
+    boolean isNeighbour;
 
     Hexagon(float x, float y, float r, HexagonGrid hGrid) {
         this.centerX = x;
@@ -41,6 +42,24 @@ public class Hexagon implements Entities, Clickable {
         sideBorders = new int[]{0, 0, 0, 0, 0, 0}; // for rays: starting in the top right, each side gets number index// clockwise
         borders = new ArrayList<>();
     }
+
+
+    //helper method for determining a neighbour
+    private boolean isNeighbour(Hexagon hex) {
+        // Calculate the distance between the centers of the two hexagons
+        double distance = Math.sqrt(Math.pow(this.getCenterX() - hex.getCenterX(), 2) +
+                Math.pow(this.getCenterY() - hex.getCenterY(), 2));
+
+        // Compare the distance to a threshold based on the radius of a hexagon
+        double threshold = this.radius * 2F;
+        return distance <= threshold;
+    }
+
+    public List<Hexagon> getNeighbours(){
+        List<Hexagon> neighbours = new ArrayList<>();
+        return neighbours;
+    }
+
 
     private float[] calculateXpoints(float x) {
 
