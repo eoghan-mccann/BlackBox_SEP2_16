@@ -85,16 +85,6 @@ public class HexagonGrid {
         }
         ray.isInside = false;
     }
-    public void toggleAtom()
-    {
-        for(Atom at: atoms)
-        {
-            at.toggled = !at.toggled;
-        }
-        for (Ray2 ray : rays) {
-            ray.toggle = !ray.toggle;
-        }
-    }
 
     public void addRay(float x, float y, Ray2.Direction direction) {
         rays.add(new Ray2(x,y,direction));

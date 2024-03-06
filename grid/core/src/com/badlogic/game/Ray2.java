@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Ray2 implements Entities, Clickable{
-    public boolean toggle;
+    public boolean debug = false;
 
     public enum Direction  { // enum of ray's directions,
         NE(new float[]{-5.2F, -9}), // NE -> SW // 12, -2
@@ -37,20 +37,17 @@ public class Ray2 implements Entities, Clickable{
         enterPos = new float[]{x1,y1};
         headPos = new float[]{x1,y1};
         direction = dir;
-
-        toggle = false;
     }
 
     @Override
     public void Draw(ShapeRenderer shape)
     {
-        if(true)
-        {
-            shape.begin(ShapeRenderer.ShapeType.Line);
+        shape.begin(ShapeRenderer.ShapeType.Line);
+        if(debug) {
             shape.setColor(Color.GREEN);
             shape.line(enterPos[0], enterPos[1], headPos[0], headPos[1]);
-            shape.end();
         }
+        shape.end();
     }
 
     @Override

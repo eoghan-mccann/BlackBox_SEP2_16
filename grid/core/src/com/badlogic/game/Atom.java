@@ -18,7 +18,7 @@ public class Atom implements Entities, Clickable{
     private float atomLayerRadius;
 
     public boolean isPlaced;
-    public boolean toggled;
+    public boolean debug;
 
     //a point on the layer that is directly to the right of the center
     //Y coord is the same as for the center
@@ -51,7 +51,7 @@ public class Atom implements Entities, Clickable{
 
 
         this.isPlaced = false;
-        this.toggled = false;
+        this.debug = false;
     }
 
     public float setCenterX(float x)
@@ -95,7 +95,7 @@ public class Atom implements Entities, Clickable{
 
     @Override
     public void Draw(ShapeRenderer shape) {
-        if(!toggled) // if toggle is off (set to atom)
+        if(!debug) // if toggle is off (set to atom)
         {
             shape.begin(ShapeRenderer.ShapeType.Line);
             // Drawing aura

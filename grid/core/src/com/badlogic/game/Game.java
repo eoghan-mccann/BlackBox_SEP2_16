@@ -17,6 +17,8 @@ public class Game {
     public static int windowHeight = 900;
     public static float hexRadius = 50;
 
+    boolean debugMode = false;
+
     private final OrthographicCamera camera;
 
     SpriteBatch batch;
@@ -80,6 +82,13 @@ public class Game {
             case PLACING_RAYS:
                 break;
         }
+
+        if(viewToggle.isClicked())
+        {
+            debugMode = !debugMode;
+        }
+
+        debugUpdate();
     }
 
     public void render() {
@@ -91,15 +100,10 @@ public class Game {
         shape.setProjectionMatrix(camera.combined);
 
         hexagonGrid.update();
+        hexagonGrid.Draw(shape);
+
         viewToggle.update();
         viewToggle.Draw(shape);
-
-        if(viewToggle.isClicked())
-        {
-            debugState();
-        }
-
-        hexagonGrid.Draw(shape);
 
         for (Atom atom : placedAtoms) {
             atom.Draw(shape);
@@ -119,20 +123,18 @@ public class Game {
         skin.dispose();
     }
 
-    private void debugState() {
-        hexagonGrid.toggleAtom();
+    private void debugUpdate() {
+            for (Atom atoms : hexagonGrid.atoms) {
+                atoms.debug = debugMode;
+            }
 
-        for (Hexagon hexagon : hexagonGrid.getHexBoard()) {
-            for (Border border : hexagon.borders) {
-                border.debug = !border.debug;
+            for (Hexagon hexagon : hexagonGrid.getHexBoard()) {
+                for (Border border : hexagon.borders) {
+                    border.debug = debugMode;
+                }
+            }
+            for (Ray2 ray : hexagonGrid.rays) {
+                ray.debug = debugMode;
             }
         }
-
-        for (Ray2 ray : hexagonGrid.rays) {
-            ray.toggle = !ray.toggle;
-        }
-
-    }
-
-
 }
