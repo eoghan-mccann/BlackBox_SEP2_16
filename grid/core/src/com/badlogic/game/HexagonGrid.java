@@ -86,6 +86,16 @@ public class HexagonGrid {
         ray.isInside = false;
     }
 
+    public void rayAtomCheck(Ray2 ray) {
+        for (Atom atom : atoms) {
+            if (atom.isInside(ray.getCoordinates())) {
+                ray.hitAtom = true;
+                return;
+            }
+        }
+        ray.hitAtom = false;
+    }
+
     public void addRay(float x, float y, Ray2.Direction direction) {
         rays.add(new Ray2(x,y,direction));
     }
@@ -333,6 +343,7 @@ public class HexagonGrid {
 
         for(Ray2 ray: rays) {
             rayCheck(ray);
+            rayAtomCheck(ray);
             ray.update();
         }
 

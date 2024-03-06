@@ -31,6 +31,7 @@ public class Ray2 implements Entities, Clickable{
     float[] enterPos; // coords of start of ray
     float[] headPos; // coords of the head of the ray
     boolean isInside;
+    boolean hitAtom;
 
     // Potentially take chosen side coords, determine direction, on update displace
     public Ray2(float x1, float y1, Direction dir) {
@@ -52,7 +53,7 @@ public class Ray2 implements Entities, Clickable{
 
     @Override
     public void update() {
-        if(isInside)
+        if(isInside && !hitAtom)
         {
             headPos[0] += direction.getXSpeed();
             headPos[1] += direction.getYSpeed();
@@ -83,7 +84,7 @@ public class Ray2 implements Entities, Clickable{
 
     @Override
     public float[] getCoordinates() {
-        return new float[0];
+        return headPos;
     }
 
     @Override

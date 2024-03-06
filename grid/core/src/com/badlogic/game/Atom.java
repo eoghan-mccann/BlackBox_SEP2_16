@@ -76,6 +76,16 @@ public class Atom implements Entities, Clickable{
         this.centrePoint[1] = y;
     }
 
+    public boolean isInside(float[] rayPos) {
+        float rayX = rayPos[0];
+        float rayY = rayPos[1];
+
+        float atomX = getCentre()[0];
+        float atomY = getCentre()[1];
+
+        // Distance between two points function
+        return Math.sqrt(Math.pow(atomX - rayX, 2)) + Math.pow(atomY - rayY, 2) <= getCentreRadius();
+    }
 
 
     @Override
