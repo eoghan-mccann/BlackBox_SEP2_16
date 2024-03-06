@@ -79,11 +79,12 @@ public class HexagonGrid {
                 if(hex.isInside(ray.headPos[0], ray.headPos[1]))
                 {
                     ray.isInside = true;
+                    ray.currHex = hex;
                     return;
                 }
             }
         }
-        ray.isInside = false;
+        ray.isInside = false; // ray is now outside the grid
     }
 
     public void rayAtomCheck(Ray2 ray) {
