@@ -14,7 +14,7 @@ public class Ray2 implements Entities, Clickable{
         W(new float[]{5,0}), // W -> E // 5,0
         NW(new float[]{5.2F,-9}); // NW -> SE // -2,12
 
-        // vectors for directions are misslabelled as i'm using directions from borders which are the opposite direction
+        // vectors for directions are mislabelled as i'm using directions from borders which are the opposite direction
 
         public final float[] direction;
 
