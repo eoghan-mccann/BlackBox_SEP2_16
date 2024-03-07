@@ -23,10 +23,24 @@ public class Hexagon implements Entities, Clickable {
     int[] sideBorders;
     List<Border> borders;
 
+
     Color color;
 
-    Atom atom; // related atom
-    boolean isNeighbour;
+    Atom atom; // related atom - null if no atom placed
+    public boolean isNeighbour;
+    //if an atom is placed down and to the left of a hexagon, that hexagon will be NorE (NorthEast hex from the atom)
+    public enum neighourPos {
+        NorE(0), East(1), SouE(2),
+        NorW(3), West(4), SouW(5);
+
+        public final int ind;
+        neighourPos(int i) {
+            this.ind = i;
+        }
+    }
+
+    neighourPos neighbDir;
+
 
     Hexagon(float x, float y, float r, HexagonGrid hGrid) {
         this.centerX = x;
@@ -44,21 +58,6 @@ public class Hexagon implements Entities, Clickable {
     }
 
 
-    //helper method for determining a neighbour
-    private boolean isNeighbour(Hexagon hex) {
-        // Calculate the distance between the centers of the two hexagons
-        double distance = Math.sqrt(Math.pow(this.getCenterX() - hex.getCenterX(), 2) +
-                Math.pow(this.getCenterY() - hex.getCenterY(), 2));
-
-        // Compare the distance to a threshold based on the radius of a hexagon
-        double threshold = this.radius * 2F;
-        return distance <= threshold;
-    }
-
-    public List<Hexagon> getNeighbours(){
-        List<Hexagon> neighbours = new ArrayList<>();
-        return neighbours;
-    }
 
 
     private float[] calculateXpoints(float x) {
@@ -207,9 +206,14 @@ public class Hexagon implements Entities, Clickable {
     public void Draw(ShapeRenderer shape) {
 
         shape.begin(ShapeRenderer.ShapeType.Line);;
+        color = Color.WHITE;
         if(isBorder)
         {
             color = Color.VIOLET;
+        }
+        if(isNeighbour)
+        {
+            color = Color.GREEN;
         }
         shape.setColor(color);
         shape.polygon(hexPoints);

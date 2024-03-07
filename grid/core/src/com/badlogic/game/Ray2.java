@@ -11,10 +11,10 @@ public class Ray2 implements Entities, Clickable{
 
     public enum Direction  { // enum of ray's directions,
         NE(new float[]{-5.2F, -9}), // NE -> SW // 12, -2
-        E(new float[]{-5,0}), // E -> W // -5, 0
+        E(new float[]{-10,0}), // E -> W // -5, 0
         SE(new float[]{-5.2F, 9}), // SE -> NW // -12,2
         SW(new float[]{5.2F,9}), // SW -> NE // 2,-12
-        W(new float[]{5,0}), // W -> E // 5,0
+        W(new float[]{10,0}), // W -> E // 5,0
         NW(new float[]{5.2F,-9}); // NW -> SE // -2,12
 
         // vectors for directions are mislabelled as i'm using directions from borders which are the opposite direction
@@ -56,8 +56,12 @@ public class Ray2 implements Entities, Clickable{
     <List<List>> where each row is one line making up the ray path, with 4 vals; start point, head point
     when !isInside, that line must be done. Add current line to list, set direction, new line vals?
 
+    Each hexagon gets isNeighbour bool, Direction enum depending on what side of the atom it's on
+    -   Use currHex to check if ray is in a neighbour
+    -   If direction == rayDirection it will hit atom -> do nothing
+    -   Otherwise reflect (go to center, change direction)
      */
-    public void setDirection() // called when ray hits border (atm) - changes ray direction and continues moving
+    public void setDirection(Hexagon hex) // called when ray hits atom aura - changes ray direction and continues moving
     {
 
         numLines = lines.size();
@@ -76,27 +80,42 @@ public class Ray2 implements Entities, Clickable{
         enterPos[1] = headPos[1];
 
         // set direction of new line
-        switch(direction) // DIRECTIONS ARE FLIPPED - NE MEANS RAY IS GOING TO SW
+        switch(hex.neighbDir)
         {
-            case NE:
-                direction = Direction.W;
+            case NorE: // top right
+                if(direction == Direction.NW) {direction = Direction.W;}
+                else if(direction == Direction.E) {direction = Direction.SE;}
                 break;
-            case E:
-                direction = Direction.NW;
+
+            case East: // right
+                if(direction == Direction.NE) {direction = Direction.NW;}
+                else if(direction == Direction.SE) {direction = Direction.SW;}
                 break;
-            case SE:
-                direction = Direction.SW;
+
+            case SouE: // bot right
+                if(direction == Direction.E) {direction = Direction.NE;}
+                else if(direction == Direction.SW) {direction = Direction.W;}
                 break;
-            case SW:
-                direction = Direction.NE;
+
+            case SouW: // TOP LEFT
+                if(direction == Direction.NE) {direction = Direction.E;}
+                else if(direction == Direction.W) {direction = Direction.SW;}
                 break;
-            case W:
-                direction = Direction.SE;
+
+            case West: // left
+                if(direction == Direction.SW) {direction = Direction.SE;}
+                else if(direction == Direction.NW) {direction = Direction.NE;}
                 break;
-            case NW:
-                direction = Direction.E;
+
+            case NorW: // BOT LEFT
+                if(direction == Direction.W) {direction = Direction.NW;}
+                else if(direction == Direction.SE) {direction = Direction.E;}
                 break;
+
+
         }
+
+
 
     }
 
@@ -127,12 +146,15 @@ public class Ray2 implements Entities, Clickable{
             headPos[0] += direction.getXSpeed();
             headPos[1] += direction.getYSpeed();
         }
-        if(!isInside) // move back, set direction, set isinside back
-        { // change to when ray hits atom aura
+        if(currHex.isNeighbour) // move back, set direction, set isinside back
+        {
             headPos[0] = currHex.getCenterX(); // move line to centre of current hexagon
             headPos[1] = currHex.getCenterY();
-            setDirection();
-            isInside = true;
+            setDirection(currHex);
+            headPos[0] += direction.getXSpeed()*5;
+            headPos[1] += direction.getYSpeed()*5;
+
+
         }
     }
 

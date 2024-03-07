@@ -63,6 +63,7 @@ public class HexagonGrid {
 
     }
 
+
       /*
     rayCheck method -> takes a ray, iterates through hexgrid
                     -> if ray head is somewhere inside the grid, update
@@ -123,12 +124,19 @@ public class HexagonGrid {
                 atoms[i].setAtomPoints(hex.getCenterX(), hex.getCenterY());
                 atoms[i].isPlaced = true;
                 hex.setAtom(atoms[i]);
+
+
+                // must also SET neighbouring atoms accordingly
+                toggleNeighbours(hex);
+
+
                 break;
             }
             if (i == 4 && atoms[i].isPlaced) // if all placed
             {
                 continue;
                 // do nothinG? or move the first placed one
+
             }
         }
 
@@ -143,9 +151,93 @@ public class HexagonGrid {
                 atoms[i].setAtomPoints((Gdx.graphics.getWidth() -100), (Gdx.graphics.getHeight() - 100 - (100*i)));
                 atoms[i].isPlaced = false;
                 hex.setAtom(null);
+
+                // must also RESET neighbouring atoms accordingly
+                toggleNeighbours(hex);
+
             }
         }
     }
+
+    /*
+    Toggle neighbours - when an atom is placed in a hexagon, toggle all the neighbouring hexagons on/off
+    get neighbours ---- hexagon
+    findHex helper -> finds hexagon's index in array (bottom to top bottom to top)
+    get neighbour hexagons through index - toggle
+     */
+
+    public void toggleNeighbours(Hexagon hex)
+    {
+        int x = findHex(hex)[1]; // gets the column index of hexagon with atom in it
+        int y = findHex(hex)[0]; // get the row
+        int[] xNeighbs = new int[]{x, x+1, x, x-1, x-1, x-1}; // array of all x indexes of neighbours (column#)
+        int[] yNeighbs = new int[]{y+1, y, y-1, y-1, y, y+1}; // array of all y indexes of neighbours (row#)
+
+        Hexagon neighbour; // currnet neighbour hexagon
+
+        // toggle all neighbours
+        for(int i=0;i<6;i++) // for all hexagon neighbours
+        {
+            if(yNeighbs[i] > 8 || yNeighbs[i] < 0) // if outside y bounds (i.e. atom hex is on a y edge)
+            {
+
+            }
+            else if (0 > xNeighbs[i] || xNeighbs[i] > hexBoard.get(yNeighbs[i]).size()-1) // if outside x bounds (i.e. atom hex is on an x edge)
+            {
+
+            }
+            else
+            {
+                /*
+                For some reason the upper neighbour x indices and lower neighbour x indices
+                mess up when above/below the grid middle. These if statements correct that
+                 */
+                if(y < 4){
+                    xNeighbs[0] += 1;
+                    xNeighbs[5] = x;
+                }
+                if(y > 4)
+                {
+                    xNeighbs[2] = x+1;
+                    xNeighbs[3] = x;
+                }
+
+
+                neighbour = hexBoard.get(yNeighbs[i]).get(xNeighbs[i]); // set neighbour to correct hexagon
+                if(hex.atom == null) // if atom just removed, RESET
+                {
+                    neighbour.neighbDir = null;
+                    neighbour.isNeighbour = false;
+                }
+                else
+                {
+                    neighbour.neighbDir = Hexagon.neighourPos.values()[i]; // set neighbour direction
+                    neighbour.isNeighbour = true;
+                }
+            }
+
+
+
+        }
+
+    }
+
+
+    public int[] findHex(Hexagon hex)
+    { // This method finds the index of a given hexaogn in the hexBoard list
+        for(int i=0;i<9;i++)
+        {
+            for(int j=0;j<hexBoard.get(i).size();j++)
+            {
+                if(hexBoard.get(i).get(j) == hex)
+                {
+                    return new int[]{i, j};
+                }
+            }
+        }
+        throw new IllegalArgumentException("Couldn't find hexagon in array");
+    }
+
 
     private void buildHexRow(int n, float y, boolean isOffset) { // Builds row of Hexagons with n of hexagons & y position
         List<Hexagon> hexRow = new ArrayList<>();
