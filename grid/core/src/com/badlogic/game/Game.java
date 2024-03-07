@@ -78,6 +78,7 @@ public class Game {
         if (!userMessage.isWaitingForInput()) {
             switch (currentPhase) {
                 case PLACING_ATOMS:
+                    rayMessDisp = false;
                     // Display message for the atom phase only once when transitioning to this phase
                     if (!userMessage.isWaitingForInput() && !atomMessDisp){
                         userMessage.showWelcomeMessage("\t\t\t Atom Phase", "You are now in the atom placement phase. \n\n \t\tPress ENTER to start.");
@@ -90,7 +91,10 @@ public class Game {
                 case PLACING_RAYS:
                     atomMessDisp = false;
                     // Display message for the ray phase only once when transitioning to this phase
-                    userMessage.showMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.", 5);
+                    if (!userMessage.isWaitingForInput() && !rayMessDisp){
+                        userMessage.showWelcomeMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.");
+                        rayMessDisp = true;
+                    }
                     break;
             }
         }
