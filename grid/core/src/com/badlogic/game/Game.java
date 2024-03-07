@@ -66,21 +66,33 @@ public class Game {
         skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
 
         userMessage = new UserMessage(stage, skin);
-        userMessage.showMessage("Welcome, time traveller!",
+        userMessage.showWelcomeMessage("Welcome, time traveller!",
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
 
     }
 
+    boolean atomMessDisp = false;
+    boolean rayMessDisp = false;
     public void update() {
-        switch (currentPhase) {
-            case PLACING_ATOMS:
-                for (Atom atoms : placedAtoms) {
-                    atoms.update();
-                }
-                break;
-            case PLACING_RAYS:
-                break;
+        if (!userMessage.isWaitingForInput()) {
+            switch (currentPhase) {
+                case PLACING_ATOMS:
+                    // Display message for the atom phase only once when transitioning to this phase
+                    if (!userMessage.isWaitingForInput() && !atomMessDisp){
+                        userMessage.showWelcomeMessage("Atom Phase", "You are now in the atom phase. Place atoms on the grid.");
+                        atomMessDisp = true;
+                    }
+                    for (Atom atoms : placedAtoms) {
+                        atoms.update();
+                    }
+                    break;
+                case PLACING_RAYS:
+                    atomMessDisp = false;
+                    // Display message for the ray phase only once when transitioning to this phase
+                    userMessage.showMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.", 5);
+                    break;
+            }
         }
 
         if(viewToggle.isClicked())
