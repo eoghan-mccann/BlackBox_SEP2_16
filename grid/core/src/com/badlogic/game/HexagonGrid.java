@@ -98,7 +98,9 @@ public class HexagonGrid {
     }
 
     public void addRay(float x, float y, Ray2.Direction direction) {
-        rays.add(new Ray2(x,y,direction));
+        if (debugMode){
+            rays.add(new Ray2(x,y,direction));
+        }
     }
 
     public void initAtoms() // initial placement of 5 atoms on the right side
