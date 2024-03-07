@@ -130,12 +130,12 @@ public class Hexagon implements Entities, Clickable {
         if(Gdx.input.justTouched() && isHoveredOver())
         {
 
-            if(atom == null) // if adding an atom
+            if((atom == null)&&(!Game.debugMode)) // if adding an atom
             {
                 grid.moveAtom(this);
                 return !clickToggle;
             }
-            else // if removing an atom
+            else if ((atom!=null)&&(!Game.debugMode))// if removing an atom
             {
                 grid.resetAtom(this);
             }
