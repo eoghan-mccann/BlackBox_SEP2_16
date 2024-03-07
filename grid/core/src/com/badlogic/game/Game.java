@@ -17,7 +17,9 @@ public class Game {
     public static int windowHeight = 900;
     public static float hexRadius = 50;
 
-    boolean debugMode = false;
+
+    //used for game logic
+    public static boolean debugMode = false;
 
     private final OrthographicCamera camera;
 
@@ -103,9 +105,13 @@ public class Game {
             debugMode = !debugMode;
             if (currentPhase == GamePhase.PLACING_ATOMS){
                 currentPhase = GamePhase.PLACING_RAYS;
+                debugMode = true;
+                //System.out.println(debugMode);
             }
             else {
                 currentPhase = GamePhase.PLACING_ATOMS;
+                debugMode = false;
+                //System.out.println(debugMode);
             }
         }
 
