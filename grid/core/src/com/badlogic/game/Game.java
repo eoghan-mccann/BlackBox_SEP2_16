@@ -99,9 +99,14 @@ public class Game {
             }
         }
 
-        if(viewToggle.isClicked())
-        {
+        if(viewToggle.isClicked()) {
             debugMode = !debugMode;
+            if (currentPhase == GamePhase.PLACING_ATOMS){
+                currentPhase = GamePhase.PLACING_RAYS;
+            }
+            else {
+                currentPhase = GamePhase.PLACING_ATOMS;
+            }
         }
 
         debugUpdate();
