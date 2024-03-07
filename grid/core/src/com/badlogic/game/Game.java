@@ -80,7 +80,7 @@ public class Game {
                 case PLACING_ATOMS:
                     // Display message for the atom phase only once when transitioning to this phase
                     if (!userMessage.isWaitingForInput() && !atomMessDisp){
-                        userMessage.showWelcomeMessage("Atom Phase", "You are now in the atom phase. Place atoms on the grid.");
+                        userMessage.showWelcomeMessage("\t\t\t Atom Phase", "You are now in the atom placement phase. \n\n \t\tPress ENTER to start.");
                         atomMessDisp = true;
                     }
                     for (Atom atoms : placedAtoms) {
