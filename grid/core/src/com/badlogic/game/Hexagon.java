@@ -215,6 +215,10 @@ public class Hexagon implements Entities, Clickable {
         {
             color = Color.GREEN;
         }
+        if(atom != null)
+        {
+            color = Color.WHITE;
+        }
         shape.setColor(color);
         shape.polygon(hexPoints);
         shape.end();

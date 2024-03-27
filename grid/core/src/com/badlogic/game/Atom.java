@@ -8,29 +8,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 //implements Clickable since it can be clicked (maybe not? mostly because of the toggle really)
 public class Atom implements Entities, Clickable{
 
-    //X coordinate for the centre point of the atom
-    private float atomCentreX;
-    //Y coordinate for the centre point of the atom
-    private float atomCentreY;
-    //radius for the atom nucleus
-    private float atomCentreRadius;
-    //radius for the field of influence
-    private float atomLayerRadius;
+    private float atomCentreX, atomCentreY; // atom centre
+    private float atomCentreRadius; // atom radius
+    private float atomLayerRadius; // aura radius
 
     public boolean isPlaced;
     public boolean debug;
 
-    //a point on the layer that is directly to the right of the center
-    //Y coord is the same as for the center
-    //X coord is centreX + radius
-    private float[] layerPoint = new float[2];
-
-    //array storing the centre of the atom in the sense that centre[X],[Y] is stored here
-    private float[] centrePoint = new float[2];
-    //maybe this could be made into a 2D array since storing point coordinates?
-    //array of all points in the atom
-    private float[] atomPoints;
-
+    private float[] centrePoint = new float[2]; // coords of atom centre
 
     //initialise atom
     Atom(float x, float y, float r1, float r2) {
@@ -38,12 +23,6 @@ public class Atom implements Entities, Clickable{
         this.atomCentreY = y;
         this.atomCentreRadius = r1;
         this.atomLayerRadius = r2;
-
-
-        //the X coordinate of the point is center + the radius
-        this.layerPoint[0] = (this.atomCentreX + atomCentreRadius);
-        //the Y coordinate of the point is the same
-        this.layerPoint[1] = this.atomCentreY;
 
 
         this.centrePoint[0] = this.atomCentreX;
@@ -54,20 +33,15 @@ public class Atom implements Entities, Clickable{
         this.debug = false;
     }
 
+    // setter methods
     public float setCenterX(float x)
     {
-        this.atomCentreX = x;
-        return atomCentreX;
+        return atomCentreX = x;
     }
-
     public float setCenterY(float y)
     {
-        this.atomCentreY = y;
-        return atomCentreY;
+        return atomCentreY = y;
     }
-
-
-    //setter method
     public void setAtomPoints(float x, float y){ // sets all values relative to the given center
         this.atomCentreX = x;
         this.atomCentreY = y;
@@ -76,6 +50,7 @@ public class Atom implements Entities, Clickable{
         this.centrePoint[1] = y;
     }
 
+    // checks if given ray coords are inside atom coords
     public boolean isInside(float[] rayPos) {
         float rayX = rayPos[0];
         float rayY = rayPos[1];
@@ -87,22 +62,6 @@ public class Atom implements Entities, Clickable{
         return Math.sqrt(Math.pow(atomX - rayX, 2)) + Math.pow(atomY - rayY, 2) <= getCentreRadius();
     }
 
-
-    @Override
-    public float[] getCentre() {
-        return this.centrePoint;
-    }
-
-    @Override
-    public float[] getCoordinates() {
-        return this.atomPoints;
-    }
-
-    @Override
-    public void getCollision() {
-
-    }
-
     @Override
     public void Draw(ShapeRenderer shape) {
         if(!Game.debugMode) // if toggle is off (set to atom)
@@ -110,23 +69,25 @@ public class Atom implements Entities, Clickable{
             shape.begin(ShapeRenderer.ShapeType.Line);
             // Drawing aura
             shape.setColor(Color.WHITE);
-            shape.circle(this.getCentre()[0], this.getCentre()[1], atomLayerRadius);
+            shape.circle(getCentre()[0], getCentre()[1], getLayerRadius());
             shape.end();
             // Drawing atom
             shape.begin(ShapeRenderer.ShapeType.Filled);
             shape.setColor(Color.PINK);
-            shape.circle(atomCentreX, atomCentreY, atomCentreRadius);
+            shape.circle(getCentre()[0], getCentre()[1], getCentreRadius());
 
-            shape.setColor(Color.WHITE);
+
             shape.end();
         }
 
 
     }
 
-    @Override
-    public void update() {
 
+    // accessor methods
+    @Override
+    public float[] getCentre() {
+        return this.centrePoint;
     }
 
     public float getCentreRadius(){
@@ -137,21 +98,22 @@ public class Atom implements Entities, Clickable{
         return this.atomLayerRadius;
     }
 
-    public void atomRow(int n, ShapeRenderer shape){
-        //the number of atoms we want for the game - 5 or 6
-        int num = n;
-        float centreX = this.getCentre()[0];
-        float centreY = this.getCentre()[1];
-        //check if the number of atoms we want is correct
-        if (num<5 || num>6){
-            throw new IllegalArgumentException("You can only play with 5 or 6 atoms");
-        }
-        //render 5 or 6 atoms to show how many atoms are left to be placed
-        for(int i=0; i<num; i++){
-            Atom a = new Atom(centreX, centreY, this.getCentreRadius(), this.getLayerRadius());
-            a.Draw(shape);
-            centreX+=this.getCentreRadius()+(this.getLayerRadius()*2F)+5;
-        }
+
+
+
+
+    @Override
+    public float[] getCoordinates() {
+        return null;
+    }
+
+    @Override
+    public void getCollision() {
+
+    }
+
+    @Override
+    public void update() {
 
     }
 
@@ -162,7 +124,7 @@ public class Atom implements Entities, Clickable{
 
     @Override
     public boolean isClicked() {
-        return true;
+        return false;
     }
 
     @Override
