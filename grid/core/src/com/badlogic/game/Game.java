@@ -20,6 +20,7 @@ public class Game {
 
     //used for game logic
     public static boolean debugMode = false;
+    public static boolean hasBeenChanged = false;
 
     private final OrthographicCamera camera;
 
@@ -96,6 +97,7 @@ public class Game {
                     if (!userMessage.isWaitingForInput() && !rayMessDisp){
                         userMessage.showWelcomeMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.");
                         rayMessDisp = true;
+                        hasBeenChanged = true;
                     }
                     break;
             }
@@ -151,17 +153,17 @@ public class Game {
     }
 
     private void debugUpdate() {
-            for (Atom atoms : hexagonGrid.atoms) {
-                atoms.debug = debugMode;
-            }
+        for (Atom atoms : hexagonGrid.atoms) {
+            atoms.debug = debugMode;
+        }
 
-            for (Hexagon hexagon : hexagonGrid.getHexBoard()) {
-                for (Border border : hexagon.borders) {
-                    border.debug = debugMode;
-                }
-            }
-            for (Ray2 ray : hexagonGrid.rays) {
-                ray.debug = debugMode;
+        for (Hexagon hexagon : hexagonGrid.getHexBoard()) {
+            for (Border border : hexagon.borders) {
+                border.debug = debugMode;
             }
         }
+        for (Ray2 ray : hexagonGrid.rays) {
+            ray.debug = debugMode;
+        }
+    }
 }

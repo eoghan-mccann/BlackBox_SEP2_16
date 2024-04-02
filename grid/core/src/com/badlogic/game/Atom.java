@@ -3,6 +3,8 @@ package com.badlogic.game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import static com.badlogic.game.Game.hasBeenChanged;
+
 
 //Atom implements Entities since it is an entity that is going to draw
 //implements Clickable since it can be clicked (maybe not? mostly because of the toggle really)
@@ -64,7 +66,7 @@ public class Atom implements Entities, Clickable{
 
     @Override
     public void Draw(ShapeRenderer shape) {
-        if(!Game.debugMode) // if toggle is off (set to atom)
+        if(!Game.debugMode && !hasBeenChanged) // if toggle is off (set to atom)
         {
             shape.begin(ShapeRenderer.ShapeType.Line);
             // Drawing aura

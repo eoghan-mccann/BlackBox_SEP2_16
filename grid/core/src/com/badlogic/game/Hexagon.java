@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.badlogic.game.Game.hasBeenChanged;
+
 public class Hexagon implements Entities, Clickable {
 
     private float centerX;
@@ -129,12 +131,12 @@ public class Hexagon implements Entities, Clickable {
         if(Gdx.input.justTouched() && isHoveredOver())
         {
 
-            if((atom == null)&&(!Game.debugMode)) // if adding an atom
+            if((atom == null)&&(!Game.debugMode)&&(!hasBeenChanged)) // if adding an atom
             {
                 grid.moveAtom(this);
                 return !clickToggle;
             }
-            else if ((atom!=null)&&(!Game.debugMode))// if removing an atom
+            else if ((atom!=null)&&(!Game.debugMode)&&(!hasBeenChanged))// if removing an atom
             {
                 grid.resetAtom(this);
             }
