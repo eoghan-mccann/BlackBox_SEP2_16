@@ -57,7 +57,6 @@ public class Ray2 implements Entities, Clickable{
      */
     public void setDirection(Hexagon hex)
     {// called when ray hits atom aura - changes ray direction and continues moving
-
         int numLines = lines.size();
         lines.add(new ArrayList<>());
 
@@ -72,65 +71,219 @@ public class Ray2 implements Entities, Clickable{
         // new line now starts at head, curr head is also there
         setEnterPos(headPos);
 
-
-        // set direction of new line
-        switch(hex.neighbDir)
+        if(currHex.neighbCount == 2)
         {
+            multAtomDeflect(); // deflect accordingly
+        }
+        else if (currHex.neighbCount > 2)
+        {
+            reflect();
+        }
+        else
+        {
+            // set direction of new line
+            switch(hex.neighbDir)
+            {
 
-            case NorE: // top right hexagon
-                if(direction == Direction.E) {direction = Direction.SE;}
-                else if(direction == Direction.SE) {direction = Direction.SW;}
-                else if(direction == Direction.SW) {direction = Direction.NE;}
-                else if(direction == Direction.W) {direction = Direction.SW;}
-                else if(direction == Direction.NW) {direction = Direction.W;}
+                case NorE: // top right hexagon
+                    if(direction == Direction.E) {direction = Direction.SE;}
+                    else if(direction == Direction.SE) {direction = Direction.SW;}
+                    else if(direction == Direction.SW) {direction = Direction.NE;}
+                    else if(direction == Direction.W) {direction = Direction.SW;}
+                    else if(direction == Direction.NW) {direction = Direction.W;}
+                    break;
+
+
+                case East: // right hexagon
+                    if(direction == Direction.NE) {direction = Direction.NW;}
+                    else if(direction == Direction.SE) {direction = Direction.SW;}
+                    else if(direction == Direction.SW) {direction = Direction.W;}
+                    else if(direction == Direction.W) {direction = Direction.E;}
+                    else if(direction == Direction.NW) {direction = Direction.W;}
+                    break;
+
+                case SouE: // bot right hexagon
+                    if(direction == Direction.NE) {direction = Direction.NW;}
+                    else if(direction == Direction.E) {direction = Direction.NE;}
+                    else if(direction == Direction.SW) {direction = Direction.W;}
+                    else if(direction == Direction.W) {direction = Direction.NW;}
+                    else if(direction == Direction.NW) {direction = Direction.SE;}
+                    break;
+
+                case SouW: // TOP LEFT hexagon
+                    if(direction == Direction.NE) {direction = Direction.E;}
+                    else if(direction == Direction.E) {direction = Direction.SE;}
+                    else if(direction == Direction.SE) {direction = Direction.NW;}
+                    else if(direction == Direction.SW) {direction = Direction.SE;}
+                    else if(direction == Direction.W) {direction = Direction.SW;}
+                    break;
+
+                case West: // left hexagon
+                    if(direction == Direction.NE) {direction = Direction.E;}
+                    else if(direction == Direction.E) {direction = Direction.W;}
+                    else if(direction == Direction.SE) {direction = Direction.E;}
+                    else if(direction == Direction.SW) {direction = Direction.SE;}
+                    else if(direction == Direction.NW) {direction = Direction.NE;}
+                    break;
+
+                case NorW: // BOT LEFT hexagon
+
+                    if(direction == Direction.NE) {direction = Direction.SW;}
+                    else if(direction == Direction.E) {direction = Direction.NE;}
+                    else if(direction == Direction.SE) {direction = Direction.E;}
+                    else if(direction == Direction.W) {direction = Direction.NW;}
+                    else if(direction == Direction.NW) {direction = Direction.NE;}
+                    break;
+
+            }
+        }
+
+    }
+
+    public void multAtomDeflect()
+    {
+        switch(getSurroundingHexagons(currHex))
+        {
+            case 0:
+                if(direction == Direction.W) {direction = Direction.NE;}
+                else if(direction == Direction.SE) {direction = Direction.E;}
                 break;
-
-
-            case East: // right hexagon
-                if(direction == Direction.NE) {direction = Direction.NW;}
-                else if(direction == Direction.SE) {direction = Direction.SW;}
-                else if(direction == Direction.SW) {direction = Direction.W;}
-                else if(direction == Direction.W) {direction = Direction.E;}
-                else if(direction == Direction.NW) {direction = Direction.W;}
+            case 1:
+                if(direction == Direction.W) { direction = Direction.SE;}
+                else if (direction == Direction.NW) { direction = Direction.E;}
                 break;
-
-            case SouE: // bot right hexagon
-                if(direction == Direction.NE) {direction = Direction.NW;}
-                else if(direction == Direction.E) {direction = Direction.NE;}
-                else if(direction == Direction.SW) {direction = Direction.W;}
-                else if(direction == Direction.W) {direction = Direction.NW;}
-                else if(direction == Direction.NW) {direction = Direction.SE;}
-                break;
-
-            case SouW: // TOP LEFT hexagon
-                if(direction == Direction.NE) {direction = Direction.E;}
+            case 2:
+                if(direction == Direction.NW) {direction = Direction.SW;}
                 else if(direction == Direction.E) {direction = Direction.SE;}
-                else if(direction == Direction.SE) {direction = Direction.NW;}
-                else if(direction == Direction.SW) {direction = Direction.SE;}
-                else if(direction == Direction.W) {direction = Direction.SW;}
                 break;
-
-            case West: // left hexagon
-                if(direction == Direction.NE) {direction = Direction.E;}
-                else if(direction == Direction.E) {direction = Direction.W;}
-                else if(direction == Direction.SE) {direction = Direction.E;}
-                else if(direction == Direction.SW) {direction = Direction.SE;}
-                else if(direction == Direction.NW) {direction = Direction.NE;}
+            case 3:
+                if(direction == Direction.E) {direction = Direction.SW;}
+                else if(direction == Direction.NE) {direction = Direction.W;}
                 break;
-
-            case NorW: // BOT LEFT hexagon
-
-                if(direction == Direction.NE) {direction = Direction.SW;}
-                else if(direction == Direction.E) {direction = Direction.NE;}
-                else if(direction == Direction.SE) {direction = Direction.E;}
-                else if(direction == Direction.W) {direction = Direction.NW;}
-                else if(direction == Direction.NW) {direction = Direction.NE;}
+            case 4:
+                if(direction == Direction.E) {direction = Direction.NW;}
+                else if(direction == Direction.SE) {direction = Direction.W;}
                 break;
-
-
-
+            case 5:
+                if(direction == Direction.SE) {direction = Direction.NE;}
+                else if(direction == Direction.SW) {direction = Direction.NW;}
+                break;
+            default:
+                reflect(); // reflect if any other
+                break;
 
         }
+    }
+
+    public void reflect()
+    {
+        switch(direction)
+        {
+            case NE:
+                direction = Direction.SW;
+                break;
+            case E:
+                direction = Direction.W;
+                break;
+            case SE:
+                direction = Direction.NW;
+                break;
+            case SW:
+                direction = Direction.NE;
+                break;
+            case W:
+                direction = Direction.E;
+                break;
+            case NW:
+                direction = Direction.SE;
+                break;
+
+        }
+    }
+
+    public int getSurroundingHexagons(Hexagon hex)
+    {
+        int x = hex.grid.findHex(hex)[0]; // x index of hexagon
+        int y = hex.grid.findHex(hex)[1]; // y index
+
+        List<List<Hexagon>> board = hex.grid.hexBoard;
+
+        Hexagon[] neighbs = new Hexagon[] {null, null, null, null, null, null}; // list of neighbours
+        int[] xIndices = new int[] {x+1, x, x-1, x-1, x, x+1}; // what has to be added to x to get a given neighbour
+        int[] yIndices = new int[] {y, y+1, y, y-1, y-1, y-1};
+
+        int tempX, tempY;
+
+
+
+        for(int i=0;i<6;i++)
+        {
+            tempX = xIndices[i];
+            tempY = yIndices[i];
+
+//            if(tempX < 4 && i == 0)
+//            {
+//                tempY +=1;
+//            }
+
+
+
+            if(tempX >= 0 && tempX < 9) // validation check
+            {
+                if(tempY >= 0 && tempY < board.get(tempX).size()) // validation check
+                {
+
+                    if(x < 4){
+                        yIndices[0] += 1;
+                        if(i == 0)
+                        {
+                            tempY = yIndices[0];
+                        }
+
+                        yIndices[5] = y;
+                    }
+
+                    if(x > 4)
+                    {
+                        yIndices[2] = y+1;
+                        yIndices[3] = y;
+                    }
+
+                    if(x == 4)
+                    {
+                        yIndices[0] = y+1;
+                        yIndices[5] = y;
+                        if(i == 5)
+                        {
+                            tempY = yIndices[5] -1;
+                        }
+
+                    }
+
+                    neighbs[i] = board.get(tempX).get(tempY);
+                    neighbs[i].color = Color.VIOLET;
+
+
+                }
+            }
+
+        }
+
+        // check for pair
+
+        for(int i=0;i<5;i++)
+        {
+            if(neighbs[i] != null & neighbs[i+1] != null)
+            {
+                if(neighbs[i].atom != null && neighbs[i+1].atom != null)
+                {
+                    return i;
+                }
+            }
+
+        }
+
+        return 10;
 
 
 
@@ -143,6 +296,8 @@ public class Ray2 implements Entities, Clickable{
         if(debug) {
             shape.setColor(Color.GREEN);
 
+
+
             if(!lines.isEmpty()) // if ray has reflected
             {
                 for(int i=0;i< lines.size();i++) // draw all lines
@@ -151,28 +306,34 @@ public class Ray2 implements Entities, Clickable{
                 }
             }
             // draw current line
+
             shape.line(enterPos[0], enterPos[1], headPos[0], headPos[1]);
+
+
         }
         shape.end();
     }
 
     @Override
     public void update() {
-        if(isInside && !hitAtom)
-        {
-            headPos[0] += direction.getXSpeed();
-            headPos[1] += direction.getYSpeed();
-        }
-        if(currHex.isNeighbour) // move back, set direction, set isinside back
-        {
-            headPos[0] = currHex.getCenterX(); // move line to centre of current hexagon for consistency
-            headPos[1] = currHex.getCenterY();
-            setDirection(currHex);
-            headPos[0] += direction.getXSpeed()*5;
-            headPos[1] += direction.getYSpeed()*5;
+
+            if(isInside && !hitAtom)
+            {
+                headPos[0] += direction.getXSpeed();
+                headPos[1] += direction.getYSpeed();
+            }
+            if(currHex.isNeighbour) // move back, set direction, set isinside back
+            {
+                headPos[0] = currHex.getCenterX(); // move line to centre of current hexagon for consistency
+                headPos[1] = currHex.getCenterY();
+                setDirection(currHex);
+                headPos[0] += direction.getXSpeed()*5;
+                headPos[1] += direction.getYSpeed()*5;
 
 
-        }
+            }
+
+
     }
 
     // accessor methods

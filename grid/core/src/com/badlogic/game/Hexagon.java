@@ -11,7 +11,7 @@ import static com.badlogic.game.Game.hasBeenChanged;
 
 public class Hexagon implements Entities, Clickable {
 
-    private float centerX;
+    private float centerX; // COORDS
     private float centerY;
     private float radius;
 
@@ -30,6 +30,7 @@ public class Hexagon implements Entities, Clickable {
 
     Atom atom; // related atom - null if no atom placed
     public boolean isNeighbour;
+    public int neighbCount;
     //if an atom is placed down and to the left of a hexagon, that hexagon will be NorE (NorthEast hex from the atom)
     public enum neighourPos {
         NorE(0), East(1), SouE(2),
@@ -57,6 +58,7 @@ public class Hexagon implements Entities, Clickable {
         this.isBorder = false;
         sideBorders = new int[]{0, 0, 0, 0, 0, 0}; // for rays: starting in the top right, each side gets number index// clockwise
         borders = new ArrayList<>();
+        neighbCount = 0;
     }
 
 
@@ -208,19 +210,20 @@ public class Hexagon implements Entities, Clickable {
     public void Draw(ShapeRenderer shape) {
 
         shape.begin(ShapeRenderer.ShapeType.Line);;
-        color = Color.WHITE;
-        if(isBorder)
-        {
-            color = Color.VIOLET;
-        }
-        if(isNeighbour)
-        {
-            color = Color.GREEN;
-        }
-        if(atom != null)
-        {
-            color = Color.WHITE;
-        }
+//        color = Color.WHITE;
+//        if(isBorder)
+//        {
+//            color = Color.VIOLET;
+//        }
+//        if(isNeighbour)
+//        {
+//            color = Color.GREEN;
+//        }
+//        if(atom != null)
+//        {
+//            color = Color.WHITE;
+//        }
+
         shape.setColor(color);
         shape.polygon(hexPoints);
         shape.end();

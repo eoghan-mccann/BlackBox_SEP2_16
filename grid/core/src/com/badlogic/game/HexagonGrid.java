@@ -109,7 +109,7 @@ public class HexagonGrid {
         float startEx = Gdx.graphics.getWidth() - 100;
         float startWhy = Gdx.graphics.getHeight() - 100;
         for(int i=0;i<5;i++){
-            atoms[i] = new Atom(startEx, startWhy, .75f*hexRadius, 1.5f*hexRadius);
+            atoms[i] = new Atom(startEx, startWhy, .75f*hexRadius, 1.75f*hexRadius);
             startWhy -= 100;
         }
 
@@ -208,11 +208,13 @@ public class HexagonGrid {
                 {
                     neighbour.neighbDir = null;
                     neighbour.isNeighbour = false;
+                    neighbour.neighbCount--;
                 }
                 else
                 {
                     neighbour.neighbDir = Hexagon.neighourPos.values()[i]; // set neighbour direction
                     neighbour.isNeighbour = true;
+                    neighbour.neighbCount++;
                 }
             }
 
@@ -407,8 +409,15 @@ public class HexagonGrid {
 
         for (List<Hexagon> hexRow : hexBoard) {
             for (Hexagon hexagon : hexRow) {
+                if(hexagon == hexBoard.get(0).get(0))
+                {
 
-                hexagon.Draw(shape);
+                }
+                else
+                {
+                    hexagon.Draw(shape);
+                }
+
 
             }
         }
