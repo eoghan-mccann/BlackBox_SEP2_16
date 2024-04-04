@@ -133,7 +133,7 @@ public class HexagonGrid {
             if (i == 4 && atoms[i].isPlaced) // if all placed
             {
                 continue;
-                // do nothinG? or move the first placed one
+                // do nothing? or move the first placed one
 
             }
         }
