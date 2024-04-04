@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ray2 implements Entities, Clickable{
-    public boolean debug = false;
+    public boolean visible = false;
 
     public enum Direction  { // enum of ray's directions - "direction the ray is coming from" - a NE ray is travelling SW
         NE(new float[]{-5.2F, -9}), // NE -> SW
@@ -289,20 +289,22 @@ public class Ray2 implements Entities, Clickable{
 
     }
 
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     @Override
     public void Draw(ShapeRenderer shape)
     {
         shape.begin(ShapeRenderer.ShapeType.Line);
-        if(debug) {
+        if(visible) {
             shape.setColor(Color.GREEN);
-
-
 
             if(!lines.isEmpty()) // if ray has reflected
             {
-                for(int i=0;i< lines.size();i++) // draw all lines
-                {
-                    shape.line(lines.get(i).get(0), lines.get(i).get(1), lines.get(i).get(2), lines.get(i).get(3));
+                // draw all lines
+                for (List<Float> line : lines) {
+                    shape.line(line.get(0), line.get(1), line.get(2), line.get(3));
                 }
             }
             // draw current line

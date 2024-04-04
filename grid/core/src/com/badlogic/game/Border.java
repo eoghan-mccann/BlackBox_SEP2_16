@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class Border implements Clickable, Entities{
 
     public boolean debug = false;
+    private boolean clickable;
     boolean hasRay = false;
     HexagonGrid hexagonGrid;
 
@@ -37,6 +38,8 @@ public class Border implements Clickable, Entities{
         this.direction = dir; // use to print line, get revMid
         setRevMid(direction);
         initBoundingBox();
+
+        clickable = false;
 
     }
 
@@ -101,11 +104,7 @@ public class Border implements Clickable, Entities{
 
     @Override
     public boolean isClicked() {
-        if(isHoveredOver() && Gdx.input.justTouched())
-        {
-            return true;
-        }
-        return false;
+        return (isHoveredOver() && Gdx.input.justTouched()) && clickable;
     }
 
     @Override
@@ -131,6 +130,10 @@ public class Border implements Clickable, Entities{
 
     }
 
+    public void setClickable(boolean clickable) {
+        this.clickable = clickable;
+    }
+
     @Override
     public float[] getCentre() {
         return new float[0];
@@ -149,7 +152,7 @@ public class Border implements Clickable, Entities{
     @Override
     public void Draw(ShapeRenderer shape) {
 
-        color = isHoveredOver() ? Color.ROYAL : Color.WHITE;
+        color = isHoveredOver() && clickable ? Color.ROYAL : Color.WHITE;
 
         shape.begin(ShapeRenderer.ShapeType.Line);
             shape.setColor(color);

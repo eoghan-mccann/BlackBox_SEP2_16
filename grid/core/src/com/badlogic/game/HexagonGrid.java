@@ -99,9 +99,7 @@ public class HexagonGrid {
     }
 
     public void addRay(float x, float y, Ray2.Direction direction) {
-        if (debugMode){
             rays.add(new Ray2(x,y,direction));
-        }
     }
 
     public void initAtoms() // initial placement of 5 atoms on the right side
@@ -407,19 +405,8 @@ public class HexagonGrid {
 
     public void Draw(ShapeRenderer shape) { // loop through all elements stored in board and call it's draw function
 
-        for (List<Hexagon> hexRow : hexBoard) {
-            for (Hexagon hexagon : hexRow) {
-                if(hexagon == hexBoard.get(0).get(0))
-                {
-
-                }
-                else
-                {
-                    hexagon.Draw(shape);
-                }
-
-
-            }
+        for (Hexagon hexagon : getHexBoard()) {
+            hexagon.Draw(shape);
         }
 
         for(Atom at: atoms)
@@ -453,6 +440,40 @@ public class HexagonGrid {
 
     }
 
+    public boolean allAtomsPlaced() {
+        for (Atom atom : atoms) {
+            if (!atom.isPlaced) { return false; }
+        }
+
+        return true;
+
+    }
+
+    public void setAtomsVisible(boolean visible) {
+        for (Atom at : atoms) {
+            at.setVisible(visible);
+        }
+    }
+
+    public void setRayVisible(boolean visible) {
+        for (Ray2 ray : rays) {
+            ray.setVisible(visible);
+        }
+    }
+
+    public void setHexClickable(boolean clickable) {
+        for (Hexagon hexagon : getHexBoard()) {
+            hexagon.setClickable(clickable);
+        }
+    }
+
+    public void setBorderClickable(boolean clickable) {
+        for (Hexagon hexagon : getHexBoard()) {
+            for (Border border : hexagon.borders) {
+                border.setClickable(clickable);
+            }
+        }
+    }
 
     public List<Hexagon> getHexBoard() { // Accessor method for hexBoard list
         List<Hexagon> flattenedHexList = new ArrayList<>();

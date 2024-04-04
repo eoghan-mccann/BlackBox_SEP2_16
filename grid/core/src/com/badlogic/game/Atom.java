@@ -3,8 +3,6 @@ package com.badlogic.game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import static com.badlogic.game.Game.hasBeenChanged;
-
 
 //Atom implements Entities since it is an entity that is going to draw
 //implements Clickable since it can be clicked (maybe not? mostly because of the toggle really)
@@ -15,7 +13,8 @@ public class Atom implements Entities, Clickable{
     private float atomLayerRadius; // aura radius
 
     public boolean isPlaced;
-    public boolean debug;
+    public boolean visible;
+    private boolean clickable;
 
     private float[] centrePoint = new float[2]; // coords of atom centre
 
@@ -32,7 +31,7 @@ public class Atom implements Entities, Clickable{
 
 
         this.isPlaced = false;
-        this.debug = false;
+        this.visible = false;
     }
 
     // setter methods
@@ -64,9 +63,13 @@ public class Atom implements Entities, Clickable{
         return Math.sqrt(Math.pow(atomX - rayX, 2)) + Math.pow(atomY - rayY, 2) <= getCentreRadius();
     }
 
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     @Override
     public void Draw(ShapeRenderer shape) {
-        if(!Game.debugMode && !hasBeenChanged) // if toggle is off (set to atom)
+        if(visible || Game.debugMode) // if toggle is off (set to atom)
         {
             shape.begin(ShapeRenderer.ShapeType.Line);
             // Drawing aura

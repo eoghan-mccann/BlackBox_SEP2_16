@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Main extends ApplicationAdapter {
 
-    ShapeRenderer shape;
     Game game;
 
     @Override

@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.badlogic.game.Game.hasBeenChanged;
-
 public class Hexagon implements Entities, Clickable {
 
     private float centerX; // COORDS
@@ -19,6 +17,7 @@ public class Hexagon implements Entities, Clickable {
     private final double angle = Math.toRadians(60);
 
     boolean clickToggle = false;
+    boolean clickable;
     HexagonGrid grid;
 
     boolean isBorder;
@@ -59,6 +58,7 @@ public class Hexagon implements Entities, Clickable {
         sideBorders = new int[]{0, 0, 0, 0, 0, 0}; // for rays: starting in the top right, each side gets number index// clockwise
         borders = new ArrayList<>();
         neighbCount = 0;
+        clickable = true;
     }
 
 
@@ -122,6 +122,10 @@ public class Hexagon implements Entities, Clickable {
         this.atom = at;
     }
 
+    public void setClickable(boolean clickable) {
+        this.clickable = clickable;
+    }
+
     @Override
     public void onClick() {
 
@@ -130,15 +134,17 @@ public class Hexagon implements Entities, Clickable {
     @Override
     public boolean isClicked()
     {
+        if (!clickable) { return false; }
+
         if(Gdx.input.justTouched() && isHoveredOver())
         {
 
-            if((atom == null)&&(!Game.debugMode)&&(!hasBeenChanged)) // if adding an atom
+            if((atom == null)&&(!Game.debugMode)) // if adding an atom
             {
                 grid.moveAtom(this);
                 return !clickToggle;
             }
-            else if ((atom!=null)&&(!Game.debugMode)&&(!hasBeenChanged))// if removing an atom
+            else if ((atom!=null)&&(!Game.debugMode))// if removing an atom
             {
                 grid.resetAtom(this);
             }
