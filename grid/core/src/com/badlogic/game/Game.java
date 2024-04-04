@@ -29,6 +29,7 @@ public class Game {
     private final Skin skin;
     private final UserMessage userMessage;
     private final Button viewToggle;
+    private final Button playerPhase;
     private final ShapeRenderer shape;
 
     private enum GamePhase {
@@ -64,7 +65,9 @@ public class Game {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        viewToggle = new Button(50, 50, 100, 75);
+        viewToggle = new Button(50, 50, 100, 75, 0);
+        playerPhase = new Button(1250, 50, 100, 75, 1);
+
 
         skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
 

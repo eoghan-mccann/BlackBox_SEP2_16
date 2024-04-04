@@ -9,15 +9,26 @@ public class Button implements Clickable, Entities{
     float X, Y;   // bottom left point
     float width, height;
     boolean toggle = false;
-    Color color;
+    Color color, color2;
+    int order;
 
-    public Button(float x, float y, float w, float h) {
+    public Button(float x, float y, float w, float h, int order) {
         X = x;
         Y = y;
         width = w;
         height = h;
+        this.order =order;
 
-        color = Color.PINK;
+
+        if (this.order == 0){
+            color = Color.PINK;
+        }
+        else if (this.order == 1){
+            color = Color.LIME;
+        }
+        else {
+            color = Color.PINK;
+        }
     }
 
     @Override
@@ -53,7 +64,12 @@ public class Button implements Clickable, Entities{
     @Override
     public void Draw(ShapeRenderer shape) {
         shape.begin(ShapeRenderer.ShapeType.Filled);
-        shape.setColor(color);
+        if (order == 1){
+            shape.setColor(color2);
+        }
+        else {
+            shape.setColor(color);
+        }
         shape.rect(X, Y, width, height);
         shape.end();
     }
@@ -68,8 +84,9 @@ public class Button implements Clickable, Entities{
         if(toggle)
         {
             color = Color.CYAN;
+            color2 = Color.MAROON;
         }
-        else { color = Color.PINK; }
+        else { color = Color.PINK; color2 = Color.LIME;}
 
     }
 
