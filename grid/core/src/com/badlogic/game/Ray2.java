@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Ray2 implements Entities, Clickable{
     public boolean debug = false;
+    public boolean dead = false;
 
     public enum Direction  { // enum of ray's directions - "direction the ray is coming from" - a NE ray is travelling SW
         NE(new float[]{-5.2F, -9}), // NE -> SW
@@ -293,21 +294,16 @@ public class Ray2 implements Entities, Clickable{
     public void Draw(ShapeRenderer shape)
     {
         shape.begin(ShapeRenderer.ShapeType.Line);
-        if(debug) {
-            shape.setColor(Color.GREEN);
-
-
-
-            if(!lines.isEmpty()) // if ray has reflected
-            {
-                for(int i=0;i< lines.size();i++) // draw all lines
-                {
-                    shape.line(lines.get(i).get(0), lines.get(i).get(1), lines.get(i).get(2), lines.get(i).get(3));
+        if(!dead) {
+            if (debug) {
+                shape.setColor(Color.GREEN);
+                if (!lines.isEmpty()) {
+                    for (int i = 0; i < lines.size(); i++) {
+                        shape.line(lines.get(i).get(0), lines.get(i).get(1), lines.get(i).get(2), lines.get(i).get(3));
+                    }
                 }
+                shape.line(enterPos[0], enterPos[1], headPos[0], headPos[1]);
             }
-            // draw current line
-
-            shape.line(enterPos[0], enterPos[1], headPos[0], headPos[1]);
 
 
         }
@@ -317,21 +313,22 @@ public class Ray2 implements Entities, Clickable{
     @Override
     public void update() {
 
-            if(isInside && !hitAtom)
-            {
+        if (!dead) {
+            // Clear the list of lines representing the ray's path
+
+
+            if (isInside && !hitAtom) {
                 headPos[0] += direction.getXSpeed();
                 headPos[1] += direction.getYSpeed();
             }
-            if(currHex.isNeighbour) // move back, set direction, set isinside back
-            {
-                headPos[0] = currHex.getCenterX(); // move line to centre of current hexagon for consistency
+            if (currHex.isNeighbour) {
+                headPos[0] = currHex.getCenterX();
                 headPos[1] = currHex.getCenterY();
                 setDirection(currHex);
-                headPos[0] += direction.getXSpeed()*5;
-                headPos[1] += direction.getYSpeed()*5;
-
-
+                headPos[0] += direction.getXSpeed() * 5;
+                headPos[1] += direction.getYSpeed() * 5;
             }
+        }
 
 
     }
