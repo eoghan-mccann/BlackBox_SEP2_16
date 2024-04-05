@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import java.util.List;
+
 public class Game {
 
     public static int windowWidth = 1600;
@@ -17,6 +19,7 @@ public class Game {
 
     //used for game logic
     public static boolean debugMode = false;
+    private boolean lastRound;
 
     private final OrthographicCamera camera;
 
@@ -27,14 +30,19 @@ public class Game {
     private final Button viewToggle;
     private Button atomConfirmButton;
     private Button guessConfirmButton;
+    private Button newGameButton;
+    private Label scoreLabel;
     private Label guessLabel;
     private Label winLabel;
     private final ShapeRenderer shape;
+
+    int[] playerScores;
 
     private enum GamePhase {
         DEBUG_VIEW,
         PLACING_ATOMS,
         PLACING_RAYS,
+        NEW_GAME,
     }
 
     private final HexagonGrid hexagonGrid;
@@ -49,8 +57,6 @@ public class Game {
         hexagonGrid.buildHexBoard();
         hexagonGrid.getBorderHexagons();
         hexagonGrid.initAtoms();
-        hexagonGrid.setHexClickable(false);
-        hexagonGrid.setAtomsVisible(true);
         hexagonGrid.activateBorders();
 
         currentPhase = GamePhase.PLACING_ATOMS;
@@ -76,7 +82,9 @@ public class Game {
                         "\n Press Enter on your keyboard to start the game :) ");
 
         guesses = new Guess();
+        lastRound = false;
 
+        playerScores = new int[2];
     }
 
     boolean atomMessDisp = false;
@@ -94,6 +102,7 @@ public class Game {
                     hexagonGrid.setHexClickable(true);
                     hexagonGrid.setRayVisible(false);
                     hexagonGrid.setBorderClickable(false);
+                    hexagonGrid.setHexState(Hexagon.State.PLACING);
 
                     rayMessDisp = false;
                     // Display message for the atom phase
@@ -138,7 +147,6 @@ public class Game {
                     for (Hexagon hexagon : hexagonGrid.getHexBoard()) {
                         if (hexagon.isClicked()) {
                             guesses.handleGuess(hexagon);
-                            System.out.println(hexagon);
                         }
                     }
 
@@ -157,23 +165,66 @@ public class Game {
 
                     // if clicked remove button and move to next phase
                     if (guessConfirmButton != null && guessConfirmButton.isClicked()) {
+                        currentPhase = GamePhase.NEW_GAME;
                         guessConfirmButton = null;
-                        currentPhase = GamePhase.DEBUG_VIEW;
 
                         winLabel = new Label(batch, 1150, 700);
                         winLabel.setFontSize(1.2f);
                         String guessString = "";
+
+                        boolean[] guessAnswers = guesses.getGuessAnswers();
+
+                        if (!lastRound) {
+                            playerScores[0] = calculateScore(guessAnswers, hexagonGrid.rays);
+                        } else {
+                            playerScores[1] = calculateScore(guessAnswers, hexagonGrid.rays);
+                        }
 
                         for (boolean guess : guesses.getGuessAnswers()) {
                             guessString += guess ? "CORRECT\n" : "INCORRECT\n";
                         }
 
                         winLabel.setText(guessString);
+                    }
+                    break;
 
+                case NEW_GAME:
+                    prevPhase = GamePhase.NEW_GAME;
+                    atomMessDisp = false;
+                    rayMessDisp = false;
+
+                    hexagonGrid.setRayVisible(true);
+                    hexagonGrid.setAtomsVisible(true);
+
+                    if (newGameButton == null) {
+                        newGameButton = new Button(batch, 1350, 50, 200, 100);
+                        newGameButton.setText(lastRound ? "End Game" : "Start Second Round");
+                        newGameButton.setFontSize(1.15f);
+                    }
+
+                    if (newGameButton != null && newGameButton.isClicked()) {
+                        newGameButton = null;
+                        winLabel = null;
+                        guessLabel = null;
+
+                        if (!lastRound) {
+                            guesses = new Guess();
+
+                            lastRound = true;
+
+                            hexagonGrid.resetAllRays();
+                            hexagonGrid.resetAllAtoms();
+                            currentPhase = GamePhase.PLACING_ATOMS;
+                        } else {
+                            scoreLabel = new Label(batch, 1150, 750);
+                            scoreLabel.setText(getWinMessage() + "\n" +
+                                    "Player 1 : " + playerScores[0] + "\n" +
+                                    "Player 2 : " + playerScores[1]);
+                            scoreLabel.setFontSize(2.5f);
+                        }
                     }
 
                     break;
-
                 case DEBUG_VIEW:
                     hexagonGrid.setAtomsVisible(true);
                     hexagonGrid.setHexClickable(false);
@@ -223,9 +274,42 @@ public class Game {
             guesses.Draw(shape,batch);
         }
 
+        if (newGameButton != null) {
+            newGameButton.Draw(shape);
+        }
+
+        if (scoreLabel != null) {
+            scoreLabel.Draw(shape);
+        }
+
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
+
+    private int calculateScore(boolean[] guesses, List<Ray2> rays) {
+        int score = 0;
+
+        for (boolean guess : guesses) {
+            if (guess) { score += 5; }
+        }
+
+        score += rays.size();
+
+        return score;
+    }
+
+    private String getWinMessage() {
+        int playerOneScore = playerScores[0];
+        int playerTwoScore = playerScores[1];
+
+        if (playerOneScore == playerTwoScore) { return "TIE GAME!"; }
+        else if (playerOneScore < playerTwoScore) {
+            return "Player 1 Wins!";
+        } else {
+            return "Player 2 Wins!";
+        }
+    }
+
     public void resize(int width, int height) {
         camera.setToOrtho(false, width, height);
         stage.getViewport().update(width, height, true);

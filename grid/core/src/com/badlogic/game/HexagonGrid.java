@@ -157,6 +157,22 @@ public class HexagonGrid {
         }
     }
 
+    public void resetAllAtoms() {
+        for (Hexagon hex : getHexBoard()) {
+            resetAtom(hex);
+        }
+    }
+
+    public void resetAllRays() {
+        rays.clear();
+
+        for (Hexagon hex : getHexBoard()) {
+            for (Border border : hex.borders) {
+                border.hasRay = false;
+            }
+        }
+    }
+
     /*
     Toggle neighbours - when an atom is placed in a hexagon, toggle all the neighbouring hexagons on/off
     get neighbours ---- hexagon
@@ -373,36 +389,6 @@ public class HexagonGrid {
         return borderHexagons.contains(hexagon);
     }
 
-    public List<float[]> getOutsideVertices() {
-        List<float[]> outerVertices = new ArrayList<>();
-
-        List<Hexagon> borderHexagons = getBorderHexagons();
-
-        for (Hexagon borderHexagon : borderHexagons) {
-            float[] coordinates = borderHexagon.getCoordinates();
-
-            for (int i = 0; i < coordinates.length; i += 2) {
-                float[] currentVertex = new float[]{coordinates[i], coordinates[i + 1]};
-                int sharedPoints = 0;
-
-                for (Hexagon hexagon : getHexBoard()) {
-                    if (hexagon == borderHexagon) { continue; }
-                    if (hexagon.containsVertex(currentVertex)) {
-                        sharedPoints++;
-                    }
-                }
-
-                if (sharedPoints <= 1) {
-                    outerVertices.add(currentVertex);
-                }
-            }
-        }
-
-        return outerVertices;
-
-    }
-
-
     public void Draw(ShapeRenderer shape) { // loop through all elements stored in board and call it's draw function
 
         for (Hexagon hexagon : getHexBoard()) {
@@ -481,19 +467,6 @@ public class HexagonGrid {
                 border.setBoundingBoxVisible(visible);
             }
         }
-    }
-
-    public Hexagon[] getHexagonsWithAtom() {
-        Hexagon[] hexagons = new Hexagon[5];
-        int count = 0;
-        for (Hexagon hexagon : getHexBoard()) {
-            if (hexagon.hasAtom()) {
-                hexagons[count++] = hexagon;
-            }
-        }
-
-        return hexagons;
-
     }
 
     public void setHexState(Hexagon.State state) {
