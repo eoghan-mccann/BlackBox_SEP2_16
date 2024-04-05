@@ -475,6 +475,33 @@ public class HexagonGrid {
         }
     }
 
+    public void setBorderBoundingBoxVisible(boolean visible) {
+        for (Hexagon hexagon : getHexBoard()) {
+            for (Border border : hexagon.borders) {
+                border.setBoundingBoxVisible(visible);
+            }
+        }
+    }
+
+    public Hexagon[] getHexagonsWithAtom() {
+        Hexagon[] hexagons = new Hexagon[5];
+        int count = 0;
+        for (Hexagon hexagon : getHexBoard()) {
+            if (hexagon.hasAtom()) {
+                hexagons[count++] = hexagon;
+            }
+        }
+
+        return hexagons;
+
+    }
+
+    public void setHexState(Hexagon.State state) {
+        for (Hexagon hex : getHexBoard()) {
+            hex.setState(state);
+        }
+    }
+
     public List<Hexagon> getHexBoard() { // Accessor method for hexBoard list
         List<Hexagon> flattenedHexList = new ArrayList<>();
         hexBoard.forEach(flattenedHexList::addAll);

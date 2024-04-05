@@ -41,6 +41,12 @@ public class Hexagon implements Entities, Clickable {
         }
     }
 
+    public enum State {
+        PLACING,
+        GUESSING
+    }
+
+    State state;
     neighourPos neighbDir;
 
 
@@ -55,6 +61,7 @@ public class Hexagon implements Entities, Clickable {
         setHexagonPos(this.centerX,this.centerY);
         this.atom = null;
         this.isBorder = false;
+        this.state = State.PLACING;
         sideBorders = new int[]{0, 0, 0, 0, 0, 0}; // for rays: starting in the top right, each side gets number index// clockwise
         borders = new ArrayList<>();
         neighbCount = 0;
@@ -132,21 +139,22 @@ public class Hexagon implements Entities, Clickable {
     }
 
     @Override
-    public boolean isClicked()
-    {
-        if (!clickable) { return false; }
+    public boolean isClicked() {
+        if(Gdx.input.justTouched() && isHoveredOver()) {
+            switch(state) {
+                case PLACING:
+                    if ((atom == null) && (!Game.debugMode)) // if adding an atom
+                    {
+                        grid.moveAtom(this);
+                        return !clickToggle;
+                    }
+                    else if ((atom != null) && (!Game.debugMode))// if removing an atom
+                    {
+                        grid.resetAtom(this);
+                    }
 
-        if(Gdx.input.justTouched() && isHoveredOver())
-        {
-
-            if((atom == null)&&(!Game.debugMode)) // if adding an atom
-            {
-                grid.moveAtom(this);
-                return !clickToggle;
-            }
-            else if ((atom!=null)&&(!Game.debugMode))// if removing an atom
-            {
-                grid.resetAtom(this);
+                case GUESSING:
+                    return !clickToggle;
             }
         }
 
@@ -210,6 +218,15 @@ public class Hexagon implements Entities, Clickable {
 
         return false;
 
+    }
+
+    public boolean hasAtom() {
+        return atom != null;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+        clickToggle = false;
     }
 
     @Override

@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.Arrays;
 
 public class Border implements Clickable, Entities{
-
-    public boolean debug = false;
     private boolean clickable;
+    private boolean boundingBoxVisible;
     boolean hasRay = false;
     HexagonGrid hexagonGrid;
 
@@ -40,6 +39,7 @@ public class Border implements Clickable, Entities{
         initBoundingBox();
 
         clickable = false;
+        boundingBoxVisible = false;
 
     }
 
@@ -159,7 +159,8 @@ public class Border implements Clickable, Entities{
             shape.line(midPoint[0], midPoint[1], revMid[0], revMid[1]);
         shape.end();
 
-        if (debug) { // draw bounding box
+        // draw bounding box
+        if (boundingBoxVisible) {
             shape.begin(ShapeRenderer.ShapeType.Line);
                 shape.setColor(Color.GREEN);
                 shape.polygon(boundingBox);
@@ -181,6 +182,10 @@ public class Border implements Clickable, Entities{
             }
             hasRay = true;
         }
+    }
+
+    public void setBoundingBoxVisible(boolean visible) {
+        boundingBoxVisible = visible;
     }
 
     public float[] midPoint(float x1, float y1, float x2, float y2)
