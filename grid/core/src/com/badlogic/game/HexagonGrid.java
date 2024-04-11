@@ -99,9 +99,7 @@ public class HexagonGrid {
     }
 
     public void addRay(float x, float y, Ray2.Direction direction) {
-        if (debugMode){
             rays.add(new Ray2(x,y,direction));
-        }
     }
 
     public void initAtoms() // initial placement of 5 atoms on the right side
@@ -155,6 +153,22 @@ public class HexagonGrid {
                 // must also RESET neighbouring atoms accordingly
                 toggleNeighbours(hex);
 
+            }
+        }
+    }
+
+    public void resetAllAtoms() {
+        for (Hexagon hex : getHexBoard()) {
+            resetAtom(hex);
+        }
+    }
+
+    public void resetAllRays() {
+        rays.clear();
+
+        for (Hexagon hex : getHexBoard()) {
+            for (Border border : hex.borders) {
+                border.hasRay = false;
             }
         }
     }
@@ -375,51 +389,10 @@ public class HexagonGrid {
         return borderHexagons.contains(hexagon);
     }
 
-    public List<float[]> getOutsideVertices() {
-        List<float[]> outerVertices = new ArrayList<>();
-
-        List<Hexagon> borderHexagons = getBorderHexagons();
-
-        for (Hexagon borderHexagon : borderHexagons) {
-            float[] coordinates = borderHexagon.getCoordinates();
-
-            for (int i = 0; i < coordinates.length; i += 2) {
-                float[] currentVertex = new float[]{coordinates[i], coordinates[i + 1]};
-                int sharedPoints = 0;
-
-                for (Hexagon hexagon : getHexBoard()) {
-                    if (hexagon == borderHexagon) { continue; }
-                    if (hexagon.containsVertex(currentVertex)) {
-                        sharedPoints++;
-                    }
-                }
-
-                if (sharedPoints <= 1) {
-                    outerVertices.add(currentVertex);
-                }
-            }
-        }
-
-        return outerVertices;
-
-    }
-
-
     public void Draw(ShapeRenderer shape) { // loop through all elements stored in board and call it's draw function
 
-        for (List<Hexagon> hexRow : hexBoard) {
-            for (Hexagon hexagon : hexRow) {
-                if(hexagon == hexBoard.get(0).get(0))
-                {
-
-                }
-                else
-                {
-                    hexagon.Draw(shape);
-                }
-
-
-            }
+        for (Hexagon hexagon : getHexBoard()) {
+            hexagon.Draw(shape);
         }
 
         for(Atom at: atoms)
@@ -453,6 +426,54 @@ public class HexagonGrid {
 
     }
 
+    public boolean allAtomsPlaced() {
+        for (Atom atom : atoms) {
+            if (!atom.isPlaced) { return false; }
+        }
+
+        return true;
+
+    }
+
+    public void setAtomsVisible(boolean visible) {
+        for (Atom at : atoms) {
+            at.setVisible(visible);
+        }
+    }
+
+    public void setRayVisible(boolean visible) {
+        for (Ray2 ray : rays) {
+            ray.setVisible(visible);
+        }
+    }
+
+    public void setHexClickable(boolean clickable) {
+        for (Hexagon hexagon : getHexBoard()) {
+            hexagon.setClickable(clickable);
+        }
+    }
+
+    public void setBorderClickable(boolean clickable) {
+        for (Hexagon hexagon : getHexBoard()) {
+            for (Border border : hexagon.borders) {
+                border.setClickable(clickable);
+            }
+        }
+    }
+
+    public void setBorderBoundingBoxVisible(boolean visible) {
+        for (Hexagon hexagon : getHexBoard()) {
+            for (Border border : hexagon.borders) {
+                border.setBoundingBoxVisible(visible);
+            }
+        }
+    }
+
+    public void setHexState(Hexagon.State state) {
+        for (Hexagon hex : getHexBoard()) {
+            hex.setState(state);
+        }
+    }
 
     public List<Hexagon> getHexBoard() { // Accessor method for hexBoard list
         List<Hexagon> flattenedHexList = new ArrayList<>();
