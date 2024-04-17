@@ -21,11 +21,11 @@ public class RayMarker {
         this.height = height;
         this.angle = angle;
 
-        this.coordinates = initBoundingBox(centerPos[0],centerPos[1], width, height, angle);
+        this.coordinates = initRectangleCoordinates(centerPos[0],centerPos[1], width, height, angle);
         color = Color.WHITE;
     }
 
-    public static float[] initBoundingBox(float centerX, float centerY, float width, float height, float angle) {
+    public static float[] initRectangleCoordinates(float centerX, float centerY, float width, float height, float angle) {
         float[] coordinates = new float[8];
 
         float halfWidth = width / 2;
