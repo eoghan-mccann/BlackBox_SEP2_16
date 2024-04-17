@@ -113,8 +113,8 @@ public class Game {
     }
 
     //bools for correct message displaying
-    boolean atomMessDisp = false;
-    boolean rayMessDisp = false;
+    boolean atomMessage = false;
+    boolean rayMessage = false;
     GamePhase prevPhase;
     public void update() {
         hexagonGrid.update();
@@ -134,12 +134,12 @@ public class Game {
                     hexagonGrid.setBorderClickable(false);
                     hexagonGrid.setHexState(Hexagon.State.PLACING);
 
-                    rayMessDisp = false;
+                    rayMessage = false;
                     // Display message for the atom phase
-                    if (!userMessage.isWaitingForInput() && !atomMessDisp)
+                    if (!userMessage.isWaitingForInput() && !atomMessage)
                     {
                         userMessage.showWelcomeMessage("\t\t\t Atom Phase", "You are now in the atom placement phase. \n\n \t\tPress ENTER to start.");
-                        atomMessDisp = true;
+                        atomMessage = true;
                     }
 
                     // Spawn confirm selection button if all atoms placed, remove if an atom gets removed
@@ -173,12 +173,12 @@ public class Game {
                     hexagonGrid.setBorderBoundingBoxVisible(false);
                     hexagonGrid.setHexState(Hexagon.State.GUESSING);
 
-                    atomMessDisp = false;
+                    atomMessage = false;
                     // Display message for the ray phase
-                    if (!userMessage.isWaitingForInput() && !rayMessDisp)
+                    if (!userMessage.isWaitingForInput() && !rayMessage)
                     {
                         userMessage.showWelcomeMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.");
-                        rayMessDisp = true;
+                        rayMessage = true;
                     }
 
                     for (Hexagon hexagon : hexagonGrid.getHexBoard())
@@ -234,8 +234,8 @@ public class Game {
                 case NEW_GAME:
                     prevPhase = GamePhase.NEW_GAME;
                     //bools for user message display
-                    atomMessDisp = false;
-                    rayMessDisp = false;
+                    atomMessage = false;
+                    rayMessage = false;
 
                     hexagonGrid.setRayVisible(true);
                     hexagonGrid.setAtomsVisible(true);
