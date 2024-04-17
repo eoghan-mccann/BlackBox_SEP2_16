@@ -32,8 +32,6 @@ public class Ray implements Entities, Clickable{
 
             double angle = Math.atan2(ySpeed, xSpeed); // Calculate the angle in radians
 
-            System.out.println(angle);
-            // Convert radians to degrees
             return (float) Math.toDegrees(angle);
         }
     }
@@ -386,21 +384,54 @@ public class Ray implements Entities, Clickable{
 
         int width = 20;
         int height = 50;
+        int productOffset = 10;
+
+        float[] startMarkerPos;
+        float[] endMarkerPos;
+
+        float startAngle;
+        float endAngle;
 
         if (lines.isEmpty()) {
-            startMarker = new RayMarker(this.startPos, width, height, startDirection.getAngleOfDirection());
-            endMarker = new RayMarker(this.headPos, width, height, currDirection.getAngleOfDirection());
+            startMarkerPos = new float[] {
+                    this.startPos[0] - startDirection.getXSpeed() * productOffset,
+                    this.startPos[1] - startDirection.getYSpeed() * productOffset
+            };
+            endMarkerPos = new float[] {
+                    this.headPos[0] + currDirection.getXSpeed() * productOffset,
+                    this.headPos[1] + currDirection.getYSpeed() * productOffset
+            };
+
+            startAngle = startDirection.getAngleOfDirection();
+            endAngle = currDirection.getAngleOfDirection();
+
         } else if (isInside) {
-            startMarker = new RayMarker(new float[]{lines.get(0).get(0), lines.get(0).get(1)}, width, height, startDirection.getAngleOfDirection());
-            endMarker = new RayMarker(new float[]{lines.get(0).get(0), lines.get(0).get(1)}, width, height, startDirection.getAngleOfDirection());
+            startMarkerPos = new float[] {
+                    lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
+                    lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
+            };
+
+            endMarkerPos = startMarkerPos;
+
+            startAngle = startDirection.getAngleOfDirection();
+            endAngle = startAngle;
         }
         else {
-            float[] startPos = new float[]{lines.get(0).get(0), lines.get(0).get(1)};
-            float[] endPos = new float[]{headPos[0], headPos[1]};
+            startMarkerPos = new float[]{
+                    lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
+                    lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
+            };
+            endMarkerPos = new float[]{
+                    headPos[0] + currDirection.getXSpeed() * productOffset,
+                    headPos[1] + currDirection.getYSpeed() * productOffset
+            };
 
-            startMarker = new RayMarker(startPos, width, height, startDirection.getAngleOfDirection());
-            endMarker = new RayMarker(endPos, width, height, currDirection.getAngleOfDirection());
+            startAngle = startDirection.getAngleOfDirection();
+            endAngle = currDirection.getAngleOfDirection();
         }
+
+        startMarker = new RayMarker(startMarkerPos, width, height, startAngle);
+        endMarker = new RayMarker(endMarkerPos, width, height, endAngle);
 
         rayMarkers = new RayMarker[] {startMarker, endMarker};
     }
