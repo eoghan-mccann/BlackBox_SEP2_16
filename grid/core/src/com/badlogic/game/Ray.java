@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Ray implements Entities, Clickable{
@@ -40,6 +41,8 @@ public class Ray implements Entities, Clickable{
 
 
     Hexagon currHex; // if ray is inside the grid, this is the hexagon it is currently inside
+
+    RayMarker[] rayMarkers;
 
     public Ray(float x1, float y1, Direction dir) {
         enterPos = new float[]{x1,y1};
@@ -201,6 +204,10 @@ public class Ray implements Entities, Clickable{
         }
     }
 
+    private boolean isMoving() {
+        return !(hitAtom || !isInside);
+    }
+
     public int getSurroundingHexagons(Hexagon hex)
     {
         int x = hex.grid.findHex(hex)[0]; // x index of hexagon
@@ -284,9 +291,6 @@ public class Ray implements Entities, Clickable{
         }
 
         return 10;
-
-
-
     }
 
     public void setVisible(boolean visible) {
@@ -314,6 +318,38 @@ public class Ray implements Entities, Clickable{
 
         }
         shape.end();
+
+        if (rayMarkers != null) {
+            for (RayMarker rayMarker : rayMarkers) {
+                rayMarker.Draw(shape);
+            }
+        }
+    }
+
+    private void spawnRayMarker() {
+        RayMarker startMarker;
+        RayMarker endMarker;
+
+        int width = 50;
+        int height = 20;
+        int angle = 90;
+
+        if (lines.isEmpty()) {
+            startMarker = new RayMarker(this.startPos, width, height, angle);
+            endMarker = new RayMarker(this.headPos, width, height, angle);
+        } else if (isInside) {
+            startMarker = new RayMarker(new float[]{lines.get(0).get(0), lines.get(0).get(1)}, width, height, angle);
+            endMarker = new RayMarker(new float[]{lines.get(0).get(0), lines.get(0).get(1)}, width, height, angle);
+        }
+        else {
+            float[] startPos = new float[]{lines.get(0).get(0), lines.get(0).get(1)};
+            float[] endPos = new float[]{headPos[0], headPos[1]};
+
+            startMarker = new RayMarker(startPos, width, height, angle);
+            endMarker = new RayMarker(endPos, width, height, angle);
+        }
+
+        rayMarkers = new RayMarker[] {startMarker, endMarker};
     }
 
     @Override
@@ -332,9 +368,11 @@ public class Ray implements Entities, Clickable{
                 headPos[0] += direction.getXSpeed()*5;
                 headPos[1] += direction.getYSpeed()*5;
 
-
             }
 
+            if (!isMoving()) {
+                spawnRayMarker();
+            }
 
     }
 
