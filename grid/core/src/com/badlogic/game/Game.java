@@ -304,7 +304,7 @@ public class Game {
         int playerTwoScore = playerScores[1];
 
         if (playerOneScore == playerTwoScore) { return "TIE GAME!"; }
-        else if (playerOneScore < playerTwoScore) {
+        else if (playerOneScore > playerTwoScore) {
             return "Player 1 Wins!";
         } else {
             return "Player 2 Wins!";
