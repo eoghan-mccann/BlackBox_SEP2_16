@@ -24,14 +24,10 @@ public class Game {
     private final ShapeRenderer shape;
     public static float hexRadius = 50;
 
-
-
     //used for game logic
     public static boolean debugMode = false;
     private boolean lastRound;
     int[] playerScores;
-
-
 
     //displaying messages, user interaction
     private final UserMessage userMessage;
@@ -42,7 +38,6 @@ public class Game {
     private Label scoreLabel;
     private Label guessLabel;
     private Label winLabel;
-
 
     /**
      * this enum is used to manage the phases of the game
@@ -61,8 +56,6 @@ public class Game {
     private final HexagonGrid hexagonGrid;
     private GamePhase currentPhase;
     Guess guesses;
-
-
 
     public Game() {
         float w = Gdx.graphics.getWidth();
@@ -330,7 +323,7 @@ public class Game {
         stage.draw();
     }
 
-    private int calculateScore(boolean[] guesses, List<Ray2> rays) {
+    private int calculateScore(boolean[] guesses, List<Ray> rays) {
         int score = 0;
 
         for (boolean guess : guesses)
