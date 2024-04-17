@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.List;
 
+//we need to comment more and separate classes
 public class Game {
 
     public static int windowWidth = 1600;
