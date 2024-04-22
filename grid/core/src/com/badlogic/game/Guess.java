@@ -10,19 +10,21 @@ public class Guess {
     private static final int MAX_GUESSES = 5;
 
     private int guessCount;
-    private List<Hexagon> guessList;
+    private final List<Hexagon> guessList;
+    private final Label marker;  // Declare as final to ensure it's not reassigned
 
-    Guess() {
+    public Guess() {
         guessCount = 0;
         guessList = new ArrayList<>();
+        marker = new Label(null, 0, 0);  // Initialize with null batch, will be set during rendering
+        marker.setText("X");
+        marker.setFontSize(20);
     }
 
     public void handleGuess(Hexagon hexagon) {
-        if (guessCount > MAX_GUESSES) { return; }
-
-        if (guessList.contains(hexagon)) { ;
+        if (guessList.contains(hexagon)) {
             removeGuess(hexagon);
-        } else {
+        } else if (guessCount < MAX_GUESSES) {
             addGuess(hexagon);
         }
     }
@@ -30,12 +32,9 @@ public class Guess {
     private void addGuess(Hexagon hexagon) {
         guessList.add(hexagon);
         guessCount++;
-
-        System.out.println(guessCount);
     }
 
     private void removeGuess(Hexagon hexagon) {
-        if (guessCount <= 0) { return; }
         guessList.remove(hexagon);
         guessCount--;
     }
@@ -54,14 +53,14 @@ public class Guess {
         return guesses;
     }
 
+    public void draw(ShapeRenderer shape, SpriteBatch batch) {
+        marker.batch = batch;
 
-    public void Draw(ShapeRenderer shape, SpriteBatch batch) {
         for (Hexagon hex : guessList) {
-            Label marker = new Label(batch, hex.getCenterX(), hex.getCenterY());
-            marker.setText("X");
-            marker.setFontSize(2);
+
+            marker.setPos(hex.getCenterX() - marker.getTextWidth() / 2, hex.getCenterY() + marker.getTextHeight() /2);
             marker.Draw(shape);
         }
     }
-
 }
+

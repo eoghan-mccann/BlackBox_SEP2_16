@@ -182,9 +182,12 @@ public class Game {
                         }
                     }
 
-                    guessLabel = new Label(batch,1150, 750);
+                    if (guessLabel == null) {
+                        guessLabel = new Label(batch, 1150, 750);
+                        guessLabel.setFontSize(25);
+                    }
+
                     guessLabel.setText("Guesses Remaining: " + guesses.getRemainingGuesses());
-                    guessLabel.setFontSize(2.5f);
 
                     if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null)
                     {
@@ -203,8 +206,11 @@ public class Game {
                         currentPhase = GamePhase.NEW_GAME;
                         guessConfirmButton = null;
 
-                        winLabel = new Label(batch, 1150, 700);
-                        winLabel.setFontSize(1.2f);
+                        if (winLabel == null) {
+                            winLabel = new Label(batch, 1150, 700);
+                            winLabel.setFontSize(20);
+                        }
+
                         String guessString = "";
 
                         boolean[] guessAnswers = guesses.getGuessAnswers();
@@ -260,11 +266,13 @@ public class Game {
                             currentPhase = GamePhase.PLACING_ATOMS;
                         } else
                         {
-                            scoreLabel = new Label(batch, 1150, 750);
-                            scoreLabel.setText(getWinMessage() + "\n" +
-                                    "Player 1 : " + playerScores[0] + "\n" +
-                                    "Player 2 : " + playerScores[1]);
-                            scoreLabel.setFontSize(2.5f);
+                            if (scoreLabel == null) {
+                                scoreLabel = new Label(batch, 1150, 750);
+                                scoreLabel.setText(getWinMessage() + "\n" +
+                                        "Player 1 : " + playerScores[0] + "\n" +
+                                        "Player 2 : " + playerScores[1]);
+                                scoreLabel.setFontSize(25);
+                            }
                         }
                     }
 
@@ -313,7 +321,7 @@ public class Game {
 
         if(winLabel != null) {winLabel.Draw(shape);}
 
-        if(guesses != null) {guesses.Draw(shape,batch);}
+        if(guesses != null) {guesses.draw(shape,batch);}
 
         if (newGameButton != null) {newGameButton.Draw(shape);}
 
