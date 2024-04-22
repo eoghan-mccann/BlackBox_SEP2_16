@@ -1,5 +1,7 @@
 package com.badlogic.game;
 
+import com.badlogic.game.UI.Label;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -12,6 +14,7 @@ public class Guess {
     private int guessCount;
     private final List<Hexagon> guessList;
     private final Label marker;  // Declare as final to ensure it's not reassigned
+    private boolean answeredRevealed;
 
     public Guess() {
         guessCount = 0;
@@ -19,6 +22,7 @@ public class Guess {
         marker = new Label(null, 0, 0);  // Initialize with null batch, will be set during rendering
         marker.setText("X");
         marker.setFontSize(20);
+        answeredRevealed = false;
     }
 
     public void handleGuess(Hexagon hexagon) {
@@ -50,6 +54,7 @@ public class Guess {
             guesses[i] = guessList.get(i).hasAtom();
         }
 
+        answeredRevealed = true;
         return guesses;
     }
 
@@ -57,8 +62,12 @@ public class Guess {
         marker.batch = batch;
 
         for (Hexagon hex : guessList) {
-
             marker.setPos(hex.getCenterX() - marker.getTextWidth() / 2, hex.getCenterY() + marker.getTextHeight() /2);
+
+            if (answeredRevealed) {
+                marker.setColor(hex.hasAtom() ? Color.GREEN : Color.RED);
+            }
+
             marker.Draw(shape);
         }
     }

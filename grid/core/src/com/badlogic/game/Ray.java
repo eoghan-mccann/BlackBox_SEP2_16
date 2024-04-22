@@ -393,7 +393,6 @@ public class Ray implements Entities, Clickable{
 
         // If the ray is only 1 line = MISS
         if (lines.isEmpty()) {
-            System.out.println("MISS");
             startMarkerPos = new float[] {
                     this.startPos[0] - startDirection.getXSpeed() * productOffset,
                     this.startPos[1] - startDirection.getYSpeed() * productOffset
@@ -406,7 +405,6 @@ public class Ray implements Entities, Clickable{
             result = RayMarker.Result.MISS;
         // If the ray is still inside the hexagon, maybe has reflections but got swallowed = HIT
         } else if (isInside) {
-            System.out.println("HIT");
             startMarkerPos = new float[] {
                     lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
                     lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
@@ -417,7 +415,6 @@ public class Ray implements Entities, Clickable{
             result = RayMarker.Result.HIT;
         }
         else { // Deflected rays, no swallowed = REFLECTION
-            System.out.println("REFLECTION");
             startMarkerPos = new float[]{
                     lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
                     lines.get(0).get(1) - startDirection.getYSpeed() * productOffset

@@ -1,5 +1,7 @@
-package com.badlogic.game;
+package com.badlogic.game.UI;
 
+import com.badlogic.game.Clickable;
+import com.badlogic.game.Entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,7 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Label implements Clickable, Entities{
+public class Label implements Clickable, Entities {
 
     float X, Y;   // bottom left point
     float textWidth;
@@ -45,6 +47,10 @@ public class Label implements Clickable, Entities{
         generator.dispose();
 
         return fontNew;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     @Override

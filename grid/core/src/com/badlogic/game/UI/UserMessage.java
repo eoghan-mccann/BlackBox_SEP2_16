@@ -1,4 +1,4 @@
-package com.badlogic.game;
+package com.badlogic.game.UI;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.Stage;

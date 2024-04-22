@@ -1,5 +1,6 @@
 package com.badlogic.game;
 
+import com.badlogic.game.UI.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -30,6 +31,10 @@ public class Game {
     int[] playerScores;
 
     //displaying messages, user interaction
+    private final InfoLegend info;
+    private GuessResultBoard guessResultBoard;
+    private Scoreboard scoreboard;
+
     private final UserMessage userMessage;
     private final Button viewToggle;
     private Button atomConfirmButton;
@@ -85,7 +90,7 @@ public class Game {
         //buttons
         viewToggle = new Button(batch, 50, 50, 175, 75);
         viewToggle.setText("Debug View");
-        viewToggle.setFontSize(1.1f);
+        viewToggle.setFontSize(20);
 
         //skin - used for UI messages
         skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
@@ -103,6 +108,10 @@ public class Game {
         //intialise the arr for keeping scores
         playerScores = new int[2];
         //perhaps playerScores = [100, 100]? i think we have to subtract a value for each guess etc?
+
+        info = new InfoLegend(50,600);
+
+
     }
 
     //bools for correct message displaying
@@ -140,7 +149,7 @@ public class Game {
                     {
                         atomConfirmButton = new Button(batch, 1350, 50, 200, 100);
                         atomConfirmButton.setText("Confirm Atom Placement");
-                        atomConfirmButton.setFontSize(1.15f);
+                        atomConfirmButton.setFontSize(15);
 
                     } else if (!hexagonGrid.allAtomsPlaced())
                     {
@@ -160,8 +169,7 @@ public class Game {
                     prevPhase = GamePhase.PLACING_RAYS;
                     hexagonGrid.setAtomsVisible(false);
                     hexagonGrid.setHexClickable(false);
-                    //rays should be visible when in the placing rays phase?
-                    hexagonGrid.setRayVisible(true);
+                    hexagonGrid.setRayVisible(false);
                     hexagonGrid.setBorderClickable(true);
                     hexagonGrid.setBorderBoundingBoxVisible(false);
                     hexagonGrid.setHexState(Hexagon.State.GUESSING);
@@ -183,17 +191,18 @@ public class Game {
                     }
 
                     if (guessLabel == null) {
-                        guessLabel = new Label(batch, 1150, 750);
+                        guessLabel = new Label(batch, 0, 0);
                         guessLabel.setFontSize(25);
                     }
 
                     guessLabel.setText("Guesses Remaining: " + guesses.getRemainingGuesses());
+                    guessLabel.setPos(windowWidth / 2f, windowHeight - 50);
 
                     if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null)
                     {
                         guessConfirmButton = new Button(batch, 1350, 50, 200, 100);
                         guessConfirmButton.setText("Confirm Guesses");
-                        guessConfirmButton.setFontSize(1.15f);
+                        guessConfirmButton.setFontSize(20);
 
                     } else if (!(guesses.getRemainingGuesses() == 0))
                     {
@@ -206,13 +215,6 @@ public class Game {
                         currentPhase = GamePhase.NEW_GAME;
                         guessConfirmButton = null;
 
-                        if (winLabel == null) {
-                            winLabel = new Label(batch, 1150, 700);
-                            winLabel.setFontSize(20);
-                        }
-
-                        String guessString = "";
-
                         boolean[] guessAnswers = guesses.getGuessAnswers();
 
                         if (!lastRound)
@@ -222,11 +224,11 @@ public class Game {
                             playerScores[1] = calculateScore(guessAnswers, hexagonGrid.rays);
                         }
 
-                        for (boolean guess : guesses.getGuessAnswers()) {
-                            guessString += guess ? "CORRECT\n" : "INCORRECT\n";
+                        if (guessResultBoard == null) {
+                            guessLabel = null;
+                            guessResultBoard = new GuessResultBoard(1350, 150, guessAnswers);
                         }
 
-                        winLabel.setText(guessString);
                     }
                     break;
 
@@ -242,9 +244,9 @@ public class Game {
                     //displaying the new game button
                     if (newGameButton == null)
                     {
-                        newGameButton = new Button(batch, 1350, 50, 200, 100);
+                        newGameButton = new Button(batch, 1349, 50, 200, 100);
                         newGameButton.setText(lastRound ? "End Game" : "Start Second Round");
-                        newGameButton.setFontSize(1.15f);
+                        newGameButton.setFontSize(15);
                     }
 
                     //if the new game button is clicked
@@ -253,7 +255,7 @@ public class Game {
                         newGameButton = null;
                         winLabel = null;
                         guessLabel = null;
-
+                        guessResultBoard = null;
                         //managing user exchange
                         if (!lastRound)
                         {
@@ -264,14 +266,9 @@ public class Game {
                             hexagonGrid.resetAllRays();
                             hexagonGrid.resetAllAtoms();
                             currentPhase = GamePhase.PLACING_ATOMS;
-                        } else
-                        {
-                            if (scoreLabel == null) {
-                                scoreLabel = new Label(batch, 1150, 750);
-                                scoreLabel.setText(getWinMessage() + "\n" +
-                                        "Player 1 : " + playerScores[0] + "\n" +
-                                        "Player 2 : " + playerScores[1]);
-                                scoreLabel.setFontSize(25);
+                        } else {
+                            if (scoreboard == null) {
+                                scoreboard = new Scoreboard(1349, 150, playerScores[0], playerScores[1]);
                             }
                         }
                     }
@@ -305,6 +302,8 @@ public class Game {
         viewToggle.update();
         viewToggle.Draw(shape);
 
+        info.Draw(shape,batch);
+
         if (atomConfirmButton != null)
         {
             atomConfirmButton.update();
@@ -325,8 +324,13 @@ public class Game {
 
         if (newGameButton != null) {newGameButton.Draw(shape);}
 
-        if (scoreLabel != null) {scoreLabel.Draw(shape);}
+        if (guessResultBoard != null) {
+            guessResultBoard.Draw(shape, batch);
+        }
 
+        if (scoreboard != null) {
+            scoreboard.Draw(shape,batch);
+        }
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
@@ -342,20 +346,6 @@ public class Game {
         score += rays.size();
 
         return score;
-    }
-
-    private String getWinMessage() {
-        int playerOneScore = playerScores[0];
-        int playerTwoScore = playerScores[1];
-
-        if (playerOneScore == playerTwoScore) { return "TIE GAME!"; }
-        else if (playerOneScore > playerTwoScore)
-        {
-            return "Player 1 Wins!";
-        } else
-        {
-            return "Player 2 Wins!";
-        }
     }
 
     public void resize(int width, int height) {
