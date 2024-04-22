@@ -44,6 +44,8 @@ public class Ray implements Entities, Clickable{
     float[] enterPos; // coords of start current line
     float[] headPos; // coords of the head of the current line
 
+    float markerRadius;
+
     boolean isInside; // true if ray is inside an atom
     boolean hitAtom;
     List<List<Float>> lines; // list of coordinates of each line making up the ray
@@ -60,6 +62,7 @@ public class Ray implements Entities, Clickable{
         currDirection = dir;
         startDirection = dir;
         lines = new ArrayList<>();
+        markerRadius = 10;
     }
     /*
     Ray moving idea:
@@ -381,18 +384,16 @@ public class Ray implements Entities, Clickable{
     private void spawnRayMarker() {
         RayMarker startMarker;
         RayMarker endMarker;
+        RayMarker.Result result;
 
-        int width = 20;
-        int height = 50;
-        int productOffset = 10;
+        int productOffset = 7;
 
         float[] startMarkerPos;
         float[] endMarkerPos;
 
-        float startAngle;
-        float endAngle;
-
+        // If the ray is only 1 line = MISS
         if (lines.isEmpty()) {
+            System.out.println("MISS");
             startMarkerPos = new float[] {
                     this.startPos[0] - startDirection.getXSpeed() * productOffset,
                     this.startPos[1] - startDirection.getYSpeed() * productOffset
@@ -402,10 +403,10 @@ public class Ray implements Entities, Clickable{
                     this.headPos[1] + currDirection.getYSpeed() * productOffset
             };
 
-            startAngle = startDirection.getAngleOfDirection();
-            endAngle = currDirection.getAngleOfDirection();
-
+            result = RayMarker.Result.MISS;
+        // If the ray is still inside the hexagon, maybe has reflections but got swallowed = HIT
         } else if (isInside) {
+            System.out.println("HIT");
             startMarkerPos = new float[] {
                     lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
                     lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
@@ -413,10 +414,10 @@ public class Ray implements Entities, Clickable{
 
             endMarkerPos = startMarkerPos;
 
-            startAngle = startDirection.getAngleOfDirection();
-            endAngle = startAngle;
+            result = RayMarker.Result.HIT;
         }
-        else {
+        else { // Deflected rays, no swallowed = REFLECTION
+            System.out.println("REFLECTION");
             startMarkerPos = new float[]{
                     lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
                     lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
@@ -426,12 +427,11 @@ public class Ray implements Entities, Clickable{
                     headPos[1] + currDirection.getYSpeed() * productOffset
             };
 
-            startAngle = startDirection.getAngleOfDirection();
-            endAngle = currDirection.getAngleOfDirection();
+            result = RayMarker.Result.REFLECTION;
         }
 
-        startMarker = new RayMarker(startMarkerPos, width, height, startAngle);
-        endMarker = new RayMarker(endMarkerPos, width, height, endAngle);
+        startMarker = new RayMarker(startMarkerPos, markerRadius, result);
+        endMarker = new RayMarker(endMarkerPos, markerRadius, result);
 
         rayMarkers = new RayMarker[] {startMarker, endMarker};
     }
