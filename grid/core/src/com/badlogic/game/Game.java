@@ -196,7 +196,7 @@ public class Game {
                     }
 
                     guessLabel.setText("Guesses Remaining: " + guesses.getRemainingGuesses());
-                    guessLabel.setPos(windowWidth / 2f, windowHeight - 50);
+                    guessLabel.setPos(windowWidth / 2f - guessLabel.getTextWidth() / 2, windowHeight - 50);
 
                     if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null)
                     {

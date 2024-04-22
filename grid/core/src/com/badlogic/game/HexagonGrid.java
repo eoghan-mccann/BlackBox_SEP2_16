@@ -261,7 +261,7 @@ public class HexagonGrid {
         float centreX = (float) windowWidth / 2;
         Hexagon centreHex = new Hexagon(centreX, y, hexRadius, this);
         float hexDist = centreHex.getWidth();
-        float startingX = (float) (centreX - ((n / 2) * hexDist) - (hexDist * 0.5));
+        float startingX = centreX - ((n / 2) * hexDist);
 
         float offset = isOffset ? hexDist / 2 : 0; // offsets row distance to fit seamlessly with row.
 
