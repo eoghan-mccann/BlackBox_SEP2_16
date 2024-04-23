@@ -233,11 +233,8 @@ public class Hexagon implements Entities, Clickable {
     public void Draw(ShapeRenderer shape) {
 
         shape.begin(ShapeRenderer.ShapeType.Line);;
-//        color = Color.WHITE;
-//        if(isBorder)
-//        {
-//            color = Color.VIOLET;
-//        }
+        color = Color.WHITE;
+
 //        if(isNeighbour)
 //        {
 //            color = Color.GREEN;
@@ -246,7 +243,10 @@ public class Hexagon implements Entities, Clickable {
 //        {
 //            color = Color.WHITE;
 //        }
-
+//        if(isBorder)
+//        {
+//            color = Color.VIOLET;
+//        }
         shape.setColor(color);
         shape.polygon(hexPoints);
         shape.end();

@@ -49,13 +49,14 @@ public class Ray implements Entities, Clickable{
     boolean isInside; // true if ray is inside an atom
     boolean hitAtom;
     List<List<Float>> lines; // list of coordinates of each line making up the ray
+    HexagonGrid grid;
 
 
     Hexagon currHex; // if ray is inside the grid, this is the hexagon it is currently inside
 
     RayMarker[] rayMarkers;
 
-    public Ray(float x1, float y1, Direction dir) {
+    public Ray(float x1, float y1, Direction dir, HexagonGrid gr) {
         enterPos = new float[]{x1,y1};
         startPos = enterPos;
         headPos = new float[]{x1,y1};
@@ -63,6 +64,9 @@ public class Ray implements Entities, Clickable{
         startDirection = dir;
         lines = new ArrayList<>();
         markerRadius = 10;
+
+        grid = gr;
+
     }
     /*
     Ray moving idea:
@@ -73,6 +77,9 @@ public class Ray implements Entities, Clickable{
      */
     public void setCurrDirection(Hexagon hex)
     {// called when ray hits atom aura - changes ray direction and continues moving
+        /* rays are made up of lines. the current line (i.e. the very front line) isn't added to the list of lines
+        *  until it has finished (hit an atom).
+       */
         int numLines = lines.size();
         lines.add(new ArrayList<>());
 
@@ -95,7 +102,7 @@ public class Ray implements Entities, Clickable{
         {
             reflect();
         }
-        else
+        else // one atom deflect - accounting for all possible directions
         {
             // set direction of new line
             switch(hex.neighbDir)
@@ -321,7 +328,7 @@ public class Ray implements Entities, Clickable{
                     }
 
                     neighbs[i] = board.get(tempX).get(tempY);
-                    neighbs[i].color = Color.VIOLET;
+
 
 
                 }
@@ -329,10 +336,18 @@ public class Ray implements Entities, Clickable{
 
         }
 
-        // check for pair
+        // check for pair - if two atoms directly neighbouring each other (a side is touching)
+        // if yes, return the index of the first one, giving indices 0-5 to be dealt with in mulAtomDeflect()
 
-        for(int i=0;i<5;i++)
+        for(int i=0;i<6;i++)
         {
+            if(i == 5)
+            {
+                if(neighbs[i].atom !=null && neighbs[0].atom != null)
+                {
+                    return i;
+                }
+            }
             if(neighbs[i] != null & neighbs[i+1] != null)
             {
                 if(neighbs[i].atom != null && neighbs[i+1].atom != null)
@@ -341,7 +356,10 @@ public class Ray implements Entities, Clickable{
                 }
             }
 
+
+
         }
+
 
         return 10;
     }
@@ -357,6 +375,7 @@ public class Ray implements Entities, Clickable{
 
         if(visible) {
             shape.setColor(Color.GREEN);
+
 
             if(!lines.isEmpty()) // if ray has reflected
             {
@@ -391,8 +410,19 @@ public class Ray implements Entities, Clickable{
         float[] startMarkerPos;
         float[] endMarkerPos;
 
+        if(currHex.isBorder && hitAtom) // if hit border atom
+        {
+            startMarkerPos = new float[] {
+                    this.startPos[0] - startDirection.getXSpeed() * productOffset,
+                    this.startPos[1] - startDirection.getYSpeed() * productOffset
+            };
+            endMarkerPos = null;
+
+
+            result = RayMarker.Result.HIT;
+        }
         // If the ray is only 1 line = MISS
-        if (lines.isEmpty()) {
+        else if (lines.isEmpty()) {
             startMarkerPos = new float[] {
                     this.startPos[0] - startDirection.getXSpeed() * productOffset,
                     this.startPos[1] - startDirection.getYSpeed() * productOffset
@@ -428,28 +458,49 @@ public class Ray implements Entities, Clickable{
         }
 
         startMarker = new RayMarker(startMarkerPos, markerRadius, result);
-        endMarker = new RayMarker(endMarkerPos, markerRadius, result);
+        if(endMarkerPos == null)
+        {
+            endMarker = startMarker;
+        }
+        else
+        {
+            endMarker = new RayMarker(endMarkerPos, markerRadius, result);
+        }
+
 
         rayMarkers = new RayMarker[] {startMarker, endMarker};
     }
 
     @Override
     public void update() {
+            grid.rayCheck(this);
 
-            if(isInside && !hitAtom)
+            if(currHex.atom != null)
+            {
+                hitAtom = true;
+            }
+
+            if(!isInside)
+            {
+
+            }
+            else if(isInside && !hitAtom && !currHex.isNeighbour) // if in the grid and hasn't hit atom update
             {
                 headPos[0] += currDirection.getXSpeed();
                 headPos[1] += currDirection.getYSpeed();
             }
-            if(currHex.isNeighbour) // move back, set direction, set isinside back
-            {
+            else if(currHex.isNeighbour && currHex.atom == null) // if currHex is a neighbour and DOESN'T have an atom in it
+            {// move back, set direction, set isinside back
                 headPos[0] = currHex.getCenterX(); // move line to centre of current hexagon for consistency
                 headPos[1] = currHex.getCenterY();
                 setCurrDirection(currHex);
                 headPos[0] += currDirection.getXSpeed()*5;
                 headPos[1] += currDirection.getYSpeed()*5;
+                grid.rayCheck(this);
 
             }
+
+
 
             if (!isMoving()) {
                 spawnRayMarker();

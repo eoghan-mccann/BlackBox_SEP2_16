@@ -85,9 +85,10 @@ public class HexagonGrid {
             }
         }
         ray.isInside = false; // ray is now outside the grid
+
     }
 
-    public void rayAtomCheck(Ray ray) {
+    public void rayAtomCheck(Ray ray) { // check if ray has hit atom
         for (Atom atom : atoms) {
             if (atom.isInside(ray.getCoordinates())) {
                 ray.hitAtom = true;
@@ -98,7 +99,7 @@ public class HexagonGrid {
     }
 
     public void addRay(float x, float y, Ray.Direction direction) {
-            rays.add(new Ray(x,y,direction));
+            rays.add(new Ray(x,y,direction, this));
     }
 
     public void initAtoms() // initial placement of 5 atoms on the right side
