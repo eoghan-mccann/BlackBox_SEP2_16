@@ -147,7 +147,7 @@ public class Game {
                     // Spawn confirm selection button if all atoms placed, remove if an atom gets removed
                     if (hexagonGrid.allAtomsPlaced() && atomConfirmButton == null)
                     {
-                        atomConfirmButton = new Button(batch, 1350, 50, 200, 100);
+                        atomConfirmButton = new Button(batch, 1200, 50, 200, 100);
                         atomConfirmButton.setText("Confirm Atom Placement");
                         atomConfirmButton.setFontSize(15);
 
@@ -200,7 +200,7 @@ public class Game {
 
                     if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null)
                     {
-                        guessConfirmButton = new Button(batch, 1350, 50, 200, 100);
+                        guessConfirmButton = new Button(batch, 1200, 50, 200, 100);
                         guessConfirmButton.setText("Confirm Guesses");
                         guessConfirmButton.setFontSize(20);
 
@@ -226,7 +226,7 @@ public class Game {
 
                         if (guessResultBoard == null) {
                             guessLabel = null;
-                            guessResultBoard = new GuessResultBoard(1350, 150, guessAnswers);
+                            guessResultBoard = new GuessResultBoard(1200, 155, guessAnswers);
                         }
 
                     }
@@ -244,7 +244,7 @@ public class Game {
                     //displaying the new game button
                     if (newGameButton == null)
                     {
-                        newGameButton = new Button(batch, 1349, 50, 200, 100);
+                        newGameButton = new Button(batch, 1200, 50, 200, 100);
                         newGameButton.setText(lastRound ? "End Game" : "Start Second Round");
                         newGameButton.setFontSize(15);
                     }
@@ -268,7 +268,7 @@ public class Game {
                             currentPhase = GamePhase.PLACING_ATOMS;
                         } else {
                             if (scoreboard == null) {
-                                scoreboard = new Scoreboard(1349, 150, playerScores[0], playerScores[1]);
+                                scoreboard = new Scoreboard(1200, 150, playerScores[0], playerScores[1]);
                             }
                         }
                     }
