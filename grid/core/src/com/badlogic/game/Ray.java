@@ -204,13 +204,15 @@ public class Ray implements Entities, Clickable{
                     currDirection = Direction.E;}
                 break;
             case 1:
-                if(currDirection == Direction.W) { currDirection = Direction.SE;}
-                else if (currDirection == Direction.NW) { currDirection = Direction.E;}
+                if(currDirection == Direction.W) {
+                    currDirection = Direction.SE;}
+                else if (currDirection == Direction.NW) {
+                    currDirection = Direction.E;}
                 break;
             case 2:
                 if(currDirection == Direction.NW) {
                     currDirection = Direction.SW;}
-                else if(currDirection == Direction.E) {
+                else if(currDirection == Direction.NE) {
                     currDirection = Direction.SE;}
                 break;
             case 3:
@@ -343,12 +345,16 @@ public class Ray implements Entities, Clickable{
         {
             if(i == 5)
             {
-                if(neighbs[i].atom !=null && neighbs[0].atom != null)
+                if(neighbs[i] != null && neighbs[0] != null)
                 {
-                    return i;
+                    if(neighbs[i].atom !=null && neighbs[0].atom != null)
+                    {
+                        return i;
+                    }
                 }
+
             }
-            if(neighbs[i] != null & neighbs[i+1] != null)
+            else if(neighbs[i] != null & neighbs[i+1] != null)
             {
                 if(neighbs[i].atom != null && neighbs[i+1].atom != null)
                 {
