@@ -1,26 +1,22 @@
-package com.badlogic.game;
+package com.badlogic.game.UI;
 
+import com.badlogic.game.Clickable;
+import com.badlogic.game.Entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Button implements Clickable, Entities{
+public class Button implements Clickable, Entities {
 
     float X, Y;   // bottom left point
     float width, height;
-    float textWidth, textHeight;
     boolean toggle = false;
     Color color;
 
-    private BitmapFont font;
-    private String text;
-
+    private final Label label;
     private SpriteBatch batch;
-    GlyphLayout layout = new GlyphLayout();
 
 
     public Button(SpriteBatch batch,float x, float y, float w, float h) {
@@ -32,10 +28,9 @@ public class Button implements Clickable, Entities{
         height = h;
 
         color = Color.PINK;
-        font = new BitmapFont();
 
-        setText("Button");
-        setFontSize(1f);
+        label = new Label(batch, X, Y);
+        label.setColor(Color.BLACK);
     }
 
     @Override
@@ -69,27 +64,21 @@ public class Button implements Clickable, Entities{
 
     public void Draw(ShapeRenderer shape) {
         shape.begin(ShapeRenderer.ShapeType.Filled);
-        shape.setColor(color);
-        shape.rect(X, Y, width, height);
+            shape.setColor(color);
+            shape.rect(X, Y, width, height);
         shape.end();
 
-        batch.begin();
-            font.setColor(Color.BLACK);
-            font.draw(batch, text, X + width / 2 - textWidth / 2, Y + height / 2 + textHeight / 2);
-        batch.end();
+        label.Draw(shape);
     }
 
     public void setText(String newText) {
-        this.text = newText;
-
-        layout.setText(font, text);
-        textWidth = layout.width;// contains the width of the current set text
-        textHeight = layout.height; // contains the height of the current set text
+        label.setText(newText);
+        label.setPos(X + width / 2 - label.getTextWidth() / 2, Y + height / 2 + label.getTextHeight() / 2);
     }
 
-    public void setFontSize(float scale) {
-        font.getData().setScale(scale);
-        setText(text); // adjusts the text height/width post-scale
+    public void setFontSize(int scale) {
+        label.setFontSize(scale);
+        label.setPos(X + width / 2 - label.getTextWidth() / 2, Y + height / 2 + label.getTextHeight() / 2);
     }
 
     @Override

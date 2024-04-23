@@ -1,5 +1,6 @@
 package com.badlogic.game;
 
+import com.badlogic.game.UI.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,22 +11,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.List;
 
+//we need to comment more and separate classes
 public class Game {
 
+
+    //necessary for displaying and correct rendering
     public static int windowWidth = 1600;
     public static int windowHeight = 900;
+    private final OrthographicCamera camera;
+    public SpriteBatch batch;
+    private final Stage stage;
+    private final Skin skin;
+    private final ShapeRenderer shape;
     public static float hexRadius = 50;
-
 
     //used for game logic
     public static boolean debugMode = false;
     private boolean lastRound;
+    int[] playerScores;
 
-    private final OrthographicCamera camera;
+    //displaying messages, user interaction
+    private final InfoLegend info;
+    private GuessResultBoard guessResultBoard;
+    private Scoreboard scoreboard;
 
-    public SpriteBatch batch;
-    private final Stage stage;
-    private final Skin skin;
     private final UserMessage userMessage;
     private final Button viewToggle;
     private Button atomConfirmButton;
@@ -34,10 +43,14 @@ public class Game {
     private Label scoreLabel;
     private Label guessLabel;
     private Label winLabel;
-    private final ShapeRenderer shape;
 
-    int[] playerScores;
-
+    /**
+     * this enum is used to manage the phases of the game
+     * debug view - used for debugging
+     * placing atoms - atom placement phase
+     * placing rays - ray shooting phase
+     * new game - starting new game
+     */
     private enum GamePhase {
         DEBUG_VIEW,
         PLACING_ATOMS,
@@ -59,42 +72,61 @@ public class Game {
         hexagonGrid.initAtoms();
         hexagonGrid.activateBorders();
 
+
+        //starting the game on the placing atoms phase
         currentPhase = GamePhase.PLACING_ATOMS;
 
+        //starting the camera for correct rendering
         camera = new OrthographicCamera(800, 800 * (h / w));
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
+        //used for rendering
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        //buttons
         viewToggle = new Button(batch, 50, 50, 175, 75);
         viewToggle.setText("Debug View");
-        viewToggle.setFontSize(1.1f);
+        viewToggle.setFontSize(20);
 
+        //skin - used for UI messages
         skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
-
         userMessage = new UserMessage(stage, skin);
         userMessage.showWelcomeMessage("Welcome, time traveller!",
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
 
+        //refer to guess class?
         guesses = new Guess();
+
+        //game logic
         lastRound = false;
 
+        //intialise the arr for keeping scores
         playerScores = new int[2];
+        //perhaps playerScores = [100, 100]? i think we have to subtract a value for each guess etc?
+
+        info = new InfoLegend(50,600);
+
+
     }
 
-    boolean atomMessDisp = false;
-    boolean rayMessDisp = false;
+    //bools for correct message displaying
+    boolean atomMessage = false;
+    boolean rayMessage = false;
     GamePhase prevPhase;
     public void update() {
         hexagonGrid.update();
 
+        //logic for correct user message displaying
         if (!userMessage.isWaitingForInput()) {
-            switch (currentPhase) {
+
+            //switch case for the enum for phases
+            switch (currentPhase)
+            {
                 case PLACING_ATOMS:
                     prevPhase = GamePhase.PLACING_ATOMS;
                     hexagonGrid.setBorderBoundingBoxVisible(false);
@@ -104,30 +136,35 @@ public class Game {
                     hexagonGrid.setBorderClickable(false);
                     hexagonGrid.setHexState(Hexagon.State.PLACING);
 
-                    rayMessDisp = false;
+                    rayMessage = false;
                     // Display message for the atom phase
-                    if (!userMessage.isWaitingForInput() && !atomMessDisp){
+                    if (!userMessage.isWaitingForInput() && !atomMessage)
+                    {
                         userMessage.showWelcomeMessage("\t\t\t Atom Phase", "You are now in the atom placement phase. \n\n \t\tPress ENTER to start.");
-                        atomMessDisp = true;
+                        atomMessage = true;
                     }
 
                     // Spawn confirm selection button if all atoms placed, remove if an atom gets removed
-                    if (hexagonGrid.allAtomsPlaced() && atomConfirmButton == null) {
+                    if (hexagonGrid.allAtomsPlaced() && atomConfirmButton == null)
+                    {
                         atomConfirmButton = new Button(batch, 1350, 50, 200, 100);
                         atomConfirmButton.setText("Confirm Atom Placement");
-                        atomConfirmButton.setFontSize(1.15f);
+                        atomConfirmButton.setFontSize(15);
 
-                    } else if (!hexagonGrid.allAtomsPlaced()) {
+                    } else if (!hexagonGrid.allAtomsPlaced())
+                    {
                         atomConfirmButton = null;
                     }
 
                     // if clicked remove button and move to next phase
-                    if (atomConfirmButton != null && atomConfirmButton.isClicked()) {
+                    if (atomConfirmButton != null && atomConfirmButton.isClicked())
+                    {
                         atomConfirmButton = null;
                         currentPhase = GamePhase.PLACING_RAYS;
                     }
 
                     break;
+
                 case PLACING_RAYS:
                     prevPhase = GamePhase.PLACING_RAYS;
                     hexagonGrid.setAtomsVisible(false);
@@ -137,77 +174,91 @@ public class Game {
                     hexagonGrid.setBorderBoundingBoxVisible(false);
                     hexagonGrid.setHexState(Hexagon.State.GUESSING);
 
-                    atomMessDisp = false;
+                    atomMessage = false;
                     // Display message for the ray phase
-                    if (!userMessage.isWaitingForInput() && !rayMessDisp){
+                    if (!userMessage.isWaitingForInput() && !rayMessage)
+                    {
                         userMessage.showWelcomeMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.");
-                        rayMessDisp = true;
+                        rayMessage = true;
                     }
 
-                    for (Hexagon hexagon : hexagonGrid.getHexBoard()) {
-                        if (hexagon.isClicked()) {
+                    for (Hexagon hexagon : hexagonGrid.getHexBoard())
+                    {
+                        if (hexagon.isClicked())
+                        {
                             guesses.handleGuess(hexagon);
                         }
                     }
 
-                    guessLabel = new Label(batch,1150, 750);
-                    guessLabel.setText("Guesses Remaining: " + guesses.getRemainingGuesses());
-                    guessLabel.setFontSize(2.5f);
+                    if (guessLabel == null) {
+                        guessLabel = new Label(batch, 0, 0);
+                        guessLabel.setFontSize(25);
+                    }
 
-                    if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null) {
+                    guessLabel.setText("Guesses Remaining: " + guesses.getRemainingGuesses());
+                    guessLabel.setPos(windowWidth / 2f - guessLabel.getTextWidth() / 2, windowHeight - 50);
+
+                    if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null)
+                    {
                         guessConfirmButton = new Button(batch, 1350, 50, 200, 100);
                         guessConfirmButton.setText("Confirm Guesses");
-                        guessConfirmButton.setFontSize(1.15f);
+                        guessConfirmButton.setFontSize(20);
 
-                    } else if (!(guesses.getRemainingGuesses() == 0)) {
+                    } else if (!(guesses.getRemainingGuesses() == 0))
+                    {
                         guessConfirmButton = null;
                     }
 
                     // if clicked remove button and move to next phase
-                    if (guessConfirmButton != null && guessConfirmButton.isClicked()) {
+                    if (guessConfirmButton != null && guessConfirmButton.isClicked())
+                    {
                         currentPhase = GamePhase.NEW_GAME;
                         guessConfirmButton = null;
 
-                        winLabel = new Label(batch, 1150, 700);
-                        winLabel.setFontSize(1.2f);
-                        String guessString = "";
-
                         boolean[] guessAnswers = guesses.getGuessAnswers();
 
-                        if (!lastRound) {
+                        if (!lastRound)
+                        {
                             playerScores[0] = calculateScore(guessAnswers, hexagonGrid.rays);
                         } else {
                             playerScores[1] = calculateScore(guessAnswers, hexagonGrid.rays);
                         }
 
-                        for (boolean guess : guesses.getGuessAnswers()) {
-                            guessString += guess ? "CORRECT\n" : "INCORRECT\n";
+                        if (guessResultBoard == null) {
+                            guessLabel = null;
+                            guessResultBoard = new GuessResultBoard(1350, 150, guessAnswers);
                         }
 
-                        winLabel.setText(guessString);
                     }
                     break;
 
                 case NEW_GAME:
                     prevPhase = GamePhase.NEW_GAME;
-                    atomMessDisp = false;
-                    rayMessDisp = false;
+                    //bools for user message display
+                    atomMessage = false;
+                    rayMessage = false;
 
                     hexagonGrid.setRayVisible(true);
                     hexagonGrid.setAtomsVisible(true);
 
-                    if (newGameButton == null) {
-                        newGameButton = new Button(batch, 1350, 50, 200, 100);
+                    //displaying the new game button
+                    if (newGameButton == null)
+                    {
+                        newGameButton = new Button(batch, 1349, 50, 200, 100);
                         newGameButton.setText(lastRound ? "End Game" : "Start Second Round");
-                        newGameButton.setFontSize(1.15f);
+                        newGameButton.setFontSize(15);
                     }
 
-                    if (newGameButton != null && newGameButton.isClicked()) {
+                    //if the new game button is clicked
+                    if (newGameButton != null && newGameButton.isClicked())
+                    {
                         newGameButton = null;
                         winLabel = null;
                         guessLabel = null;
-
-                        if (!lastRound) {
+                        guessResultBoard = null;
+                        //managing user exchange
+                        if (!lastRound)
+                        {
                             guesses = new Guess();
 
                             lastRound = true;
@@ -216,11 +267,9 @@ public class Game {
                             hexagonGrid.resetAllAtoms();
                             currentPhase = GamePhase.PLACING_ATOMS;
                         } else {
-                            scoreLabel = new Label(batch, 1150, 750);
-                            scoreLabel.setText(getWinMessage() + "\n" +
-                                    "Player 1 : " + playerScores[0] + "\n" +
-                                    "Player 2 : " + playerScores[1]);
-                            scoreLabel.setFontSize(2.5f);
+                            if (scoreboard == null) {
+                                scoreboard = new Scoreboard(1349, 150, playerScores[0], playerScores[1]);
+                            }
                         }
                     }
 
@@ -233,7 +282,8 @@ public class Game {
             }
         }
 
-        if (viewToggle.isClicked()) {
+        if (viewToggle.isClicked())
+        {
             currentPhase = currentPhase == GamePhase.DEBUG_VIEW ? prevPhase : GamePhase.DEBUG_VIEW;
         }
 
@@ -252,62 +302,50 @@ public class Game {
         viewToggle.update();
         viewToggle.Draw(shape);
 
-        if (atomConfirmButton != null) {
+        info.Draw(shape,batch);
+
+        if (atomConfirmButton != null)
+        {
             atomConfirmButton.update();
             atomConfirmButton.Draw(shape);
         }
 
-        if (guessConfirmButton != null) {
+        if (guessConfirmButton != null)
+        {
             guessConfirmButton.update();
             guessConfirmButton.Draw(shape);
         }
 
-        if (guessLabel != null) {
-            guessLabel.Draw(shape);
+        if (guessLabel != null) {guessLabel.Draw(shape);}
+
+        if(winLabel != null) {winLabel.Draw(shape);}
+
+        if(guesses != null) {guesses.draw(shape,batch);}
+
+        if (newGameButton != null) {newGameButton.Draw(shape);}
+
+        if (guessResultBoard != null) {
+            guessResultBoard.Draw(shape, batch);
         }
 
-        if(winLabel != null) {
-            winLabel.Draw(shape);
+        if (scoreboard != null) {
+            scoreboard.Draw(shape,batch);
         }
-
-        if(guesses != null) {
-            guesses.Draw(shape,batch);
-        }
-
-        if (newGameButton != null) {
-            newGameButton.Draw(shape);
-        }
-
-        if (scoreLabel != null) {
-            scoreLabel.Draw(shape);
-        }
-
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
 
-    private int calculateScore(boolean[] guesses, List<Ray2> rays) {
+    private int calculateScore(boolean[] guesses, List<Ray> rays) {
         int score = 0;
 
-        for (boolean guess : guesses) {
+        for (boolean guess : guesses)
+        {
             if (guess) { score += 5; }
         }
 
         score += rays.size();
 
         return score;
-    }
-
-    private String getWinMessage() {
-        int playerOneScore = playerScores[0];
-        int playerTwoScore = playerScores[1];
-
-        if (playerOneScore == playerTwoScore) { return "TIE GAME!"; }
-        else if (playerOneScore < playerTwoScore) {
-            return "Player 1 Wins!";
-        } else {
-            return "Player 2 Wins!";
-        }
     }
 
     public void resize(int width, int height) {

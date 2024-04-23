@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import java.util.Arrays;
-
 public class Border implements Clickable, Entities{
     private boolean clickable;
     private boolean boundingBoxVisible;
@@ -19,9 +17,9 @@ public class Border implements Clickable, Entities{
     float[] boundingBox;
     Color color;
 
-    Ray2.Direction direction;
+    Ray.Direction direction;
 
-    public Border(float x1, float y1, float x2, float y2, Ray2.Direction dir, HexagonGrid hex)
+    public Border(float x1, float y1, float x2, float y2, Ray.Direction dir, HexagonGrid hex)
     {
         this.x1 = x1;
         this.y1 = y1;
@@ -43,7 +41,7 @@ public class Border implements Clickable, Entities{
 
     }
 
-    public void setRevMid(Ray2.Direction direction)
+    public void setRevMid(Ray.Direction direction)
     { /* this method sets the second point of the line that is drawn at each side
         this val can't be calc'ed generally for any side, so it has to be done like this
         the direction indicates which side is being handled
@@ -171,11 +169,11 @@ public class Border implements Clickable, Entities{
     @Override
     public void update() {
         if (isClicked() && !hasRay) { // Various pixel offsets due to the isInside function
-            if (direction == Ray2.Direction.NE || direction == Ray2.Direction.NW) {
+            if (direction == Ray.Direction.NE || direction == Ray.Direction.NW) {
                 hexagonGrid.addRay(midPoint[0], midPoint[1] - 1, direction);
-            } else if (direction == Ray2.Direction.SE){
+            } else if (direction == Ray.Direction.SE){
                 hexagonGrid.addRay(midPoint[0], midPoint[1] + 1, direction);
-            } else if (direction == Ray2.Direction.E ) {
+            } else if (direction == Ray.Direction.E ) {
                 hexagonGrid.addRay(midPoint[0] - 1, midPoint[1], direction);
             } else {
                 hexagonGrid.addRay(midPoint[0], midPoint[1], direction);

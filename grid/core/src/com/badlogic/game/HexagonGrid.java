@@ -1,7 +1,6 @@
 package com.badlogic.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class HexagonGrid {
     int maxNoHex;
 
     Atom[] atoms;
-    List<Ray2> rays;
+    List<Ray> rays;
 
     public HexagonGrid()
     {
@@ -51,11 +50,11 @@ public class HexagonGrid {
                 {
                     if(i == 5) // if last
                     {
-                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1], Ray2.Direction.values()[i], this));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1], Ray.Direction.values()[i], this));
                     }
                     else
                     {
-                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3], Ray2.Direction.values()[i], this));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3], Ray.Direction.values()[i], this));
                     }
                 }
             }
@@ -71,7 +70,7 @@ public class HexagonGrid {
 
                     method in hexgrid -> called in game
      */
-    public void rayCheck(Ray2 ray)
+    public void rayCheck(Ray ray)
     {
         for(List<Hexagon> hexList: hexBoard)
         {
@@ -88,7 +87,7 @@ public class HexagonGrid {
         ray.isInside = false; // ray is now outside the grid
     }
 
-    public void rayAtomCheck(Ray2 ray) {
+    public void rayAtomCheck(Ray ray) {
         for (Atom atom : atoms) {
             if (atom.isInside(ray.getCoordinates())) {
                 ray.hitAtom = true;
@@ -98,8 +97,8 @@ public class HexagonGrid {
         ray.hitAtom = false;
     }
 
-    public void addRay(float x, float y, Ray2.Direction direction) {
-            rays.add(new Ray2(x,y,direction));
+    public void addRay(float x, float y, Ray.Direction direction) {
+            rays.add(new Ray(x,y,direction));
     }
 
     public void initAtoms() // initial placement of 5 atoms on the right side
@@ -262,7 +261,7 @@ public class HexagonGrid {
         float centreX = (float) windowWidth / 2;
         Hexagon centreHex = new Hexagon(centreX, y, hexRadius, this);
         float hexDist = centreHex.getWidth();
-        float startingX = (float) (centreX - ((n / 2) * hexDist) - (hexDist * 0.5));
+        float startingX = centreX - ((n / 2) * hexDist);
 
         float offset = isOffset ? hexDist / 2 : 0; // offsets row distance to fit seamlessly with row.
 
@@ -400,7 +399,7 @@ public class HexagonGrid {
             at.Draw(shape);
         }
 
-        for(Ray2 ray: rays) {
+        for(Ray ray: rays) {
             ray.Draw(shape);
         }
     }
@@ -418,7 +417,7 @@ public class HexagonGrid {
             at.update();
         }
 
-        for(Ray2 ray: rays) {
+        for(Ray ray: rays) {
             rayCheck(ray);
             rayAtomCheck(ray);
             ray.update();
@@ -442,7 +441,7 @@ public class HexagonGrid {
     }
 
     public void setRayVisible(boolean visible) {
-        for (Ray2 ray : rays) {
+        for (Ray ray : rays) {
             ray.setVisible(visible);
         }
     }

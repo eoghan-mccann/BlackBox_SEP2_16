@@ -1,39 +1,56 @@
-package com.badlogic.game;
+package com.badlogic.game.UI;
 
+import com.badlogic.game.Clickable;
+import com.badlogic.game.Entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Label implements Clickable, Entities{
+public class Label implements Clickable, Entities {
 
     float X, Y;   // bottom left point
-    float width, height;
-    float textWidth, textHeight;
-    boolean toggle = false;
+    float textWidth;
+    float textHeight;
+    int size;
     Color color;
 
     private BitmapFont font;
     private String text;
 
-    private SpriteBatch batch;
+    public SpriteBatch batch;
     GlyphLayout layout = new GlyphLayout();
 
 
     public Label(SpriteBatch batch,float x, float y) {
         this.batch = batch;
+        this.size = 10;
 
         X = x;
         Y = y;
 
         color = Color.WHITE;
-        font = new BitmapFont();
+        font = generateFont();
 
         setText("Label");
-        setFontSize(1f);
+    }
+
+    private BitmapFont generateFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Nexa-Heavy.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = size;
+        BitmapFont fontNew = generator.generateFont(parameter);
+        generator.dispose();
+
+        return fontNew;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     @Override
@@ -66,9 +83,24 @@ public class Label implements Clickable, Entities{
         textHeight = layout.height; // contains the height of the current set text
     }
 
-    public void setFontSize(float scale) {
-        font.getData().setScale(scale);
-        setText(text); // adjusts the text height/width post-scale
+    public void setFontSize(int size) {
+        this.size = size;
+        font = generateFont();
+    }
+
+    public void setPos(float x, float y) {
+        X = x;
+        Y = y;
+    }
+
+    public float getTextWidth() {
+        layout.setText(font, text);
+        return layout.width;
+    }
+
+    public float getTextHeight() {
+        layout.setText(font, text);
+        return layout.height;
     }
 
     @Override
