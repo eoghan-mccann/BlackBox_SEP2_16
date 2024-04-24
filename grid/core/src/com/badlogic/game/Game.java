@@ -16,14 +16,14 @@ public class Game {
 
 
     //necessary for displaying and correct rendering
-    public static int windowWidth = 1600;
-    public static int windowHeight = 900;
+    public static int windowWidth = 1920;
+    public static int windowHeight = 1000;
     private final OrthographicCamera camera;
     public SpriteBatch batch;
     private final Stage stage;
     private final Skin skin;
     private final ShapeRenderer shape;
-    public static float hexRadius = 50;
+    public static float hexRadius = 55;
 
     //used for game logic
     public static boolean debugMode = false;
@@ -40,7 +40,6 @@ public class Game {
     private Button atomConfirmButton;
     private Button guessConfirmButton;
     private Button newGameButton;
-    private Label scoreLabel;
     private Label guessLabel;
     private Label winLabel;
 
@@ -66,20 +65,22 @@ public class Game {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
+        //starting the camera for correct rendering
+        camera = new OrthographicCamera(1080, 800 * (h / w));
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera.update();
+
         hexagonGrid = new HexagonGrid();
         hexagonGrid.buildHexBoard();
         hexagonGrid.getBorderHexagons();
         hexagonGrid.initAtoms();
+        hexagonGrid.setAtomsVisible(true);
         hexagonGrid.activateBorders();
 
 
         //starting the game on the placing atoms phase
         currentPhase = GamePhase.PLACING_ATOMS;
 
-        //starting the camera for correct rendering
-        camera = new OrthographicCamera(800, 800 * (h / w));
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.update();
 
         //used for rendering
         batch = new SpriteBatch();
@@ -109,9 +110,7 @@ public class Game {
         playerScores = new int[2];
         //perhaps playerScores = [100, 100]? i think we have to subtract a value for each guess etc?
 
-        info = new InfoLegend(50,600);
-
-
+        info = new InfoLegend(50,Game.getWindowHeight() - Game.getWindowHeight() * 0.2f);
     }
 
     //bools for correct message displaying
@@ -119,6 +118,9 @@ public class Game {
     boolean rayMessage = false;
     GamePhase prevPhase;
     public void update() {
+        float rightButtonX = Game.getWindowWidth() - Game.getWindowWidth() * 0.125f;
+        float allButtonY = Game.getWindowHeight() * 0.05f;
+
         hexagonGrid.update();
 
         //logic for correct user message displaying
@@ -147,7 +149,7 @@ public class Game {
                     // Spawn confirm selection button if all atoms placed, remove if an atom gets removed
                     if (hexagonGrid.allAtomsPlaced() && atomConfirmButton == null)
                     {
-                        atomConfirmButton = new Button(batch, 1200, 50, 200, 100);
+                        atomConfirmButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
                         atomConfirmButton.setText("Confirm Atom Placement");
                         atomConfirmButton.setFontSize(15);
 
@@ -192,15 +194,15 @@ public class Game {
 
                     if (guessLabel == null) {
                         guessLabel = new Label(batch, 0, 0);
-                        guessLabel.setFontSize(25);
+                        guessLabel.setFontSize(40);
                     }
 
                     guessLabel.setText("Guesses Remaining: " + guesses.getRemainingGuesses());
-                    guessLabel.setPos(windowWidth / 2f - guessLabel.getTextWidth() / 2, windowHeight - 50);
+                    guessLabel.setPos(windowWidth / 2f - guessLabel.getTextWidth() / 2, getWindowHeight() * 0.95f);
 
                     if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null)
                     {
-                        guessConfirmButton = new Button(batch, 1200, 50, 200, 100);
+                        guessConfirmButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
                         guessConfirmButton.setText("Confirm Guesses");
                         guessConfirmButton.setFontSize(20);
 
@@ -226,7 +228,7 @@ public class Game {
 
                         if (guessResultBoard == null) {
                             guessLabel = null;
-                            guessResultBoard = new GuessResultBoard(1200, 155, guessAnswers);
+                            guessResultBoard = new GuessResultBoard(rightButtonX, 155, guessAnswers);
                         }
 
                     }
@@ -244,7 +246,7 @@ public class Game {
                     //displaying the new game button
                     if (newGameButton == null)
                     {
-                        newGameButton = new Button(batch, 1200, 50, 200, 100);
+                        newGameButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
                         newGameButton.setText(lastRound ? "End Game" : "Start Second Round");
                         newGameButton.setFontSize(15);
                     }
@@ -268,7 +270,7 @@ public class Game {
                             currentPhase = GamePhase.PLACING_ATOMS;
                         } else {
                             if (scoreboard == null) {
-                                scoreboard = new Scoreboard(1200, 150, playerScores[0], playerScores[1]);
+                                scoreboard = new Scoreboard(rightButtonX, allButtonY * 3, playerScores[0], playerScores[1]);
                             }
                         }
                     }
@@ -335,6 +337,14 @@ public class Game {
         stage.draw();
     }
 
+    public static int getWindowWidth() {
+        return Gdx.graphics.getWidth();
+    }
+
+    public static int getWindowHeight() {
+        return Gdx.graphics.getHeight();
+    }
+
     private int calculateScore(boolean[] guesses, List<Ray> rays) {
         int score = 0;
 
@@ -350,7 +360,7 @@ public class Game {
 
     public void resize(int width, int height) {
         camera.setToOrtho(false, width, height);
-        stage.getViewport().update(width, height, true);
+        stage.getViewport().update(width, height, false);
     }
 
     public void dispose () {
