@@ -4,17 +4,9 @@ Eoghan McCann
 Kristina Skutilova
 Cian Cockerill
 
-SPRINT 1
-+ <s>hexagon grid</s>
-+ <s>atom placing</s>
-+ basic rays
-+ hiding toggle for debugging
-+ debug menu
-+ test version of user interaction
-+ tests
 
+TODO :
 
-TO-DO:
-
-- user message
-- rays
+- CLEAN UP CLASSES
+- testing
+- is that it?

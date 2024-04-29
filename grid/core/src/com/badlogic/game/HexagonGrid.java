@@ -278,7 +278,7 @@ public class HexagonGrid {
         Hexagon tempHex = new Hexagon(0,0, hexRadius, this);
         float heightDist = (float) (tempHex.getHeight() * 0.75); // gets height distance to increase y value
 
-        float startY = (windowHeight) - (heightDist * (minNoHex * 2));
+        float startY = Game.getWindowHeight() * 0.95f - (heightDist * (minNoHex * 2));
 
         // Initially hexagon n is increasing and it starts dead center on x axis.
         boolean descending = false;
