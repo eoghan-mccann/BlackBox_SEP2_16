@@ -7,7 +7,8 @@ public class RayMarker {
     public enum Result {
         HIT(Color.GREEN),
         REFLECTION(Color.CYAN),
-        MISS(Color.RED);
+        MISS(Color.RED),
+        DEFLECTION(Color.YELLOW);
 
         private final Color color;
 
