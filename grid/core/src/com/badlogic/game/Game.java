@@ -65,7 +65,6 @@ public class Game {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        //starting the camera for correct rendering
         camera = new OrthographicCamera(1080, 800 * (h / w));
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
@@ -82,38 +81,32 @@ public class Game {
         currentPhase = GamePhase.PLACING_ATOMS;
 
 
-        //used for rendering
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        //buttons
         viewToggle = new Button(batch, 50, 50, 175, 75);
         viewToggle.setText("Debug View");
         viewToggle.setFontSize(20);
 
-        //skin - used for UI messages
         skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
         userMessage = new UserMessage(stage, skin);
         userMessage.showWelcomeMessage("Welcome, time traveller!",
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
 
-        //refer to guess class?
         guesses = new Guess();
 
         //game logic
         lastRound = false;
 
-        //intialise the arr for keeping scores
         playerScores = new int[2];
-        //perhaps playerScores = [100, 100]? i think we have to subtract a value for each guess etc?
 
         info = new InfoLegend(50,Game.getWindowHeight() - Game.getWindowHeight() * 0.2f);
     }
 
-    //bools for correct message displaying
+    //booleans for correct message displaying
     boolean atomMessage = false;
     boolean rayMessage = false;
     GamePhase prevPhase;
@@ -126,7 +119,6 @@ public class Game {
         //logic for correct user message displaying
         if (!userMessage.isWaitingForInput()) {
 
-            //switch case for the enum for phases
             switch (currentPhase)
             {
                 case PLACING_ATOMS:
@@ -139,14 +131,12 @@ public class Game {
                     hexagonGrid.setHexState(Hexagon.State.PLACING);
 
                     rayMessage = false;
-                    // Display message for the atom phase
                     if (!userMessage.isWaitingForInput() && !atomMessage)
                     {
                         userMessage.showWelcomeMessage("\t\t\t Atom Phase", "You are now in the atom placement phase. \n\n \t\tPress ENTER to start.");
                         atomMessage = true;
                     }
 
-                    // Spawn confirm selection button if all atoms placed, remove if an atom gets removed
                     if (hexagonGrid.allAtomsPlaced() && atomConfirmButton == null)
                     {
                         atomConfirmButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
@@ -158,7 +148,6 @@ public class Game {
                         atomConfirmButton = null;
                     }
 
-                    // if clicked remove button and move to next phase
                     if (atomConfirmButton != null && atomConfirmButton.isClicked())
                     {
                         atomConfirmButton = null;
@@ -177,7 +166,6 @@ public class Game {
                     hexagonGrid.setHexState(Hexagon.State.GUESSING);
 
                     atomMessage = false;
-                    // Display message for the ray phase
                     if (!userMessage.isWaitingForInput() && !rayMessage)
                     {
                         userMessage.showWelcomeMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.");
@@ -211,7 +199,6 @@ public class Game {
                         guessConfirmButton = null;
                     }
 
-                    // if clicked remove button and move to next phase
                     if (guessConfirmButton != null && guessConfirmButton.isClicked())
                     {
                         currentPhase = GamePhase.NEW_GAME;
@@ -236,14 +223,12 @@ public class Game {
 
                 case NEW_GAME:
                     prevPhase = GamePhase.NEW_GAME;
-                    //bools for user message display
                     atomMessage = false;
                     rayMessage = false;
 
                     hexagonGrid.setRayVisible(true);
                     hexagonGrid.setAtomsVisible(true);
 
-                    //displaying the new game button
                     if (newGameButton == null)
                     {
                         newGameButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
@@ -251,14 +236,13 @@ public class Game {
                         newGameButton.setFontSize(15);
                     }
 
-                    //if the new game button is clicked
                     if (newGameButton != null && newGameButton.isClicked())
                     {
                         newGameButton = null;
                         winLabel = null;
                         guessLabel = null;
                         guessResultBoard = null;
-                        //managing user exchange
+
                         if (!lastRound)
                         {
                             guesses = new Guess();
