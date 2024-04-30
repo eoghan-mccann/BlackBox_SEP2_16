@@ -16,7 +16,7 @@ public class InfoLegend {
 
     public InfoLegend(float x, float y) {
         width = 175;
-        height = 120;
+        height = 140;
 
         title = new Label(null, 0,0);
         title.setFontSize(18);

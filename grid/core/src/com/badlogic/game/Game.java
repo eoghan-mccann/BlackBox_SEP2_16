@@ -16,8 +16,8 @@ public class Game {
 
 
     //necessary for displaying and correct rendering
-    public static int windowWidth = 1920;
-    public static int windowHeight = 1000;
+    public static int windowWidth = 1550;
+    public static int windowHeight = 900;
     private final OrthographicCamera camera;
     public SpriteBatch batch;
     private final Stage stage;
@@ -103,7 +103,7 @@ public class Game {
 
         playerScores = new int[2];
 
-        info = new InfoLegend(50,Game.getWindowHeight() - Game.getWindowHeight() * 0.2f);
+        info = new InfoLegend(45,Game.getWindowHeight() - Game.getWindowHeight() * 0.2f);
     }
 
     //booleans for correct message displaying
