@@ -10,7 +10,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("A refreshing game of blackbox hexagon made by the Pookies (tm)");
-		config.setWindowedMode(1600, 900);
+		config.setWindowedMode((int) (1920 * 0.9), (int) (1080 * 0.9));
 		config.setForegroundFPS(60);
 		config.setTitle("BlackBoxGame");
 		new Lwjgl3Application(new Main(), config);

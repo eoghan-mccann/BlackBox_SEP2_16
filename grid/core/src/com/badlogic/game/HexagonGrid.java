@@ -6,21 +6,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.badlogic.game.Game.*;
 
 public class HexagonGrid {
     List<List<Hexagon>> hexBoard; // list of rows of hexagons where the rows are lists of hexagons
     int minNoHex;
     int maxNoHex;
+    float hexRadius;
 
     Atom[] atoms;
     List<Ray> rays;
 
-    public HexagonGrid()
+    public HexagonGrid(float hexRadius)
     {
         hexBoard = new ArrayList<>(); // list of rows of hexagons where the rows are lists of hexagons
         minNoHex = 5;
         maxNoHex = 9;
+        this.hexRadius = hexRadius;
 
         atoms = new Atom[5];
         rays = new ArrayList<>();
@@ -259,7 +260,7 @@ public class HexagonGrid {
         List<Hexagon> hexRow = new ArrayList<>();
 
         // places first hexagon (n - 1) / 2 hexagon lengths to the left of x center point to build across.
-        float centreX = (float) windowWidth / 2;
+        float centreX = (float) Game.getWindowWidth() / 2;
         Hexagon centreHex = new Hexagon(centreX, y, hexRadius, this);
         float hexDist = centreHex.getWidth();
         float startingX = centreX - ((n / 2) * hexDist);

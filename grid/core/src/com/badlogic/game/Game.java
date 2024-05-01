@@ -69,7 +69,7 @@ public class Game {
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
-        hexagonGrid = new HexagonGrid();
+        hexagonGrid = new HexagonGrid((float)(w * 0.03));
         hexagonGrid.buildHexBoard();
         hexagonGrid.getBorderHexagons();
         hexagonGrid.initAtoms();
