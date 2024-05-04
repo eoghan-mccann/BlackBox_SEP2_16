@@ -244,6 +244,4 @@ public class Ray extends RayUtil implements Entities, Clickable{
     @Override
     public float[] getCentre() {return new float[0];}
 
-    @Override
-    public void getCollision() {}
 }

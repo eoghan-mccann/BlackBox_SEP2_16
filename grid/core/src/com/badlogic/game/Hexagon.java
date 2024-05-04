@@ -204,11 +204,6 @@ public class Hexagon implements Entities, Clickable {
         return this.hexPoints;
     }
 
-    @Override
-    public void getCollision() {
-
-    }
-
     public boolean containsVertex(float[] vertex) {
         for (int i = 0; i < hexPoints.length; i += 2) {
             if (vertex[0] == hexPoints[i] && vertex[1] == hexPoints[i + 1]) {
@@ -235,18 +230,6 @@ public class Hexagon implements Entities, Clickable {
         shape.begin(ShapeRenderer.ShapeType.Line);;
         color = Color.WHITE;
 
-//        if(isNeighbour)
-//        {
-//            color = Color.GREEN;
-//        }
-//        if(atom != null)
-//        {
-//            color = Color.WHITE;
-//        }
-//        if(isBorder)
-//        {
-//            color = Color.VIOLET;
-//        }
         shape.setColor(color);
         shape.polygon(hexPoints);
         shape.end();

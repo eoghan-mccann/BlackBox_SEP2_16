@@ -147,10 +147,6 @@ public class Border implements Clickable, Entities{
         return new float[]{midPoint[0], midPoint[1], revMid[0], revMid[1]};
     }
 
-    @Override
-    public void getCollision() {
-
-    }
 
     @Override
     public void Draw(ShapeRenderer shape) {

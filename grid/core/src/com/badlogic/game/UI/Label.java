@@ -119,9 +119,4 @@ public class Label implements Clickable, Entities {
     }
 
 
-    @Override
-    public void getCollision() {
-
-    }
-
 }

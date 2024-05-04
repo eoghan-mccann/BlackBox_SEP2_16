@@ -106,10 +106,4 @@ public class Button implements Clickable, Entities {
         return new float[0];
     }
 
-
-    @Override
-    public void getCollision() {
-
-    }
-
 }

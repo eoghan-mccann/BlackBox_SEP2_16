@@ -4,21 +4,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
-//Atom implements Entities since it is an entity that is going to draw
-//implements Clickable since it can be clicked (maybe not? mostly because of the toggle really)
-public class Atom implements Entities, Clickable{
+public class Atom implements Entities{
 
-    private float atomCentreX, atomCentreY; // atom centre
-    private float atomCentreRadius; // atom radius
-    private float atomLayerRadius; // aura radius
+    private float atomCentreX, atomCentreY;
+    private float atomCentreRadius;
+    private float atomLayerRadius; // Radius of atom's aura
 
     public boolean isPlaced;
     public boolean visible;
-    private boolean clickable;
 
-    private float[] centrePoint = new float[2]; // coords of atom centre
 
-    //initialise atom
     Atom(float x, float y, float r1, float r2) {
         this.atomCentreX = x;
         this.atomCentreY = y;
@@ -26,32 +21,14 @@ public class Atom implements Entities, Clickable{
         this.atomLayerRadius = r2;
 
 
-        this.centrePoint[0] = this.atomCentreX;
-        this.centrePoint[1] = this.atomCentreY;
 
 
         this.isPlaced = false;
         this.visible = false;
     }
 
-    // setter methods
-    public float setCenterX(float x)
-    {
-        return atomCentreX = x;
-    }
-    public float setCenterY(float y)
-    {
-        return atomCentreY = y;
-    }
-    public void setAtomPoints(float x, float y){ // sets all values relative to the given center
-        this.atomCentreX = x;
-        this.atomCentreY = y;
 
-        this.centrePoint[0] = x;
-        this.centrePoint[1] = y;
-    }
-
-    // checks if given ray coords are inside atom coords
+    // Checks if given coordinates are inside the atom
     public boolean isInside(float[] rayPos) {
         float rayX = rayPos[0];
         float rayY = rayPos[1];
@@ -63,13 +40,9 @@ public class Atom implements Entities, Clickable{
         return Math.sqrt(Math.pow(atomX - rayX, 2)) + Math.pow(atomY - rayY, 2) <= getCentreRadius();
     }
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
     @Override
     public void Draw(ShapeRenderer shape) {
-        if(visible || Game.debugMode) // if toggle is off (set to atom)
+        if(visible || Game.debugMode) // If toggle is off (set to atom)
         {
             shape.begin(ShapeRenderer.ShapeType.Line);
             // Drawing aura
@@ -89,11 +62,21 @@ public class Atom implements Entities, Clickable{
     }
 
 
+    // ----     Setter methods     ----
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    // Sets atom's position to x, y
+    public void setAtomPoints(float x, float y){
+        atomCentreX = x;
+        atomCentreY = y;
+    }
+
+
     // accessor methods
     @Override
-    public float[] getCentre() {
-        return this.centrePoint;
-    }
+    public float[] getCentre() { return new float[]{atomCentreX, atomCentreY}; }
 
     public float getCentreRadius(){
         return this.atomCentreRadius;
@@ -106,35 +89,14 @@ public class Atom implements Entities, Clickable{
 
 
 
-
     @Override
     public float[] getCoordinates() {
         return null;
     }
 
     @Override
-    public void getCollision() {
+    public void update() {}
 
-    }
 
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void onClick() {
-
-    }
-
-    @Override
-    public boolean isClicked() {
-        return false;
-    }
-
-    @Override
-    public boolean isHoveredOver() {
-        return false;
-    }
 }
 
