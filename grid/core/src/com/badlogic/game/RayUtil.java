@@ -3,13 +3,20 @@ package com.badlogic.game;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-    Utilities class for Ray. Holds more complex Ray methods.
+/**
+ * Utilities class for {@code Ray}. Contains complex methods for Ray manipulation.
+ *
  */
 public class RayUtil {
 
 
-    // Changes ray's direction accordingly when it hits an atom aura
+
+    /**
+     * Changes a Ray's direction, based on the given Hexagon's position, and the Ray's direction .
+     *
+     * @param hex the Hexagon the Ray is currently travelling through.
+     * @param ray the Ray whose direction is to be changed.
+     */
     public void setCurrDirection(Hexagon hex, Ray ray)
     {
         // The current head line of the ray is added to lines once it is finished (i.e. when the ray enters atom aura)
@@ -47,7 +54,12 @@ public class RayUtil {
 
     }
 
-    // Finds neighbouring pairs of neighbouring hexagons of a given hexagon. Returns an int depending on pattern
+
+    /**
+     * Searches for a pair of Hexagons surrounding the given hexagon directly neighbouring each other that both have atoms.
+     *
+     * @return the {@code index} of the first hexagon in the pair, where index 0 is the top right hexagon and 1 is the right (east) Hexagon. Returns {@code 10} if none found.
+     */
     public int findHexPair(Hexagon hex)
     {
         int x = hex.grid.findHex(hex)[0]; // x index of hexagon
@@ -119,7 +131,11 @@ public class RayUtil {
         return 10;
     }
 
-    // Deflects a ray which is inside >1 atom auras
+    /**
+     * Deflects a ray which is inside of multiple atom auras at the same time.
+     *
+     * @param ray The ray to be deflected.
+     */
     public void multAtomDeflect(Ray ray)
     {
         switch(findHexPair(ray.currHex))
@@ -167,7 +183,13 @@ public class RayUtil {
         }
     }
 
-    // Deflects a ray inside 1 atom aura
+
+    /**
+     * Deflects a ray which is inside 1 atom aura.
+     *
+     * @param ray The ray to be deflected.
+     * @param hex The Hexagon that is deflecting the Ray
+     */
     public void singleAtomDeflect(Ray ray, Hexagon hex)
     {
         switch(hex.neighbDir)
@@ -256,7 +278,11 @@ public class RayUtil {
         }
     }
 
-    // Reflect ray (invert its direction)
+    /**
+     * Inverts the direction of a Ray, reflecting it back along its course.
+     *
+     * @param ray The ray to be reflected.
+     */
     public static void reflect(Ray ray)
     {
         switch(ray.currDirection)
@@ -282,8 +308,4 @@ public class RayUtil {
 
         }
     }
-
-
-
-
 }

@@ -7,13 +7,13 @@ Cian Cockerill
 
 TODO :
 
-- CLEAN UP CLASSES
+- CLEAN UP CLASSES (+ javadoc)
 - testing
 - is that it?
 
 Classes to clean:
 - <s>Atom</s>
-- Border
+- <s>Border</s>
 - Game
 - Guess
 - <s>Hexagon</s>
@@ -21,3 +21,4 @@ Classes to clean:
 - Main
 - <s>Ray</s>
 - RayMarker
+

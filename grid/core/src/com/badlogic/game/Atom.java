@@ -28,7 +28,13 @@ public class Atom implements Entities{
     }
 
 
-    // Checks if given coordinates are inside the atom
+    /**
+     * Checks if the given coordinates are inside the atom.
+     *
+     * @param rayPos An array containing the X and Y coordinates of the point to be checked.
+     *               The X coordinate is at index 0, and the Y coordinate is at index 1.
+     * @return {@code true} if the given coordinates are inside the atom, {@code false} otherwise.
+     */
     public boolean isInside(float[] rayPos) {
         float rayX = rayPos[0];
         float rayY = rayPos[1];
@@ -39,6 +45,7 @@ public class Atom implements Entities{
         // Distance between two points function
         return Math.sqrt(Math.pow(atomX - rayX, 2)) + Math.pow(atomY - rayY, 2) <= getCentreRadius();
     }
+
 
     @Override
     public void Draw(ShapeRenderer shape) {
@@ -63,25 +70,54 @@ public class Atom implements Entities{
 
 
     // ----     Setter methods     ----
-    public void setVisible(boolean visible) {
-        this.visible = visible;
+
+    /**
+     * Sets the visibility of an atom.
+     *
+     * @param vis bool for visible to be set to
+     */
+    public void setVisible(boolean vis) {
+        this.visible = vis;
     }
 
-    // Sets atom's position to x, y
+
+    /**
+     * Sets atom's position to x, y
+     *
+     * @param x horizontal coordinate
+     * @param y vertical coordinate
+     *
+     */
     public void setAtomPoints(float x, float y){
         atomCentreX = x;
         atomCentreY = y;
     }
 
 
-    // accessor methods
+    // ----      Accessor methods      ----
+
+    /**
+     * Get the center coordinate of an Atom
+     *
+     * @return center coordinates as a float array, where index 0 is the x coordinate and index 1 is the y coordinate
+     */
     @Override
     public float[] getCentre() { return new float[]{atomCentreX, atomCentreY}; }
 
+    /**
+     * Get the radius of an atom
+     *
+     * @return atom's center radius as a float
+     */
     public float getCentreRadius(){
         return this.atomCentreRadius;
     }
 
+    /**
+     * Get the radius of an atom's aura.
+     *
+     * @return radius of atom's aura as a float
+     */
     public float getLayerRadius(){
         return this.atomLayerRadius;
     }

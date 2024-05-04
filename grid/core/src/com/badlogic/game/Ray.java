@@ -6,15 +6,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-        Rays are stored as a sequence of lines. Lines consist of a starting coordinate and an end coordinate.
-        All lines are stored in the lines List, except for the line currently moving through the grid.
-        The current lines start coordinate will be the end coordinate of the previous line, and its head is stored in headPos[]
 
-        Extra utility methods for the Ray class are in the RayUtil class.
-*/
+/**
+ * Rays are stored as a sequence of lines. Lines consist of a starting coordinate and an end coordinate.
+ *         All lines are stored in the {@code lines} List, except for the line currently moving through the grid.
+ *         The current lines start coordinate will be the end coordinate of the previous line, and its head is stored in {@code headPos}.
+ *
+ *         Extra utility methods for the Ray class are in the {@code RayUtil} class.
+ */
 
-public class Ray extends RayUtil implements Entities, Clickable{
+public class Ray extends RayUtil implements Entities{
     // Enum of ray's directions - "direction the ray is coming from" - a NE ray is travelling SW
     public enum Direction  {
         NE(new float[]{-5.2F, -9}), // NE -> SW
@@ -136,7 +137,10 @@ public class Ray extends RayUtil implements Entities, Clickable{
     }
 
 
-
+    /**
+     * Spawn a {@code RayMarker} for the associated Ray, in a position relative to its status and position on the board.
+     *
+     */
     private void spawnRayMarker() {
         RayMarker startMarker;
         RayMarker endMarker;
@@ -208,38 +212,58 @@ public class Ray extends RayUtil implements Entities, Clickable{
         rayMarkers = new RayMarker[] {startMarker, endMarker};
     }
 
+    /**
+     * Determines whether a Ray object is moving.
+     *
+     * @return {@code true} if Ray is moving, {@code false} if not
+     */
     private boolean isMoving() {return !(hitAtom || !isInside);}
 
 
     // ----        Getter/setter methods       ----
     @Override
     public float[] getCoordinates() { return headPos;}
+
+    /**
+     * Get the coordinates of the entry point of the associated Ray object to the Grid.
+     *
+     * @return The coordinates of entry as a float array, where index 0 is the x coordinate and index 1 is the y coordinate.
+     */
     public float[] getEnterPos(){ return enterPos;}
-    public float[] getStartPos() { return startPos;}
+
+    /**
+     * Get the coordinates of the head of the associated Ray object.
+     *
+     * @return The coordinates of the head as a float array, where index 0 is the x coordinate and index 1 is the y coordinate.
+     */
     public float[] getHeadPos() { return headPos;}
 
+    /**
+     * Set the visibility status of the associated Ray object.
+     *
+     * @param visible {@code true} to make Ray visibile, {@code false} to make Ray invisible
+     */
     public void setVisible(boolean visible) { this.visible = visible;}
+
+    /**
+     * Set the associated Rays point of entry into the Grid.
+     *
+     * @param arr array where index 0 is the x coordinate, index 1 is the y coordinate
+     */
     public void setEnterPos(float[] arr) {
         enterPos[0] = arr[0];
         enterPos[1] = arr[1];
     }
+
+    /**
+     * Set the head coordinates of the associated Ray.
+     *
+     * @param arr array where index 0 is the x coordinate, index 1 is the y coordinate
+     */
     public void setHeadPos(float[] arr) {
         headPos[0] = arr[0];
         headPos[1] = arr[1];
     }
-
-
-
-
-    // ----       redundant (unused) methods       ----
-    @Override
-    public void onClick() {}
-
-    @Override
-    public boolean isClicked() {return false;}
-
-    @Override
-    public boolean isHoveredOver() {return false;}
 
     @Override
     public float[] getCentre() {return new float[0];}

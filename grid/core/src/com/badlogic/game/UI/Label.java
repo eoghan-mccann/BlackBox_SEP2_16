@@ -53,10 +53,7 @@ public class Label implements Clickable, Entities {
         this.color = color;
     }
 
-    @Override
-    public void onClick() {
 
-    }
 
     @Override
     public boolean isClicked() {

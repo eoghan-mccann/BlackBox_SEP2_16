@@ -4,21 +4,26 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+/**
+ * A Clickable Entity representing the side of a Hexagon exposed to the perimeter. Each Hexagon has at most 3 Borders.
+ * Borders are represented in-game by a straight, perpendicular line coming out of the border side of the hexagon.
+ */
 public class Border implements Clickable, Entities{
     private boolean clickable;
     private boolean boundingBoxVisible;
-    boolean hasRay = false;
+
+    boolean hasRay = false; // Each border can hold exactly 1 ray
     HexagonGrid hexagonGrid;
 
-    float x1, y1;
-    float x2, y2;
-    float[] midPoint;
-    float[] revMid;
+    float x1, y1, x2, y2;  // Coordinates of the associated side's points
+
+    float[] midPoint; // mid-point of the associated hexagon's associated side (where the border starts)
+    float[] revMid;  // the other point of the border's line
     float[] boundingBox;
     Color color;
 
     Ray.Direction direction;
-    Hexagon assocHex;
+    Hexagon assocHex; // associated hexagon
 
     public Border(float x1, float y1, float x2, float y2, Ray.Direction dir, HexagonGrid hex, Hexagon assoc)
     {
@@ -32,8 +37,8 @@ public class Border implements Clickable, Entities{
 
         hexagonGrid = hex;
 
-        //direction mirrors ray's direction and hexagon's sideBorders[] - 0 is coming from NW, 1 W, etc
-        this.direction = dir; // use to print line, get revMid
+
+        this.direction = dir;
         setRevMid(direction);
         initBoundingBox();
 
@@ -44,11 +49,15 @@ public class Border implements Clickable, Entities{
 
     }
 
+    /**
+     * Calculates the coordinates of the second point on the Border's line.
+     *
+     * @param direction The associated hexagon's associated side's position.
+
+     */
     public void setRevMid(Ray.Direction direction)
-    { /* this method sets the second point of the line that is drawn at each side
-        this val can't be calc'ed generally for any side, so it has to be done like this
-        the direction indicates which side is being handled
-        */
+    {
+        // Depending on direction, set coordinates to make a perpendicular line
         switch(direction)
         {
             case NE:
@@ -74,6 +83,9 @@ public class Border implements Clickable, Entities{
         }
     }
 
+    /**
+     * Generates the box around the Border's line in which the Border can be clicked. Updates {@code boundingBox} to hold these coordinates.
+     */
     private void initBoundingBox() {
         float[] linePoints = this.getCoordinates();
 
@@ -98,10 +110,6 @@ public class Border implements Clickable, Entities{
         };
     }
 
-    @Override
-    public void onClick() {
-
-    }
 
     @Override
     public boolean isClicked() {
@@ -117,7 +125,13 @@ public class Border implements Clickable, Entities{
         return contains(curX, curY);
     }
 
-
+    /**
+     * Determines if a given x, y coordinate is inside the Border's {@code boundingBox}.
+     *
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @return {@code true} if point is in the boundingBox, {@code false} otherwise.
+     */
     public boolean contains(float x, float y) {
         int i, j;
         boolean isInside = false;
@@ -133,6 +147,12 @@ public class Border implements Clickable, Entities{
 
     }
 
+    /**
+     * Sets the clickable boolean.
+     *
+     * @param clickable The logical value to assign to clickable.
+
+     */
     public void setClickable(boolean clickable) {
         this.clickable = clickable;
     }
@@ -183,10 +203,24 @@ public class Border implements Clickable, Entities{
         }
     }
 
+    /**
+     * Sets the visibility of the boundingBox around a Border.
+     *
+     * @param visible The status to set the boundingBoxVisible bool to.
+     */
     public void setBoundingBoxVisible(boolean visible) {
         boundingBoxVisible = visible;
     }
 
+    /**
+     * Calculates and returns the midpoint of the two points given.
+     *
+     * @param x1 The first x coordinate.
+     * @param y1 The first y coordinate.
+     * @param x2 The second x coordinate.
+     * @param y2 The second y coordinate.
+     * @return The midpoint of the given line
+     */
     public float[] midPoint(float x1, float y1, float x2, float y2)
     {
         float midX = (x1 + x2)/2;

@@ -33,10 +33,6 @@ public class Button implements Clickable, Entities {
         label.setColor(Color.BLACK);
     }
 
-    @Override
-    public void onClick() {
-
-    }
 
     @Override
     public boolean isClicked() {

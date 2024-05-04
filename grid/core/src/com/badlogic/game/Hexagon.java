@@ -200,6 +200,5 @@ public class Hexagon implements Entities, Clickable {
     @Override
     public float[] getCoordinates() {return this.hexPoints;}
 
-    @Override
-    public void onClick() {}
+
 }
