@@ -116,6 +116,8 @@ public class Border implements Clickable, Entities{
 
         return contains(curX, curY);
     }
+
+
     public boolean contains(float x, float y) {
         int i, j;
         boolean isInside = false;
