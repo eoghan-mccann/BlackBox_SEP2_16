@@ -138,6 +138,7 @@ public class Hexagon implements Entities, Clickable {
         return isInside(curX, curY);
     }
 
+
     // Point in polygon algorithm to determine if point x, y is inside Hexagon
     public boolean isInside(float x, float y) {
         int i, j;
