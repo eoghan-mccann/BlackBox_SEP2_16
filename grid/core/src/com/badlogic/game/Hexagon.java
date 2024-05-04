@@ -126,7 +126,6 @@ public class Hexagon implements Entities, Clickable {
             }
             else {return !clickToggle;}
         }
-
         return clickToggle;
     }
 
