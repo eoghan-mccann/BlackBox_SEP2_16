@@ -16,7 +16,7 @@ Classes to clean:
 - Border
 - Game
 - Guess
-- Hexagon
+- <s>Hexagon</s>
 - HexagonGrid
 - Main
 - <s>Ray</s>
