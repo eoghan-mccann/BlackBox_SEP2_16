@@ -21,16 +21,9 @@ public class UserMessage {
         this.skin = skin;
     }
 
-    //public void showWelcomeMessage(String title, String message) {
-    //waitingForInput = true;
-    //showMessage(title, message);
-    //}
-
     public void showWelcomeMessage(String title, String message) {
-        //Dialog dialog = new Dialog(title, skin);
         Dialog dialog = new Dialog(title, skin);
         dialog.text(message);
-        //dialog.button("OK");
 
         //libGDX dialog method inherited from class com.badlogic.gdx.scenes.scene2d.Actor
         //input listener for low level actions, enter click in this case
