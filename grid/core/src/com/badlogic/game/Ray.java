@@ -49,10 +49,10 @@ public class Ray extends RayUtil implements Entities, Clickable{
 
     float markerRadius;
 
-    List<List<Float>> lines; // list of lists of coordinates of each line
+    List<List<Float>> lines; // List of lists of coordinates of each line
     HexagonGrid grid;
 
-    Hexagon currHex; // if ray is inside the grid, this is the hexagon it is currently inside
+    Hexagon currHex; // If ray is inside the grid, this is the hexagon it is currently inside
 
     RayMarker[] rayMarkers;
 
@@ -211,7 +211,7 @@ public class Ray extends RayUtil implements Entities, Clickable{
     private boolean isMoving() {return !(hitAtom || !isInside);}
 
 
-    // ----       getter/setter methods      ----
+    // ----        Getter/setter methods       ----
     @Override
     public float[] getCoordinates() { return headPos;}
     public float[] getEnterPos(){ return enterPos;}
