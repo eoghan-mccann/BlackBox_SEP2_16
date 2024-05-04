@@ -1,6 +1,5 @@
 package com.badlogic.game;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.game.Main;

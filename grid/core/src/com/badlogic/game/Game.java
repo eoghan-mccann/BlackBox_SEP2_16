@@ -84,6 +84,7 @@ public class Game {
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         stage = new Stage();
+
         Gdx.input.setInputProcessor(stage);
 
         viewToggle = new Button(batch, 50, 50, 175, 75);

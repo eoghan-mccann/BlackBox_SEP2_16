@@ -51,11 +51,11 @@ public class HexagonGrid {
                 {
                     if(i == 5) // if last
                     {
-                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1], Ray.Direction.values()[i], this));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[0], hex.hexPoints[1], Ray.Direction.values()[i], this, hex));
                     }
                     else
                     {
-                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3], Ray.Direction.values()[i], this));
+                        hex.borders.add(new Border(hex.hexPoints[i*2], hex.hexPoints[(i*2)+1], hex.hexPoints[(i*2)+2], hex.hexPoints[(i*2)+3], Ray.Direction.values()[i], this, hex));
                     }
                 }
             }
@@ -99,8 +99,9 @@ public class HexagonGrid {
         ray.hitAtom = false;
     }
 
-    public void addRay(float x, float y, Ray.Direction direction) {
+    public void addRay(float x, float y, Ray.Direction direction, Hexagon hex) {
             rays.add(new Ray(x,y,direction, this));
+            rays.getLast().currHex = hex;
     }
 
     public void initAtoms() // initial placement of 5 atoms on the right side

@@ -18,8 +18,9 @@ public class Border implements Clickable, Entities{
     Color color;
 
     Ray.Direction direction;
+    Hexagon assocHex;
 
-    public Border(float x1, float y1, float x2, float y2, Ray.Direction dir, HexagonGrid hex)
+    public Border(float x1, float y1, float x2, float y2, Ray.Direction dir, HexagonGrid hex, Hexagon assoc)
     {
         this.x1 = x1;
         this.y1 = y1;
@@ -35,6 +36,8 @@ public class Border implements Clickable, Entities{
         this.direction = dir; // use to print line, get revMid
         setRevMid(direction);
         initBoundingBox();
+
+        this.assocHex = assoc;
 
         clickable = false;
         boundingBoxVisible = false;
@@ -170,13 +173,13 @@ public class Border implements Clickable, Entities{
     public void update() {
         if (isClicked() && !hasRay) { // Various pixel offsets due to the isInside function
             if (direction == Ray.Direction.NE || direction == Ray.Direction.NW) {
-                hexagonGrid.addRay(midPoint[0], midPoint[1] - 1, direction);
+                hexagonGrid.addRay(midPoint[0]+direction.direction[0], midPoint[1] + direction.direction[1], direction, assocHex);
             } else if (direction == Ray.Direction.SE){
-                hexagonGrid.addRay(midPoint[0], midPoint[1] + 1, direction);
+                hexagonGrid.addRay(midPoint[0]+direction.direction[0], midPoint[1] + direction.direction[1] , direction, assocHex);
             } else if (direction == Ray.Direction.E ) {
-                hexagonGrid.addRay(midPoint[0] - 1, midPoint[1], direction);
+                hexagonGrid.addRay(midPoint[0] + direction.direction[0], midPoint[1] +direction.direction[1], direction, assocHex);
             } else {
-                hexagonGrid.addRay(midPoint[0], midPoint[1], direction);
+                hexagonGrid.addRay(midPoint[0] + direction.direction[0], midPoint[1] +direction.direction[1], direction, assocHex);
             }
             hasRay = true;
         }

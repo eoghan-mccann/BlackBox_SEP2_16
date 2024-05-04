@@ -302,6 +302,7 @@ public class Ray implements Entities, Clickable{
                 if(tempY >= 0 && tempY < board.get(tempX).size()) // validation check
                 {
 
+                    // accounting for hexagon's position on the board
                     if(x < 4){
                         yIndices[0] += 1;
                         if(i == 0)
@@ -505,8 +506,6 @@ public class Ray implements Entities, Clickable{
                 grid.rayCheck(this);
 
             }
-
-
 
             if (!isMoving()) {
                 spawnRayMarker();
