@@ -150,8 +150,6 @@ public class Ray extends RayUtil implements Entities{
                 this.startPos[1] - startDirection.getYSpeed() * productOffset
         };
 
-        System.out.println(lines);
-
         // If ray hit atom on the border = HIT
         if(currHex.isBorder && hitAtom) {
             // Accounts for hexagons on border hit from ray on other side of board
