@@ -198,7 +198,7 @@ public class GameLogic {
 
         for (boolean guess : guesses)
         {
-            if (guess) { score += 5; }
+            if (!guess) { score += 5; }
         }
 
         score += rays.size();

@@ -54,7 +54,7 @@ public class Hexagon extends HexUtil implements Entities, Clickable {
     NeighbourPosition neighbDir; // This Hexagon's position in relation to its Neighbour
 
 
-    Hexagon(float x, float y, float r, HexagonGrid hGrid) {
+    public Hexagon(float x, float y, float r, HexagonGrid hGrid) {
         this.centerX = x;
         this.centerY = y;
         this.radius = r;
@@ -188,6 +188,14 @@ public class Hexagon extends HexUtil implements Entities, Clickable {
     public void setCenter(float x, float y) {
         centerX = x;
         centerY = y;
+    }
+
+    /**
+     * Sets the Neighbour Direction of the hexagon
+     * @param neighbDir The direction.
+     */
+    public void setNeighbDir(NeighbourPosition neighbDir) {
+        this.neighbDir = neighbDir;
     }
 
     @Override
