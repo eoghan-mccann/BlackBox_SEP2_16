@@ -60,7 +60,6 @@ public class HexagonGrid {
                 }
             }
         }
-
     }
 
 
@@ -100,8 +99,11 @@ public class HexagonGrid {
     }
 
     public void addRay(float x, float y, Ray.Direction direction, Hexagon hex) {
-            rays.add(new Ray(x,y,direction, this));
-            rays.getLast().currHex = hex;
+            Ray newRay = new Ray(x,y,direction, this);
+            newRay.startHex = hex;
+            newRay.currHex = hex;
+
+            rays.add(newRay);
     }
 
     public void initAtoms() // initial placement of 5 atoms on the right side

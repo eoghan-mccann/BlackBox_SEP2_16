@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -54,6 +55,8 @@ public class Ray extends RayUtil implements Entities{
     HexagonGrid grid;
 
     Hexagon currHex; // If ray is inside the grid, this is the hexagon it is currently inside
+    Hexagon startHex;
+    Hexagon endHex;
 
     RayMarker[] rayMarkers;
 
@@ -73,7 +76,6 @@ public class Ray extends RayUtil implements Entities{
         visible = false;
 
         grid = gr;
-
     }
 
 
@@ -93,8 +95,6 @@ public class Ray extends RayUtil implements Entities{
         }
 
         shape.end();
-
-
 
         if (rayMarkers != null) {
             for (RayMarker rayMarker : rayMarkers) {
@@ -134,6 +134,8 @@ public class Ray extends RayUtil implements Entities{
             spawnRayMarker();
         }
 
+        System.out.println(currHex);
+
     }
 
 
@@ -146,7 +148,7 @@ public class Ray extends RayUtil implements Entities{
         RayMarker endMarker;
         RayMarker.Result result;
 
-        int productOffset = 7;
+        int productOffset = 7; // offset product for how far marker will be from hexagon
 
         float[] startMarkerPos;
         float[] endMarkerPos;
@@ -174,9 +176,9 @@ public class Ray extends RayUtil implements Entities{
             };
 
             result = RayMarker.Result.MISS;
-        // If the ray is still inside the hexagon, maybe has reflections but got swallowed = HIT
+        // If the ray is still inside the hexagon, could have deflections but got swallowed = HIT
         } else if (isInside) {
-            startMarkerPos = new float[] {
+            startMarkerPos = new float[]{
                     lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
                     lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
             };
@@ -184,8 +186,10 @@ public class Ray extends RayUtil implements Entities{
             endMarkerPos = startMarkerPos;
 
             result = RayMarker.Result.HIT;
-        }
-        else { // Deflected rays, no swallowed = REFLECTION
+        } else { // Ray has bounced = REFLECTION or DEFLECTION
+            List<Float> firstLine = lines.get(0);
+            List<Float> lastline = lines.get(lines.size() - 1);
+
             startMarkerPos = new float[]{
                     lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
                     lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
@@ -195,19 +199,23 @@ public class Ray extends RayUtil implements Entities{
                     headPos[1] + currDirection.getYSpeed() * productOffset
             };
 
-            result = RayMarker.Result.REFLECTION;
+            result = RayMarker.Result.DEFLECTION;
+
+            if (currHex == startHex) { // if start hexagon == currhex when stopped, it's reflected
+                if (Objects.equals(firstLine.get(firstLine.size() - 1), lastline.get(lastline.size() - 1))) {
+                    result = RayMarker.Result.REFLECTION;
+                    endMarkerPos = null;
+                }
+            }
         }
 
         startMarker = new RayMarker(startMarkerPos, markerRadius, result);
-        if(endMarkerPos == null)
-        {
+        if(endMarkerPos == null) {
             endMarker = startMarker;
         }
-        else
-        {
+        else {
             endMarker = new RayMarker(endMarkerPos, markerRadius, result);
         }
-
 
         rayMarkers = new RayMarker[] {startMarker, endMarker};
     }
