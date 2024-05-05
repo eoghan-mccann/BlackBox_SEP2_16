@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Atom implements Entities{
 
     private float atomCentreX, atomCentreY;
-    private float atomCentreRadius;
-    private float atomLayerRadius; // Radius of atom's aura
+    private final float atomCentreRadius;
+    private final float atomLayerRadius; // Radius of atom's aura
 
     public boolean isPlaced;
     public boolean visible;

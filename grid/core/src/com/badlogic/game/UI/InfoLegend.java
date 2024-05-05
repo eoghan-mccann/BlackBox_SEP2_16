@@ -37,7 +37,7 @@ public class InfoLegend {
         shape.box(xPos,yPos,0,width,height,0);
         shape.end();
 
-        RayMarker.Result result[] = RayMarker.Result.values();
+        RayMarker.Result[] result = RayMarker.Result.values();
         for (int i = 0; i < result.length; i++) {
             shape.begin(ShapeRenderer.ShapeType.Filled);
             shape.setColor(result[i].getColor());

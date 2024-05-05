@@ -16,14 +16,11 @@ public class Game {
 
 
     //necessary for displaying and correct rendering
-    public static int windowWidth = 1550;
-    public static int windowHeight = 900;
     private final OrthographicCamera camera;
     public SpriteBatch batch;
     private final Stage stage;
     private final Skin skin;
     private final ShapeRenderer shape;
-    public static float hexRadius = 55;
 
     //used for game logic
     public static boolean debugMode = false;
@@ -187,7 +184,7 @@ public class Game {
                     }
 
                     guessLabel.setText("Guesses Remaining: " + guesses.getRemainingGuesses());
-                    guessLabel.setPos(windowWidth / 2f - guessLabel.getTextWidth() / 2, getWindowHeight() * 0.95f);
+                    guessLabel.setPos(getWindowWidth() / 2f - guessLabel.getTextWidth() / 2, getWindowHeight() * 0.95f);
 
                     if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null)
                     {

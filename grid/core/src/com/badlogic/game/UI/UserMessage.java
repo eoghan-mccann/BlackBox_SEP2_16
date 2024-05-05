@@ -3,17 +3,15 @@ package com.badlogic.game.UI;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class UserMessage {
-    private Stage stage;
-    private Skin skin;
+    private final Stage stage;
+    private final Skin skin;
     private boolean waitingForInput = true;
 
     public UserMessage(Stage stage, Skin skin) {
@@ -45,22 +43,4 @@ public class UserMessage {
     public boolean isWaitingForInput() {
         return waitingForInput;
     }
-
-
-    public void showMessage(String title, String message, float duration) {
-        // Create the dialog with the provided title and skin
-        Dialog dialog = new Dialog(title, skin);
-        dialog.text(message);
-
-        dialog.show(stage);
-
-        // Schedule a task to hide the dialog after the specified duration
-        Timer.schedule(new Task() {
-            @Override
-            public void run() {
-                dialog.hide();
-            }
-        }, duration);
-    }
-
 }

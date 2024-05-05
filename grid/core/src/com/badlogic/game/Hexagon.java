@@ -10,7 +10,7 @@ import java.util.List;
 public class Hexagon implements Entities, Clickable {
 
     private float centerX, centerY;
-    private float radius; // Radius (centre to any corner)
+    private final float radius; // Radius (centre to any corner)
 
     public float[] hexPoints; // Array of Hexagon's corner coordinates
     private final double angle = Math.toRadians(60);
@@ -156,7 +156,7 @@ public class Hexagon implements Entities, Clickable {
     @Override
     public void Draw(ShapeRenderer shape) {
 
-        shape.begin(ShapeRenderer.ShapeType.Line);;
+        shape.begin(ShapeRenderer.ShapeType.Line);
         color = Color.WHITE;
 
         shape.setColor(color);

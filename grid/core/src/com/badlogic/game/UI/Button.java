@@ -16,12 +16,9 @@ public class Button implements Clickable, Entities {
     Color color;
 
     private final Label label;
-    private SpriteBatch batch;
 
 
     public Button(SpriteBatch batch,float x, float y, float w, float h) {
-        this.batch = batch;
-
         X = x;
         Y = y;
         width = w;

@@ -134,12 +134,6 @@ public class HexagonGrid {
 
                 break;
             }
-            if (i == 4 && atoms[i].isPlaced) // if all placed
-            {
-                continue;
-                // do nothinG? or move the first placed one
-
-            }
         }
 
     }
@@ -386,13 +380,6 @@ public class HexagonGrid {
 
         return returnList;
     }
-
-    public boolean isBorderHexagon(Hexagon hexagon) { // returns whether given hexagon is on the border.
-        List<Hexagon> borderHexagons = getBorderHexagons();
-
-        return borderHexagons.contains(hexagon);
-    }
-
     public void Draw(ShapeRenderer shape) { // loop through all elements stored in board and call it's draw function
 
         for (Hexagon hexagon : getHexBoard()) {

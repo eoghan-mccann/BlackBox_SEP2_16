@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -129,9 +128,6 @@ public class Ray extends RayUtil implements Entities{
         if (!isMoving()) {
             spawnRayMarker();
         }
-
-        System.out.println(currHex);
-
     }
 
 
