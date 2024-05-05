@@ -1,5 +1,8 @@
-package com.badlogic.game;
+package com.badlogic.game.Tests;
 
+import com.badlogic.game.HexUtil;
+import com.badlogic.game.Hexagon;
+import com.badlogic.game.HexagonGrid;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
