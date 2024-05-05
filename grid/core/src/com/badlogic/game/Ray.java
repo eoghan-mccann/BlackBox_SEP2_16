@@ -12,7 +12,6 @@ import java.util.Objects;
  * Rays are stored as a sequence of lines. Lines consist of a starting coordinate and an end coordinate.
  *         All lines are stored in the {@code lines} List, except for the line currently moving through the grid.
  *         The current lines start coordinate will be the end coordinate of the previous line, and its head is stored in {@code headPos}.
- *
  *         Extra utility methods for the Ray class are in the {@code RayUtil} class.
  */
 
@@ -55,12 +54,9 @@ public class Ray extends RayUtil implements Entities{
     HexagonGrid grid;
 
     Hexagon currHex; // If ray is inside the grid, this is the hexagon it is currently inside
-    Hexagon startHex;
-    Hexagon endHex;
+    Hexagon startHex; // Stores hexagon that ray started in
 
     RayMarker[] rayMarkers;
-
-
 
     public Ray(float x1, float y1, Direction dir, HexagonGrid gr) {
         enterPos = new float[]{x1,y1};
@@ -153,43 +149,40 @@ public class Ray extends RayUtil implements Entities{
         float[] startMarkerPos;
         float[] endMarkerPos;
 
-        if(currHex.isBorder && hitAtom) // if hit border atom
-        {
-            startMarkerPos = new float[] {
-                    this.startPos[0] - startDirection.getXSpeed() * productOffset,
-                    this.startPos[1] - startDirection.getYSpeed() * productOffset
-            };
+        startMarkerPos = new float[] {
+                this.startPos[0] - startDirection.getXSpeed() * productOffset,
+                this.startPos[1] - startDirection.getYSpeed() * productOffset
+        };
+
+        // If ray hit atom on the border = HIT
+        if(currHex.isBorder && hitAtom) {
             endMarkerPos = null;
-
-
             result = RayMarker.Result.HIT;
         }
+
         // If the ray is only 1 line = MISS
         else if (lines.isEmpty()) {
-            startMarkerPos = new float[] {
-                    this.startPos[0] - startDirection.getXSpeed() * productOffset,
-                    this.startPos[1] - startDirection.getYSpeed() * productOffset
-            };
             endMarkerPos = new float[] {
                     this.headPos[0] + currDirection.getXSpeed() * productOffset,
                     this.headPos[1] + currDirection.getYSpeed() * productOffset
             };
 
             result = RayMarker.Result.MISS;
+        }
+
         // If the ray is still inside the hexagon, could have deflections but got swallowed = HIT
-        } else if (isInside) {
+        else if (isInside) {
             startMarkerPos = new float[]{
                     lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
                     lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
             };
 
             endMarkerPos = startMarkerPos;
-
             result = RayMarker.Result.HIT;
-        } else { // Ray has bounced = REFLECTION or DEFLECTION
-            List<Float> firstLine = lines.get(0);
-            List<Float> lastline = lines.get(lines.size() - 1);
+        }
 
+        // Ray has bounced = REFLECTION or DEFLECTION
+        else {
             startMarkerPos = new float[]{
                     lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
                     lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
@@ -202,21 +195,13 @@ public class Ray extends RayUtil implements Entities{
             result = RayMarker.Result.DEFLECTION;
 
             if (currHex == startHex) { // if start hexagon == currhex when stopped, it's reflected
-                if (Objects.equals(firstLine.get(firstLine.size() - 1), lastline.get(lastline.size() - 1))) {
-                    result = RayMarker.Result.REFLECTION;
-                    endMarkerPos = null;
-                }
+                result = RayMarker.Result.REFLECTION;
+                endMarkerPos = null;
             }
         }
 
         startMarker = new RayMarker(startMarkerPos, markerRadius, result);
-        if(endMarkerPos == null) {
-            endMarker = startMarker;
-        }
-        else {
-            endMarker = new RayMarker(endMarkerPos, markerRadius, result);
-        }
-
+        endMarker = endMarkerPos == null ? startMarker : new RayMarker(endMarkerPos, markerRadius, result);
         rayMarkers = new RayMarker[] {startMarker, endMarker};
     }
 

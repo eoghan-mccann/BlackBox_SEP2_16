@@ -42,7 +42,7 @@ public class Scoreboard {
         if (playerOneScore == playerTwoScore) {
             return "Tie Game!";
         }
-        return playerOneScore > playerTwoScore ? "Player 1 Wins!" : "Player 2 Wins!";
+        return playerOneScore < playerTwoScore ? "Player 1 Wins!" : "Player 2 Wins!";
     }
 
 
