@@ -40,12 +40,21 @@ public class GameLogic {
         playerScores = new int[2];
     }
 
+    /**
+     *
+     * @param infoLegend
+     * @param viewToggle
+     */
     public void HexagonGridUpdate(InfoLegend infoLegend, Button viewToggle) {
         infoLegend.setVisible(true);
         viewToggle.setVisible(true);
         hexagonGrid.update();
     }
 
+    /**
+     *
+     * @param atomConfirmButton
+     */
     public void updatePlacingAtomsPhase(Button atomConfirmButton) {
         hexagonGrid.setBorderBoundingBoxVisible(false);
         hexagonGrid.setAtomsVisible(true);
@@ -70,6 +79,12 @@ public class GameLogic {
         }
     }
 
+    /**
+     *
+     * @param guessLabel
+     * @param guessConfirmButton
+     * @param guessResultBoard
+     */
     public void updatePlacingRayPhase(Label guessLabel, Button guessConfirmButton, GuessResultBoard guessResultBoard) {
         hexagonGrid.setAtomsVisible(false);
         hexagonGrid.setRayVisible(false);
@@ -119,6 +134,14 @@ public class GameLogic {
         }
     }
 
+    /**
+     *
+     * @param newGameButton
+     * @param winLabel
+     * @param guessLabel
+     * @param guessResultBoard
+     * @param scoreboard
+     */
     public void updateNewGamePhase(Button newGameButton,
                                    Label winLabel,
                                    Label guessLabel,
@@ -158,6 +181,9 @@ public class GameLogic {
         }
     }
 
+    /**
+     *
+     */
     public void updateDebugPhase() {
         hexagonGrid.setAtomsVisible(true);
         hexagonGrid.setRayVisible(true);
@@ -165,6 +191,12 @@ public class GameLogic {
         hexagonGrid.setBorderBoundingBoxVisible(true);
     }
 
+    /**
+     * Method for calculating the player scores.
+     * @param guesses
+     * @param rays
+     * @return
+     */
     private int calculateScore(boolean[] guesses, List<Ray> rays) {
         int score = 0;
 
