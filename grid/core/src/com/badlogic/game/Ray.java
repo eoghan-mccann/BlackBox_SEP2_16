@@ -267,6 +267,22 @@ public class Ray extends RayUtil implements Entities{
         headPos[0] = arr[0];
         headPos[1] = arr[1];
     }
+    /**
+     * Gets the Direction of the ray
+     *
+     * @return Direction of Ray
+     */
+    public Direction getCurrDirection() {
+        return currDirection;
+    }
+    /**
+     * Sets the hex that the ray is currently in
+     *
+     * @param currHex hexagon it's in
+     */
+    public void setCurrHex(Hexagon currHex) {
+        this.currHex = currHex;
+    }
 
     @Override
     public float[] getCentre() {return new float[0];}

@@ -14,7 +14,7 @@ public class Atom implements Entities{
     public boolean visible;
 
 
-    Atom(float x, float y, float r1, float r2) {
+    public Atom(float x, float y, float r1, float r2) {
         this.atomCentreX = x;
         this.atomCentreY = y;
         this.atomCentreRadius = r1;

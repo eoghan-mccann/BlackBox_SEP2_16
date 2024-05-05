@@ -231,7 +231,7 @@ public class RayUtil {
      *
      * @param ray The ray to be reflected.
      */
-    public static void reflect(Ray ray) {
+    public void reflect(Ray ray) {
         ray.currDirection = getReflectionDirection(ray.currDirection);
     }
 
