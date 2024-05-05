@@ -112,14 +112,14 @@ public class Ray extends RayUtil implements Entities{
             headPos[0] += currDirection.getXSpeed();
             headPos[1] += currDirection.getYSpeed();
         }
-        else if(currHex.isNeighbour && currHex.atom == null) { // if currHex = neighbour and DOESN'T have an atom in it
+        else if(isInside && currHex.isNeighbour && currHex.atom == null) { // if currHex = neighbour and DOESN'T have an atom in it
 
             // Move ray head to center of hex, change direction, move
             setHeadPos(new float[]{currHex.getCenterX(), currHex.getCenterY()});
 
             setCurrDirection(currHex, this);
-            headPos[0] += currDirection.getXSpeed()*5;
-            headPos[1] += currDirection.getYSpeed()*5;
+            headPos[0] += currDirection.getXSpeed()*6;
+            headPos[1] += currDirection.getYSpeed()*6;
 
             grid.rayCheck(this);
 

@@ -82,6 +82,7 @@ public class HexagonGrid {
                     ray.currHex = hex;
                     return;
                 }
+
             }
         }
         ray.isInside = false; // ray is now outside the grid
