@@ -1,10 +1,6 @@
 package com.badlogic.game;
 
 import com.badlogic.game.UI.*;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.List;
 

@@ -2,13 +2,11 @@ package com.badlogic.game;
 
 import com.badlogic.game.UI.*;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-//import sun.jvm.hotspot.opto.Phase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,6 @@ public class Game {
 
     //used for game logic
     public static boolean debugMode = false;
-    int[] playerScores;
 
     //displaying messages, user interaction
     private final InfoLegend info;
@@ -195,24 +192,9 @@ public class Game {
         return uiObjects;
     }
 
-    public void setCurrentPhase(GamePhase phase) {
+    public void setCurrentPhase(Game.GamePhase phase) {
         this.currentPhase = phase;
     }
-
-    /*
-    private int calculateScore(boolean[] guesses, List<Ray> rays) {
-        int score = 0;
-
-        for (boolean guess : guesses)
-        {
-            if (guess) { score += 5; }
-        }
-
-        score += rays.size();
-
-        return score;
-    }
-     */
 
     public void resize(int width, int height) {
         camera.setToOrtho(false, width, height);
