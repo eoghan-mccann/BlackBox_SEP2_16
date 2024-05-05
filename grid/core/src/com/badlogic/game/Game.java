@@ -16,7 +16,7 @@ import java.util.List;
 //we need to comment more and separate classes
 
 /**
- *
+ * This class represents Model in HLD.
  */
 public class Game {
     //necessary for displaying and correct rendering

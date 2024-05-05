@@ -12,6 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import java.lang.reflect.Array;
 import java.util.List;
 
+/**
+ * Class for rendering the game elements. In HLD, this is represented by View.
+ */
 public class GameRenderer {
 
     private final OrthographicCamera camera;

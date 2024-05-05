@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * The class responsible for game logic.
  * It handles phases of the game.
- * In HLD, it would represent the controller.
+ * In HLD, it would represent Controller.
  */
 public class GameLogic {
     //used for game logic
@@ -210,10 +210,18 @@ public class GameLogic {
         return score;
     }
 
+    /**
+     *
+     * @return
+     */
     public HexagonGrid getHexagonGrid() {
         return hexagonGrid;
     }
 
+    /**
+     *
+     * @return
+     */
     public Guess getGuessObject() {
         return guesses;
     }
