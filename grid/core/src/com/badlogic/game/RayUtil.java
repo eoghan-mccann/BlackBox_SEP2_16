@@ -10,13 +10,6 @@ import java.util.Map;
  *
  */
 public class RayUtil {
-    /**
-     * Changes a Ray's direction, based on the given Hexagon's position, and the Ray's direction .
-     *
-     * @param hex the Hexagon the Ray is currently travelling through.
-     * @param ray the Ray whose direction is to be changed.
-     */
-
     // Define a map to store reflection mappings based on neighbor position and input direction
     private static final Map<Hexagon.NeighbourPosition, Map<Ray.Direction, Ray.Direction>> DIRECTION_MAP = new HashMap<>();
 
@@ -82,6 +75,12 @@ public class RayUtil {
         DIRECTION_MAP.put(Hexagon.NeighbourPosition.NorW, norWMap);
     }
 
+    /**
+     * Changes a Ray's direction, based on the given Hexagon's position, and the Ray's direction .
+     *
+     * @param hex the Hexagon the Ray is currently travelling through.
+     * @param ray the Ray whose direction is to be changed.
+     */
     public void setCurrDirection(Hexagon hex, Ray ray)
     {
         // The current head line of the ray is added to lines once it is finished (i.e. when the ray enters atom aura)
@@ -110,9 +109,7 @@ public class RayUtil {
         }
         else // one atom deflect - accounting for all possible directions
         {
-            // set direction of new line
             singleAtomDeflect(ray, hex);
-
         }
 
     }

@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Controller {@code Guess} class handles the guessing mechanic of the Game. A guess ir represented on screen by an "x".
+ */
 public class Guess implements Renderable {
     private static final int MAX_GUESSES = 5;
 
@@ -16,7 +19,7 @@ public class Guess implements Renderable {
     private final List<Hexagon> guessList;
     private final Label marker;  // Declare as final to ensure it's not reassigned
     private boolean answeredRevealed;
-    private boolean isVisible;
+
 
     public Guess() {
         guessCount = 0;
@@ -28,6 +31,10 @@ public class Guess implements Renderable {
         answeredRevealed = false;
     }
 
+    /**
+     * Method to either add or remove a guess from the list of guesses, depending on if the given Hexagon already has been guessed.
+     * @param hexagon The Hexagon which the guess is being added to / removed from.
+     */
     public void handleGuess(Hexagon hexagon) {
         if (guessList.contains(hexagon)) {
             removeGuess(hexagon);
@@ -36,20 +43,36 @@ public class Guess implements Renderable {
         }
     }
 
+    /**
+     * Method to add a new guess to the {@code guessList} List.
+     * @param hexagon The Hexagon being guessed.
+     */
     private void addGuess(Hexagon hexagon) {
         guessList.add(hexagon);
         guessCount++;
     }
 
+    /**
+     * Method to remove a guess from the {@code guessList} List.
+     * @param hexagon The Hexagon being removed.
+     */
     private void removeGuess(Hexagon hexagon) {
         guessList.remove(hexagon);
         guessCount--;
     }
 
+    /**
+     * Gets the remaining number of guesses the user has.
+     * @return The integer number of guesses left.
+     */
     public int getRemainingGuesses() {
         return MAX_GUESSES - guessCount;
     }
 
+    /**
+     * Gets the answers to each guess.
+     * @return A boolean array of answers, where {@code True} is correct and {@code False} incorrect.
+     */
     public boolean[] getGuessAnswers() {
         boolean[] guesses = new boolean[MAX_GUESSES];
 
