@@ -40,6 +40,9 @@ public class GameRenderer {
         skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
     }
 
+    /**
+     * Renders all objects to the screen on each frame.
+     */
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -57,6 +60,9 @@ public class GameRenderer {
         stage.draw();
     }
 
+    /**
+     * Helper method of the {@code render} method. Renders all Game elements.
+     */
     private void renderGameElements() {
         List<Object> EntityObjects = game.getEntityObjects();
 
@@ -69,6 +75,9 @@ public class GameRenderer {
         }
     }
 
+    /**
+     * Helper method of the {@code render} method. Renders all UI elements of the game.
+     */
     private void renderUIElements() {
         List<Object> UIElements = game.getUIObjects();
 
@@ -81,10 +90,18 @@ public class GameRenderer {
         }
     }
 
+    /**
+     * Method to get the width of the player's screen.
+     * @return Width of player's screen.
+     */
     public static int getWindowWidth() {
         return Gdx.graphics.getWidth();
     }
 
+    /**
+     * Method to get the height/length of the player's screen
+     * @return Height of the player's screen.
+     */
     public static int getWindowHeight() {
         return Gdx.graphics.getHeight();
     }

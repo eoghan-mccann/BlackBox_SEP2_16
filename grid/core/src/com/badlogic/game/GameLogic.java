@@ -14,7 +14,7 @@ import java.util.List;
  * In HLD, it would represent Controller.
  */
 public class GameLogic {
-    //used for game logic
+
     int[] playerScores;
 
     //displaying messages, user interaction
@@ -41,9 +41,9 @@ public class GameLogic {
     }
 
     /**
-     *
-     * @param infoLegend
-     * @param viewToggle
+     * Calls the update() method for {@code HexagonGrid}.
+     * @param infoLegend legend containing ray output information
+     * @param viewToggle Button object which toggles player view
      */
     public void HexagonGridUpdate(InfoLegend infoLegend, Button viewToggle) {
         infoLegend.setVisible(true);
@@ -52,8 +52,8 @@ public class GameLogic {
     }
 
     /**
-     *
-     * @param atomConfirmButton
+     * Updates all object variables which need to be updated in order to progress to the Ray Placing phase of the Game.
+     * @param atomConfirmButton Button which confirms user Atom placements.
      */
     public void updatePlacingAtomsPhase(Button atomConfirmButton) {
         hexagonGrid.setBorderBoundingBoxVisible(false);
@@ -80,10 +80,10 @@ public class GameLogic {
     }
 
     /**
-     *
-     * @param guessLabel
-     * @param guessConfirmButton
-     * @param guessResultBoard
+     * Method to handle game logic in the Ray Placement phase of the Game.
+     * @param guessLabel The label attributed to each Guess
+     * @param guessConfirmButton Button to confirm guesses
+     * @param guessResultBoard Board of results
      */
     public void updatePlacingRayPhase(Label guessLabel, Button guessConfirmButton, GuessResultBoard guessResultBoard) {
         hexagonGrid.setAtomsVisible(false);
@@ -135,12 +135,12 @@ public class GameLogic {
     }
 
     /**
-     *
-     * @param newGameButton
-     * @param winLabel
-     * @param guessLabel
-     * @param guessResultBoard
-     * @param scoreboard
+     * Method to handle the "New Game" phase of the Game; when the second round is played.
+     * @param newGameButton Button to enter New Game
+     * @param winLabel Label of correct guess
+     * @param guessLabel Label of each guess
+     * @param guessResultBoard Board of results of the guesses made by a Player.
+     * @param scoreboard Board storing the scores of each Player.
      */
     public void updateNewGamePhase(Button newGameButton,
                                    Label winLabel,
@@ -182,7 +182,7 @@ public class GameLogic {
     }
 
     /**
-     *
+     *  Method to set {@code HexagonGrid} to debug mode
      */
     public void updateDebugPhase() {
         hexagonGrid.setAtomsVisible(true);
@@ -193,9 +193,9 @@ public class GameLogic {
 
     /**
      * Method for calculating the player scores.
-     * @param guesses
-     * @param rays
-     * @return
+     * @param guesses boolean array of correct and incorrect guesses
+     * @param rays List of rays used to make guesses.
+     * @return The calculated score.
      */
     private int calculateScore(boolean[] guesses, List<Ray> rays) {
         int score = 0;
@@ -211,16 +211,16 @@ public class GameLogic {
     }
 
     /**
-     *
-     * @return
+     * Method to get the {@code HexagonGrid} object.
+     * @return The HexagonGrid
      */
     public HexagonGrid getHexagonGrid() {
         return hexagonGrid;
     }
 
     /**
-     *
-     * @return
+     * Gets the Guess object associated with this object.
+     * @return The associated Guess.
      */
     public Guess getGuessObject() {
         return guesses;
