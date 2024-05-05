@@ -198,9 +198,6 @@ public class Ray extends RayUtil implements Entities{
 
             result = RayMarker.Result.DEFLECTION;
 
-            System.out.println((Math.abs(lines.get(0).get(1) - lines.get(0).get(3))));
-            System.out.println((Math.abs(lines.get(0).get(0) - lines.get(0).get(2))));
-
             // if start hexagon == end hexagon and the end direction is the start direction reflected back
             if (currHex == startHex && currDirection == getReflectionDirection(startDirection)) {
                 result = RayMarker.Result.REFLECTION;
