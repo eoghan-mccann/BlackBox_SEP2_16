@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import sun.jvm.hotspot.opto.Phase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,31 +16,30 @@ import java.util.List;
 //we need to comment more and separate classes
 public class Game {
     //necessary for displaying and correct rendering
-    public final OrthographicCamera camera;
-    public SpriteBatch batch;
-    public final Stage stage;
-    private final Skin skin;
-    public final ShapeRenderer shape;
+    private final OrthographicCamera camera;
+    private final SpriteBatch batch;
+    private final Stage stage;
+    private final ShapeRenderer shape;
 
     //used for game logic
     public static boolean debugMode = false;
-    private boolean lastRound;
     int[] playerScores;
 
     //displaying messages, user interaction
     private final InfoLegend info;
-    private GuessResultBoard guessResultBoard;
-    private Scoreboard scoreboard;
+    private final GuessResultBoard guessResultBoard;
+    private final Scoreboard scoreboard;
 
     private final UserMessage userMessage;
     private final Button viewToggle;
-    private Button atomConfirmButton;
-    private Button guessConfirmButton;
-    private Button newGameButton;
-    private Label guessLabel;
-    private Label winLabel;
+    private final Button atomConfirmButton;
+    private final Button guessConfirmButton;
+    private final Button newGameButton;
+    private final Label guessLabel;
+    private final Label winLabel;
 
     GameRenderer gameRenderer;
+    GameLogic gameLogic;
 
     /**
      * this enum is used to manage the phases of the game
@@ -48,16 +48,30 @@ public class Game {
      * placing rays - ray shooting phase
      * new game - starting new game
      */
-    private enum GamePhase {
+    enum GamePhase {
         DEBUG_VIEW,
         PLACING_ATOMS,
         PLACING_RAYS,
         NEW_GAME,
     }
 
-    private final HexagonGrid hexagonGrid;
     private GamePhase currentPhase;
-    Guess guesses;
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public ShapeRenderer getShapeRenderer() {
+        return shape;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 
     public Game() {
         float w = Gdx.graphics.getWidth();
@@ -67,17 +81,8 @@ public class Game {
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
-        hexagonGrid = new HexagonGrid((float)(w * 0.03));
-        hexagonGrid.buildHexBoard(hexagonGrid);
-        hexagonGrid.getBorderHexagons(hexagonGrid);
-        hexagonGrid.initAtoms(hexagonGrid);
-        hexagonGrid.setAtomsVisible(true);
-        hexagonGrid.activateBorders(hexagonGrid);
-
-
         //starting the game on the placing atoms phase
         currentPhase = GamePhase.PLACING_ATOMS;
-
 
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -89,207 +94,84 @@ public class Game {
         viewToggle.setText("Debug View");
         viewToggle.setFontSize(20);
 
-        skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("rainbow/skin/rainbow-ui.json"));
         userMessage = new UserMessage(stage, skin);
         userMessage.showWelcomeMessage("Welcome, time traveller!",
                 "The Pookies welcome you to a refreshing game of BlackBox. " +
                         "\n Press Enter on your keyboard to start the game :) ");
 
-        guesses = new Guess();
-
-        //game logic
-        lastRound = false;
-
-        playerScores = new int[2];
-
-        info = new InfoLegend(45,Game.getWindowHeight() - Game.getWindowHeight() * 0.2f);
         gameRenderer = new GameRenderer(this);
+        gameLogic = new GameLogic(this);
+
+        float rightButtonX = GameRenderer.getWindowWidth() - GameRenderer.getWindowWidth() * 0.125f;
+        float allButtonY = GameRenderer.getWindowHeight() * 0.05f;
+
+        info = new InfoLegend(45,GameRenderer.getWindowHeight() - GameRenderer.getWindowHeight() * 0.2f);
+        guessLabel = new Label(batch, 0, 0);
+        guessConfirmButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
+        guessResultBoard = new GuessResultBoard(rightButtonX, 155, null);
+        newGameButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
+        atomConfirmButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
+        scoreboard = new Scoreboard(rightButtonX, allButtonY * 3, 0, 0);
+        winLabel = new Label(batch, 100,100);
     }
 
     //booleans for correct message displaying
     boolean atomMessage = false;
     boolean rayMessage = false;
     GamePhase prevPhase;
-    public void update() {
-        float rightButtonX = Game.getWindowWidth() - Game.getWindowWidth() * 0.125f;
-        float allButtonY = Game.getWindowHeight() * 0.05f;
 
-        hexagonGrid.update();
+
+    public void update() {
+        gameLogic.HexagonGridUpdate(info, viewToggle);
 
         //logic for correct user message displaying
-        if (!userMessage.isWaitingForInput()) {
+        switch (currentPhase) {
+            case PLACING_ATOMS:
+                prevPhase = GamePhase.PLACING_ATOMS;
+                rayMessage = false;
 
-            switch (currentPhase)
-            {
-                case PLACING_ATOMS:
-                    prevPhase = GamePhase.PLACING_ATOMS;
-                    hexagonGrid.setBorderBoundingBoxVisible(false);
-                    hexagonGrid.setAtomsVisible(true);
+                if (!userMessage.isWaitingForInput() && !atomMessage) {
+                    userMessage.showWelcomeMessage("\t\t\t Atom Phase", "You are now in the atom placement phase. \n\n \t\tPress ENTER to start.");
+                    atomMessage = true;
+                }
 
-                    hexagonGrid.setRayVisible(false);
-                    hexagonGrid.setBorderClickable(false);
-                    hexagonGrid.setHexState(Hexagon.State.PLACING);
+                gameLogic.updatePlacingAtomsPhase(atomConfirmButton);
+                break;
+            case PLACING_RAYS:
+                prevPhase = GamePhase.PLACING_RAYS;
+                atomMessage = false;
 
-                    rayMessage = false;
-                    if (!userMessage.isWaitingForInput() && !atomMessage)
-                    {
-                        userMessage.showWelcomeMessage("\t\t\t Atom Phase", "You are now in the atom placement phase. \n\n \t\tPress ENTER to start.");
-                        atomMessage = true;
-                    }
+                if (!userMessage.isWaitingForInput() && !rayMessage) {
+                    userMessage.showWelcomeMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.");
+                    rayMessage = true;
+                }
 
-                    if (hexagonGrid.allAtomsPlaced() && atomConfirmButton == null)
-                    {
-                        atomConfirmButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
-                        atomConfirmButton.setText("Confirm Atom Placement");
-                        atomConfirmButton.setFontSize(15);
-
-                    } else if (!hexagonGrid.allAtomsPlaced())
-                    {
-                        atomConfirmButton = null;
-                    }
-
-                    if (atomConfirmButton != null && atomConfirmButton.isClicked())
-                    {
-                        atomConfirmButton = null;
-                        currentPhase = GamePhase.PLACING_RAYS;
-                    }
-
-                    break;
-
-                case PLACING_RAYS:
-                    prevPhase = GamePhase.PLACING_RAYS;
-                    hexagonGrid.setAtomsVisible(false);
-
-                    hexagonGrid.setRayVisible(false);
-                    hexagonGrid.setBorderClickable(true);
-                    hexagonGrid.setBorderBoundingBoxVisible(false);
-                    hexagonGrid.setHexState(Hexagon.State.GUESSING);
-
-                    atomMessage = false;
-                    if (!userMessage.isWaitingForInput() && !rayMessage)
-                    {
-                        userMessage.showWelcomeMessage("Ray Phase", "You are now in the ray phase. Place rays to solve the puzzle.");
-                        rayMessage = true;
-                    }
-
-                    for (Hexagon hexagon : hexagonGrid.getHexBoard())
-                    {
-                        if (hexagon.isClicked())
-                        {
-                            guesses.handleGuess(hexagon);
-                        }
-                    }
-
-                    if (guessLabel == null) {
-                        guessLabel = new Label(batch, 0, 0);
-                        guessLabel.setFontSize(40);
-                    }
-
-                    guessLabel.setText("Guesses Remaining: " + guesses.getRemainingGuesses());
-                    guessLabel.setPos(getWindowWidth() / 2f - guessLabel.getTextWidth() / 2, getWindowHeight() * 0.95f);
-
-                    if (guesses.getRemainingGuesses() == 0 && guessConfirmButton == null)
-                    {
-                        guessConfirmButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
-                        guessConfirmButton.setText("Confirm Guesses");
-                        guessConfirmButton.setFontSize(20);
-
-                    } else if (!(guesses.getRemainingGuesses() == 0))
-                    {
-                        guessConfirmButton = null;
-                    }
-
-                    if (guessConfirmButton != null && guessConfirmButton.isClicked())
-                    {
-                        currentPhase = GamePhase.NEW_GAME;
-                        guessConfirmButton = null;
-
-                        boolean[] guessAnswers = guesses.getGuessAnswers();
-
-                        if (!lastRound)
-                        {
-                            playerScores[0] = calculateScore(guessAnswers, hexagonGrid.rays);
-                        } else {
-                            playerScores[1] = calculateScore(guessAnswers, hexagonGrid.rays);
-                        }
-
-                        if (guessResultBoard == null) {
-                            guessLabel = null;
-                            guessResultBoard = new GuessResultBoard(rightButtonX, 155, guessAnswers);
-                        }
-
-                    }
-                    break;
-
-                case NEW_GAME:
-                    prevPhase = GamePhase.NEW_GAME;
-                    atomMessage = false;
-                    rayMessage = false;
-
-                    hexagonGrid.setRayVisible(true);
-                    hexagonGrid.setAtomsVisible(true);
-
-                    if (newGameButton == null)
-                    {
-                        newGameButton = new Button(batch, rightButtonX, allButtonY, 200, 100);
-                        newGameButton.setText(lastRound ? "End Game" : "Start Second Round");
-                        newGameButton.setFontSize(15);
-                    }
-
-                    if (newGameButton != null && newGameButton.isClicked())
-                    {
-                        newGameButton = null;
-                        winLabel = null;
-                        guessLabel = null;
-                        guessResultBoard = null;
-
-                        if (!lastRound)
-                        {
-                            guesses = new Guess();
-
-                            lastRound = true;
-
-                            hexagonGrid.resetAllRays();
-                            hexagonGrid.resetAllAtoms();
-                            currentPhase = GamePhase.PLACING_ATOMS;
-                        } else {
-                            if (scoreboard == null) {
-                                scoreboard = new Scoreboard(rightButtonX, allButtonY * 3, playerScores[0], playerScores[1]);
-                            }
-                        }
-                    }
-
-                    break;
-                case DEBUG_VIEW:
-                    hexagonGrid.setAtomsVisible(true);
-
-                    hexagonGrid.setRayVisible(true);
-                    hexagonGrid.setBorderBoundingBoxVisible(true);
-            }
+                gameLogic.updatePlacingRayPhase(guessLabel, guessConfirmButton, guessResultBoard);
+                break;
+            case NEW_GAME:
+                prevPhase = GamePhase.NEW_GAME;
+                atomMessage = false;
+                rayMessage = false;
+                gameLogic.updateNewGamePhase(newGameButton, winLabel, guessLabel, guessResultBoard, scoreboard);
+                break;
+            case DEBUG_VIEW:
+                gameLogic.updateDebugPhase();
         }
 
-        if (viewToggle.isClicked())
-        {
+        if (viewToggle.isClicked()) {
             currentPhase = currentPhase == GamePhase.DEBUG_VIEW ? prevPhase : GamePhase.DEBUG_VIEW;
         }
-
     }
 
     public void render() {
         gameRenderer.render();
     }
 
-    public static int getWindowWidth() {
-        return Gdx.graphics.getWidth();
-    }
-
-    public static int getWindowHeight() {
-        return Gdx.graphics.getHeight();
-    }
-
     public List<Object> getEntityObjects() {
+        // All Entities drawn within hexagonGrid.
         List<Object> entityObjects = new ArrayList<>();
-        entityObjects.add(hexagonGrid);
+        entityObjects.add(gameLogic.getHexagonGrid());
         return entityObjects;
     }
 
@@ -305,8 +187,12 @@ public class Game {
         uiObjects.add(newGameButton);
         uiObjects.add(guessLabel);
         uiObjects.add(winLabel);
-        uiObjects.add(guesses);
+        uiObjects.add(gameLogic.getGuessObject());
         return uiObjects;
+    }
+
+    public void setCurrentPhase(GamePhase phase) {
+        this.currentPhase = phase;
     }
 
     private int calculateScore(boolean[] guesses, List<Ray> rays) {
@@ -328,8 +214,6 @@ public class Game {
     }
 
     public void dispose () {
-        shape.dispose();
-        stage.dispose();
-        skin.dispose();
+        gameRenderer.dispose();
     }
 }

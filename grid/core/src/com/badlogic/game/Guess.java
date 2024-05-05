@@ -16,11 +16,13 @@ public class Guess implements Renderable {
     private final List<Hexagon> guessList;
     private final Label marker;  // Declare as final to ensure it's not reassigned
     private boolean answeredRevealed;
+    private boolean isVisible;
 
     public Guess() {
         guessCount = 0;
         guessList = new ArrayList<>();
         marker = new Label(null, 0, 0);  // Initialize with null batch, will be set during rendering
+        marker.setVisible(true);
         marker.setText("X");
         marker.setFontSize(20);
         answeredRevealed = false;

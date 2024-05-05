@@ -15,6 +15,7 @@ public class Button implements Clickable, Entities {
     boolean toggle = false;
     Color color;
 
+    private boolean isVisible;
     private final Label label;
 
 
@@ -25,8 +26,10 @@ public class Button implements Clickable, Entities {
         height = h;
 
         color = Color.PINK;
+        isVisible = false;
 
         label = new Label(batch, X, Y);
+        label.setVisible(true);
         label.setColor(Color.BLACK);
     }
 
@@ -55,13 +58,23 @@ public class Button implements Clickable, Entities {
 
     }
 
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
     public void Draw(ShapeRenderer shape) {
-        shape.begin(ShapeRenderer.ShapeType.Filled);
+        if (isVisible) {
+            shape.begin(ShapeRenderer.ShapeType.Filled);
             shape.setColor(color);
             shape.rect(X, Y, width, height);
-        shape.end();
+            shape.end();
 
-        label.Draw(shape);
+            label.Draw(shape);
+        }
     }
 
     public void setText(String newText) {
@@ -76,17 +89,16 @@ public class Button implements Clickable, Entities {
 
     @Override
     public void update() {
-
-        if(isClicked())
-        {
-            toggle = !toggle;
+        if (isVisible) {
+            if (isClicked()) {
+                toggle = !toggle;
+            }
+            if (toggle) {
+                color = Color.CYAN;
+            } else {
+                color = Color.PINK;
+            }
         }
-        if(toggle)
-        {
-            color = Color.CYAN;
-        }
-        else { color = Color.PINK; }
-
     }
 
     @Override

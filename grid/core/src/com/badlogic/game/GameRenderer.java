@@ -25,13 +25,12 @@ public class GameRenderer {
     public GameRenderer(Game game) {
         this.game = game;
 
-        camera = game.camera;
+        camera = game.getCamera();
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.update();
 
-        batch = game.batch;
-        shapeRenderer = game.shape;
-        stage = game.stage;
+        batch = game.getBatch();
+        shapeRenderer = game.getShapeRenderer();
+        stage = game.getStage();
 
         Gdx.input.setInputProcessor(stage);
 
@@ -48,6 +47,8 @@ public class GameRenderer {
 
         renderGameElements();
         renderUIElements();
+
+        camera.update();
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
@@ -73,10 +74,16 @@ public class GameRenderer {
                 ((Renderable) ui).Draw(shapeRenderer, batch);
             } else if (ui instanceof Entities) {
                 ((Entities) ui).Draw(shapeRenderer);
-            } else {
-                System.out.println(ui);
             }
         }
+    }
+
+    public static int getWindowWidth() {
+        return Gdx.graphics.getWidth();
+    }
+
+    public static int getWindowHeight() {
+        return Gdx.graphics.getHeight();
     }
 
     public void dispose() {

@@ -21,6 +21,7 @@ public class Label implements Clickable, Entities {
 
     private BitmapFont font;
     private String text;
+    private boolean isVisible;
 
     public SpriteBatch batch;
     GlyphLayout layout = new GlyphLayout();
@@ -29,6 +30,8 @@ public class Label implements Clickable, Entities {
     public Label(SpriteBatch batch,float x, float y) {
         this.batch = batch;
         this.size = 10;
+
+        this.isVisible = false;
 
         X = x;
         Y = y;
@@ -53,7 +56,13 @@ public class Label implements Clickable, Entities {
         this.color = color;
     }
 
+    public void setVisible(boolean visible) {
+        this.isVisible = visible;
+    }
 
+    public boolean isVisible() {
+        return isVisible;
+    }
 
     @Override
     public boolean isClicked() {
@@ -66,10 +75,12 @@ public class Label implements Clickable, Entities {
     }
 
     public void Draw(ShapeRenderer shape) {
-        batch.begin();
+        if (isVisible) {
+            batch.begin();
             font.setColor(color);
             font.draw(batch, text, X, Y);
-        batch.end();
+            batch.end();
+        }
     }
 
     public void setText(String newText) {

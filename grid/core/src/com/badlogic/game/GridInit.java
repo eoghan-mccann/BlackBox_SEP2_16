@@ -18,7 +18,7 @@ public class GridInit {
         Hexagon tempHex = new Hexagon(0,0, grid.hexRadius, grid);
         float heightDist = (float) (tempHex.getHeight() * 0.75); // gets height distance to increase y value
 
-        float startY = Game.getWindowHeight() * 0.95f - (heightDist * (grid.minNoHex * 2));
+        float startY = GameRenderer.getWindowHeight() * 0.95f - (heightDist * (grid.minNoHex * 2));
 
         // Initially hexagon n is increasing and it starts dead center on x axis.
         boolean descending = false;
@@ -53,7 +53,7 @@ public class GridInit {
         List<Hexagon> hexRow = new ArrayList<>();
 
         // places first hexagon (n - 1) / 2 hexagon lengths to the left of x center point to build across.
-        float centreX = (float) Game.getWindowWidth() / 2;
+        float centreX = (float) GameRenderer.getWindowWidth() / 2;
         Hexagon centreHex = new Hexagon(centreX, y, grid.hexRadius, grid);
         float hexDist = centreHex.getWidth();
         float startingX = centreX - ((n / 2) * hexDist);
