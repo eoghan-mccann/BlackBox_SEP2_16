@@ -52,7 +52,7 @@ public class GridUtil extends GridInit {
                 }
                 else
                 {
-                    neighbour.neighbDir = Hexagon.neighourPos.values()[i]; // set neighbour direction
+                    neighbour.neighbDir = Hexagon.NeighbourPosition.values()[i]; // set neighbour direction
                     neighbour.isNeighbour = true;
                     neighbour.neighbCount++;
                 }

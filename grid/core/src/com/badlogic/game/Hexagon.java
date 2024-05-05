@@ -35,12 +35,12 @@ public class Hexagon extends HexUtil implements Entities, Clickable {
 
     // Enum for tracking what "type" of Neighbour Hexagon this is: If west of the atom, etc.
     // neighbourPos mirrors Ray direction. Bottom left hexagon is NE instead of SW.
-    public enum neighourPos {
+    public enum NeighbourPosition {
         NorE(0), East(1), SouE(2),
         NorW(3), West(4), SouW(5);
 
         public final int ind;
-        neighourPos(int i) {
+        NeighbourPosition(int i) {
             this.ind = i;
         }
     }
@@ -51,7 +51,7 @@ public class Hexagon extends HexUtil implements Entities, Clickable {
     }
 
     State state;
-    neighourPos neighbDir; // This Hexagon's position in relation to its Neighbour
+    NeighbourPosition neighbDir; // This Hexagon's position in relation to its Neighbour
 
 
     Hexagon(float x, float y, float r, HexagonGrid hGrid) {
