@@ -123,7 +123,7 @@ public class Game {
                     prevPhase = GamePhase.PLACING_ATOMS;
                     hexagonGrid.setBorderBoundingBoxVisible(false);
                     hexagonGrid.setAtomsVisible(true);
-                    hexagonGrid.setHexClickable(true);
+
                     hexagonGrid.setRayVisible(false);
                     hexagonGrid.setBorderClickable(false);
                     hexagonGrid.setHexState(Hexagon.State.PLACING);
@@ -157,7 +157,7 @@ public class Game {
                 case PLACING_RAYS:
                     prevPhase = GamePhase.PLACING_RAYS;
                     hexagonGrid.setAtomsVisible(false);
-                    hexagonGrid.setHexClickable(false);
+
                     hexagonGrid.setRayVisible(false);
                     hexagonGrid.setBorderClickable(true);
                     hexagonGrid.setBorderBoundingBoxVisible(false);
@@ -260,7 +260,7 @@ public class Game {
                     break;
                 case DEBUG_VIEW:
                     hexagonGrid.setAtomsVisible(true);
-                    hexagonGrid.setHexClickable(false);
+
                     hexagonGrid.setRayVisible(true);
                     hexagonGrid.setBorderBoundingBoxVisible(true);
             }

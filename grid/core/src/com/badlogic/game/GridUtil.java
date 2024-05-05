@@ -52,7 +52,7 @@ public class GridUtil extends GridInit {
                 }
                 else
                 {
-                    neighbour.neighbDir = Hexagon.NeighbourPosition.values()[i]; // set neighbour direction
+                    neighbour.neighbDir = Hexagon.neighourPos.values()[i]; // set neighbour direction
                     neighbour.isNeighbour = true;
                     neighbour.neighbCount++;
                 }
@@ -89,7 +89,7 @@ public class GridUtil extends GridInit {
     public void rayCheck(Ray ray) {
         for(List<Hexagon> hexList: ray.grid.hexBoard) {
             for(Hexagon hex: hexList) { // For each Hexagon in the board
-                if(hex.isInside(ray.headPos[0], ray.headPos[1])) { // If ray is inside
+                if(hex.isInside(hex, ray.headPos[0], ray.headPos[1])) { // If ray is inside
                     ray.isInside = true;
                     ray.currHex = hex;
                     return;
