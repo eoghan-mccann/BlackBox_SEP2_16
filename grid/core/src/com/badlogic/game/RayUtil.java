@@ -1,22 +1,87 @@
 package com.badlogic.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utilities class for {@code Ray}. Contains complex methods for Ray manipulation.
  *
  */
 public class RayUtil {
-
-
-
     /**
      * Changes a Ray's direction, based on the given Hexagon's position, and the Ray's direction .
      *
      * @param hex the Hexagon the Ray is currently travelling through.
      * @param ray the Ray whose direction is to be changed.
      */
+
+    // Define a map to store reflection mappings based on neighbor position and input direction
+    private static final Map<Hexagon.NeighbourPosition, Map<Ray.Direction, Ray.Direction>> DIRECTION_MAP = new HashMap<>();
+
+    /*
+      Initializes the direction map for reflecting ray directions based on neighbor positions.
+      Map is initialized with predefined reflection mappings for each neighbor position.
+     */
+    static { // static initializer for directionMaps
+        // Northeast neighbour position
+        Map<Ray.Direction, Ray.Direction> norEMap = new HashMap<>();
+        norEMap.put(Ray.Direction.E, Ray.Direction.SE);
+        norEMap.put(Ray.Direction.SE, Ray.Direction.SW);
+        norEMap.put(Ray.Direction.SW, Ray.Direction.NE);
+        norEMap.put(Ray.Direction.W, Ray.Direction.SW);
+        norEMap.put(Ray.Direction.NW, Ray.Direction.W);
+
+        // East neighbour position
+        Map<Ray.Direction, Ray.Direction> eastMap = new HashMap<>();
+        eastMap.put(Ray.Direction.NE, Ray.Direction.NW);
+        eastMap.put(Ray.Direction.SE, Ray.Direction.SW);
+        eastMap.put(Ray.Direction.SW, Ray.Direction.W);
+        eastMap.put(Ray.Direction.W, Ray.Direction.E);
+        eastMap.put(Ray.Direction.NW, Ray.Direction.W);
+
+        // Southeast neighbour position
+        Map<Ray.Direction, Ray.Direction> souEMap = new HashMap<>();
+        souEMap.put(Ray.Direction.NE, Ray.Direction.NW);
+        souEMap.put(Ray.Direction.E, Ray.Direction.NE);
+        souEMap.put(Ray.Direction.SW, Ray.Direction.W);
+        souEMap.put(Ray.Direction.W, Ray.Direction.NW);
+        souEMap.put(Ray.Direction.NW, Ray.Direction.SE);
+
+        // Southwest neighbour position
+        Map<Ray.Direction, Ray.Direction> souWMap = new HashMap<>();
+        souWMap.put(Ray.Direction.NE, Ray.Direction.E);
+        souWMap.put(Ray.Direction.E, Ray.Direction.SE);
+        souWMap.put(Ray.Direction.SE, Ray.Direction.NW);
+        souWMap.put(Ray.Direction.SW, Ray.Direction.SE);
+        souWMap.put(Ray.Direction.W, Ray.Direction.SW);
+
+        // West neighbour position
+        Map<Ray.Direction, Ray.Direction> westMap = new HashMap<>();
+        westMap.put(Ray.Direction.NE, Ray.Direction.E);
+        westMap.put(Ray.Direction.E, Ray.Direction.W);
+        westMap.put(Ray.Direction.SE, Ray.Direction.E);
+        westMap.put(Ray.Direction.SW, Ray.Direction.SE);
+        westMap.put(Ray.Direction.NW, Ray.Direction.NE);
+
+        // NorthWest neighbour position
+        Map<Ray.Direction, Ray.Direction> norWMap = new HashMap<>();
+        norWMap.put(Ray.Direction.NE, Ray.Direction.SW);
+        norWMap.put(Ray.Direction.E, Ray.Direction.NE);
+        norWMap.put(Ray.Direction.SE, Ray.Direction.E);
+        norWMap.put(Ray.Direction.W, Ray.Direction.NW);
+        norWMap.put(Ray.Direction.NW, Ray.Direction.NE);
+
+        // Put each direction map into the main direction map
+        DIRECTION_MAP.put(Hexagon.NeighbourPosition.NorE, norEMap);
+        DIRECTION_MAP.put(Hexagon.NeighbourPosition.East, eastMap);
+        DIRECTION_MAP.put(Hexagon.NeighbourPosition.SouE, souEMap);
+        DIRECTION_MAP.put(Hexagon.NeighbourPosition.SouW, souWMap);
+        DIRECTION_MAP.put(Hexagon.NeighbourPosition.West, westMap);
+        DIRECTION_MAP.put(Hexagon.NeighbourPosition.NorW, norWMap);
+    }
+
     public void setCurrDirection(Hexagon hex, Ray ray)
     {
         // The current head line of the ray is added to lines once it is finished (i.e. when the ray enters atom aura)
@@ -30,16 +95,14 @@ public class RayUtil {
         ray.lines.get(numLines).add(ray.getHeadPos()[0]);
         ray.lines.get(numLines).add(ray.getHeadPos()[1]);
 
-
         // ---- initialise new line ----
         // new line now starts at head, curr head is also there
         ray.setEnterPos(ray.headPos);
 
-
         // Depending on neighbour count, change ray direction accordingly
         if(ray.currHex.neighbCount == 2)
         {
-            multAtomDeflect(ray);
+            multiAtomDeflect(ray);
         }
         else if (ray.currHex.neighbCount > 2)
         {
@@ -54,11 +117,10 @@ public class RayUtil {
 
     }
 
-
     /**
      * Searches for a pair of Hexagons surrounding the given hexagon directly neighbouring each other that both have atoms.
      *
-     * @return the {@code index} of the first hexagon in the pair, where index 0 is the top right hexagon and 1 is the right (east) Hexagon. Returns {@code 10} if none found.
+     * @return the {@code index} of the first hexagon in the pair, where index 0 is the top right hexagon and 1 is the right (east) Hexagon. Returns {@code -1} if none found.
      */
     public int findHexPair(Hexagon hex)
     {
@@ -128,7 +190,7 @@ public class RayUtil {
             }
         }
 
-        return 10;
+        return -1;
     }
 
     /**
@@ -136,53 +198,20 @@ public class RayUtil {
      *
      * @param ray The ray to be deflected.
      */
-    public void multAtomDeflect(Ray ray)
-    {
-        switch(findHexPair(ray.currHex))
-        {
-            case 0:
-                if(ray.currDirection == Ray.Direction.W) {
-                    ray.currDirection = Ray.Direction.NE;}
-                else if(ray.currDirection == Ray.Direction.SE) {
-                    ray.currDirection = Ray.Direction.E;}
-                break;
-            case 1:
-                if(ray.currDirection == Ray.Direction.W) {
-                    ray.currDirection = Ray.Direction.SE;}
-                else if (ray.currDirection == Ray.Direction.NW) {
-                    ray.currDirection = Ray.Direction.E;}
-                break;
-            case 2:
-                if(ray.currDirection == Ray.Direction.NW) {
-                    ray.currDirection = Ray.Direction.SW;}
-                else if(ray.currDirection == Ray.Direction.NE) {
-                    ray.currDirection = Ray.Direction.SE;}
-                break;
-            case 3:
-                if(ray.currDirection == Ray.Direction.E) {
-                    ray.currDirection = Ray.Direction.SW;}
-                else if(ray.currDirection == Ray.Direction.NE) {
-                    ray.currDirection = Ray.Direction.W;}
-                break;
-            case 4:
-                if(ray.currDirection == Ray.Direction.E) {
-                    ray.currDirection = Ray.Direction.NW;}
-                else if(ray.currDirection == Ray.Direction.SE) {
-                    ray.currDirection = Ray.Direction.W;}
-                break;
-            case 5:
-                if(ray.currDirection == Ray.Direction.SE) {
-                    ray.currDirection = Ray.Direction.NE;}
-                else if(ray.currDirection == Ray.Direction.SW) {
-                    ray.currDirection = Ray.Direction.NW;}
-                break;
-            default:
-                reflect(ray); // reflect if any other
-                break;
-
+    public void multiAtomDeflect(Ray ray) {
+        int pairIndex = findHexPair(ray.currHex);
+        if (pairIndex != -1) {
+            Map<Ray.Direction, Ray.Direction> directionMap = DIRECTION_MAP.get(Hexagon.NeighbourPosition.values()[pairIndex]);
+            if (directionMap != null) {
+                Ray.Direction newDirection = directionMap.get(ray.currDirection);
+                if (newDirection != null) {
+                    ray.currDirection = newDirection;
+                }
+            }
+        } else {
+            reflect(ray); // Reflect if no suitable direction found
         }
     }
-
 
     /**
      * Deflects a ray which is inside 1 atom aura.
@@ -190,91 +219,13 @@ public class RayUtil {
      * @param ray The ray to be deflected.
      * @param hex The Hexagon that is deflecting the Ray
      */
-    public void singleAtomDeflect(Ray ray, Hexagon hex)
-    {
-        switch(hex.neighbDir)
-        {
-
-            case NorE: // top right hexagon
-                if(ray.currDirection == Ray.Direction.E) {
-                    ray.currDirection = Ray.Direction.SE;}
-                else if(ray.currDirection == Ray.Direction.SE) {
-                    ray.currDirection = Ray.Direction.SW;}
-                else if(ray.currDirection == Ray.Direction.SW) {
-                    ray.currDirection = Ray.Direction.NE;}
-                else if(ray.currDirection == Ray.Direction.W) {
-                    ray.currDirection = Ray.Direction.SW;}
-                else if(ray.currDirection == Ray.Direction.NW) {
-                    ray.currDirection = Ray.Direction.W;}
-                break;
-
-
-            case East: // right hexagon
-                if(ray.currDirection == Ray.Direction.NE) {
-                    ray.currDirection = Ray.Direction.NW;}
-                else if(ray.currDirection == Ray.Direction.SE) {
-                    ray.currDirection = Ray.Direction.SW;}
-                else if(ray.currDirection == Ray.Direction.SW) {
-                    ray.currDirection = Ray.Direction.W;}
-                else if(ray.currDirection == Ray.Direction.W) {
-                    ray.currDirection = Ray.Direction.E;}
-                else if(ray.currDirection == Ray.Direction.NW) {
-                    ray.currDirection = Ray.Direction.W;}
-                break;
-
-            case SouE: // bot right hexagon
-                if(ray.currDirection == Ray.Direction.NE) {
-                    ray.currDirection = Ray.Direction.NW;}
-                else if(ray.currDirection == Ray.Direction.E) {
-                    ray.currDirection = Ray.Direction.NE;}
-                else if(ray.currDirection == Ray.Direction.SW) {
-                    ray.currDirection = Ray.Direction.W;}
-                else if(ray.currDirection == Ray.Direction.W) {
-                    ray.currDirection = Ray.Direction.NW;}
-                else if(ray.currDirection == Ray.Direction.NW) {
-                    ray.currDirection = Ray.Direction.SE;}
-                break;
-
-            case SouW: // TOP LEFT hexagon
-                if(ray.currDirection == Ray.Direction.NE) {
-                    ray.currDirection = Ray.Direction.E;}
-                else if(ray.currDirection == Ray.Direction.E) {
-                    ray.currDirection = Ray.Direction.SE;}
-                else if(ray.currDirection == Ray.Direction.SE) {
-                    ray.currDirection = Ray.Direction.NW;}
-                else if(ray.currDirection == Ray.Direction.SW) {
-                    ray.currDirection = Ray.Direction.SE;}
-                else if(ray.currDirection == Ray.Direction.W) {
-                    ray.currDirection = Ray.Direction.SW;}
-                break;
-
-            case West: // left hexagon
-                if(ray.currDirection == Ray.Direction.NE) {
-                    ray.currDirection = Ray.Direction.E;}
-                else if(ray.currDirection == Ray.Direction.E) {
-                    ray.currDirection = Ray.Direction.W;}
-                else if(ray.currDirection == Ray.Direction.SE) {
-                    ray.currDirection = Ray.Direction.E;}
-                else if(ray.currDirection == Ray.Direction.SW) {
-                    ray.currDirection = Ray.Direction.SE;}
-                else if(ray.currDirection == Ray.Direction.NW) {
-                    ray.currDirection = Ray.Direction.NE;}
-                break;
-
-            case NorW: // BOT LEFT hexagon
-
-                if(ray.currDirection == Ray.Direction.NE) {
-                    ray.currDirection = Ray.Direction.SW;}
-                else if(ray.currDirection == Ray.Direction.E) {
-                    ray.currDirection = Ray.Direction.NE;}
-                else if(ray.currDirection == Ray.Direction.SE) {
-                    ray.currDirection = Ray.Direction.E;}
-                else if(ray.currDirection == Ray.Direction.W) {
-                    ray.currDirection = Ray.Direction.NW;}
-                else if(ray.currDirection == Ray.Direction.NW) {
-                    ray.currDirection = Ray.Direction.NE;}
-                break;
-
+    public void singleAtomDeflect(Ray ray, Hexagon hex) {
+        Map<Ray.Direction, Ray.Direction> directionMap = DIRECTION_MAP.get(hex.neighbDir);
+        if (directionMap != null) {
+            Ray.Direction newDirection = directionMap.get(ray.currDirection);
+            if (newDirection != null) {
+                ray.currDirection = newDirection;
+            }
         }
     }
 
@@ -283,10 +234,16 @@ public class RayUtil {
      *
      * @param ray The ray to be reflected.
      */
-    public static void reflect(Ray ray)
-    {
+    public static void reflect(Ray ray) {
         ray.currDirection = getReflectionDirection(ray.currDirection);
     }
+
+    /**
+     * Returns the reflection direction of the inputted direction.
+     *
+     * @param direction direction to be reflected
+     * @return reflected {@code Ray.Direction} of inputted {@code direction}
+     */
 
     public static Ray.Direction getReflectionDirection(Ray.Direction direction) {
         switch(direction) {
