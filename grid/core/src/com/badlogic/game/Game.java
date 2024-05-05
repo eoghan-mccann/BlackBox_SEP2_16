@@ -67,11 +67,11 @@ public class Game {
         camera.update();
 
         hexagonGrid = new HexagonGrid((float)(w * 0.03));
-        hexagonGrid.buildHexBoard();
-        hexagonGrid.getBorderHexagons();
-        hexagonGrid.initAtoms();
+        hexagonGrid.buildHexBoard(hexagonGrid);
+        hexagonGrid.getBorderHexagons(hexagonGrid);
+        hexagonGrid.initAtoms(hexagonGrid);
         hexagonGrid.setAtomsVisible(true);
-        hexagonGrid.activateBorders();
+        hexagonGrid.activateBorders(hexagonGrid);
 
 
         //starting the game on the placing atoms phase

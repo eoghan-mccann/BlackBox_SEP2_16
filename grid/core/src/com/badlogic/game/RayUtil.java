@@ -62,8 +62,8 @@ public class RayUtil {
      */
     public int findHexPair(Hexagon hex)
     {
-        int x = hex.grid.findHex(hex)[0]; // x index of hexagon
-        int y = hex.grid.findHex(hex)[1]; // y index
+        int x = hex.grid.findHex(hex, hex.grid)[0]; // x index of hexagon
+        int y = hex.grid.findHex(hex, hex.grid)[1]; // y index
 
         List<List<Hexagon>> board = hex.grid.hexBoard;
 
