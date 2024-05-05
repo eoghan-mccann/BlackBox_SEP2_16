@@ -199,6 +199,7 @@ public class Game {
         this.currentPhase = phase;
     }
 
+    /*
     private int calculateScore(boolean[] guesses, List<Ray> rays) {
         int score = 0;
 
@@ -211,6 +212,7 @@ public class Game {
 
         return score;
     }
+     */
 
     public void resize(int width, int height) {
         camera.setToOrtho(false, width, height);
