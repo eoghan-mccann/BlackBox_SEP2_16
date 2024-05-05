@@ -140,7 +140,7 @@ public class Ray extends RayUtil implements Entities{
         RayMarker endMarker;
         RayMarker.Result result;
 
-        int productOffset = 7; // offset product for how far marker will be from hexagon
+        int productOffset = 8; // offset product for how far marker will be from hexagon
 
         float[] startMarkerPos;
         float[] endMarkerPos;
@@ -150,8 +150,18 @@ public class Ray extends RayUtil implements Entities{
                 this.startPos[1] - startDirection.getYSpeed() * productOffset
         };
 
+        System.out.println(lines);
+
         // If ray hit atom on the border = HIT
         if(currHex.isBorder && hitAtom) {
+            // Accounts for hexagons on border hit from ray on other side of board
+            if (!lines.isEmpty()) {
+                startMarkerPos = new float[]{
+                        lines.get(0).get(0) - startDirection.getXSpeed() * productOffset,
+                        lines.get(0).get(1) - startDirection.getYSpeed() * productOffset
+                };
+            }
+
             endMarkerPos = null;
             result = RayMarker.Result.HIT;
         }
@@ -190,7 +200,11 @@ public class Ray extends RayUtil implements Entities{
 
             result = RayMarker.Result.DEFLECTION;
 
-            if (currHex == startHex) { // if start hexagon == currhex when stopped, it's reflected
+            System.out.println((Math.abs(lines.get(0).get(1) - lines.get(0).get(3))));
+            System.out.println((Math.abs(lines.get(0).get(0) - lines.get(0).get(2))));
+
+            // if start hexagon == end hexagon and the end direction is the start direction reflected back
+            if (currHex == startHex && currDirection == getReflectionDirection(startDirection)) {
                 result = RayMarker.Result.REFLECTION;
                 endMarkerPos = null;
             }

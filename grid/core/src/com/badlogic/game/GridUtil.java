@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Utility class for Grid. Holds methods for grid interaction with user, including management of {@code Atoms}, {@code Rays}.
  */
-public class GridUtil extends GridInit{
+public class GridUtil extends GridInit {
 
     /**
      * Changes the status of all neighbouring Hexagons of the given hexagon to having a neighbour Hexagon with an Atom if one has been placed, or to have one less neighbouring Atom Hexagon if one has been removed.
@@ -52,7 +52,7 @@ public class GridUtil extends GridInit{
                 }
                 else
                 {
-                    neighbour.neighbDir = Hexagon.neighourPos.values()[i]; // set neighbour direction
+                    neighbour.neighbDir = Hexagon.NeighbourPosition.values()[i]; // set neighbour direction
                     neighbour.isNeighbour = true;
                     neighbour.neighbCount++;
                 }

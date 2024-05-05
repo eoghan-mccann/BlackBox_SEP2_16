@@ -285,27 +285,25 @@ public class RayUtil {
      */
     public static void reflect(Ray ray)
     {
-        switch(ray.currDirection)
-        {
-            case NE:
-                ray.currDirection = Ray.Direction.SW;
-                break;
-            case E:
-                ray.currDirection = Ray.Direction.W;
-                break;
-            case SE:
-                ray.currDirection = Ray.Direction.NW;
-                break;
-            case SW:
-                ray.currDirection = Ray.Direction.NE;
-                break;
-            case W:
-                ray.currDirection = Ray.Direction.E;
-                break;
-            case NW:
-                ray.currDirection = Ray.Direction.SE;
-                break;
+        ray.currDirection = getReflectionDirection(ray.currDirection);
+    }
 
+    public static Ray.Direction getReflectionDirection(Ray.Direction direction) {
+        switch(direction) {
+            case NE:
+                return Ray.Direction.SW;
+            case E:
+                return Ray.Direction.W;
+            case SE:
+                return Ray.Direction.NW;
+            case SW:
+                return Ray.Direction.NE;
+            case W:
+                return Ray.Direction.E;
+            case NW:
+                return Ray.Direction.SE;
+            default:
+                return direction;
         }
     }
 }
