@@ -108,7 +108,14 @@ public class HexagonGrid extends GridUtil{
         return true;
     }
 
+
+
+
+
     //  ----    Setter / Getter methods     ----
+
+
+
 
     /**
      * Sets the status of the {@code visible} boolean in each Atom of the Grid.
@@ -130,15 +137,7 @@ public class HexagonGrid extends GridUtil{
         }
     }
 
-    /**
-     * Set the status of the {@code clickable} boolean in each Hexagon of the Grid.
-     * @param clickable The value to be set.
-     */
-    public void setHexClickable(boolean clickable) {
-        for (Hexagon hexagon : getHexBoard()) {
-            hexagon.setClickable(clickable);
-        }
-    }
+
 
     /**
      * Set the status of the {@code clickable} boolean in each Hexagon of the Grid.
