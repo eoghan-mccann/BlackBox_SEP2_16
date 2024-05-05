@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import java.util.ArrayList;
 import java.util.List;
 
-//we need to comment more and separate classes
+
 
 /**
  * This class represents Model in HLD.
@@ -42,13 +42,6 @@ public class Game {
     GameRenderer gameRenderer;
     GameLogic gameLogic;
 
-    /*
-     * this enum is used to manage the phases of the game
-     * debug view - used for debugging
-     * placing atoms - atom placement phae
-     * placing rays - ray shooting phase
-     * new game - starting new game
-     */
     enum GamePhase {
         DEBUG_VIEW,
         PLACING_ATOMS,
@@ -56,25 +49,15 @@ public class Game {
         NEW_GAME,
     }
 
+
+
     private GamePhase currentPhase;
 
-    public SpriteBatch getBatch() {
-        return batch;
-    }
+    //booleans for correct message displaying
+    boolean atomMessage = false;
+    boolean rayMessage = false;
+    GamePhase prevPhase;
 
-
-    public ShapeRenderer getShapeRenderer() {
-        return shape;
-    }
-
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
 
     public Game() {
         float w = Gdx.graphics.getWidth();
@@ -119,11 +102,21 @@ public class Game {
         winLabel = new Label(batch, 100,100);
     }
 
-    //booleans for correct message displaying
-    boolean atomMessage = false;
-    boolean rayMessage = false;
-    GamePhase prevPhase;
+    public SpriteBatch getBatch() {
+        return batch;
+    }
 
+    public ShapeRenderer getShapeRenderer() {
+        return shape;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 
     public void update() {
         gameLogic.HexagonGridUpdate(info, viewToggle);

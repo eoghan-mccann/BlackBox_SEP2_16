@@ -14,11 +14,10 @@ TODO :
 Classes to clean:
 - <s>Atom</s>
 - <s>Border</s>
-- Game
-- Guess
+- <s>Game</s>
+- <s>Guess</s>
 - <s>Hexagon</s>
 - <s>HexagonGrid</s>
-- Main
+- <s>Main</s>
 - <s>Ray</s>
-- RayMarker
-
+- <s>RayMarker</s>
