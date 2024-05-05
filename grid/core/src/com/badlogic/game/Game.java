@@ -8,12 +8,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import sun.jvm.hotspot.opto.Phase;
+//import sun.jvm.hotspot.opto.Phase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //we need to comment more and separate classes
+
+/**
+ *
+ */
 public class Game {
     //necessary for displaying and correct rendering
     private final OrthographicCamera camera;

@@ -8,6 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.List;
 
+/**
+ * The class responsible for game logic.
+ * It handles phases of the game.
+ * In HLD, it would represent the controller.
+ */
 public class GameLogic {
     //used for game logic
     int[] playerScores;
