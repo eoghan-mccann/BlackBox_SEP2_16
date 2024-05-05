@@ -3,7 +3,7 @@ package com.badlogic.game.UI;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Scoreboard {
+public class Scoreboard implements Renderable {
     float xPos;
     float yPos;
     float width;

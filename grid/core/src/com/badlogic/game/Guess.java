@@ -1,6 +1,7 @@
 package com.badlogic.game;
 
 import com.badlogic.game.UI.Label;
+import com.badlogic.game.UI.Renderable;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -8,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Guess {
+public class Guess implements Renderable {
     private static final int MAX_GUESSES = 5;
 
     private int guessCount;
@@ -58,7 +59,7 @@ public class Guess {
         return guesses;
     }
 
-    public void draw(ShapeRenderer shape, SpriteBatch batch) {
+    public void Draw(ShapeRenderer shape, SpriteBatch batch) {
         marker.batch = batch;
 
         for (Hexagon hex : guessList) {

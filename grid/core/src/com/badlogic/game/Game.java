@@ -9,18 +9,17 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //we need to comment more and separate classes
 public class Game {
-
-
     //necessary for displaying and correct rendering
-    private final OrthographicCamera camera;
+    public final OrthographicCamera camera;
     public SpriteBatch batch;
-    private final Stage stage;
+    public final Stage stage;
     private final Skin skin;
-    private final ShapeRenderer shape;
+    public final ShapeRenderer shape;
 
     //used for game logic
     public static boolean debugMode = false;
@@ -40,10 +39,12 @@ public class Game {
     private Label guessLabel;
     private Label winLabel;
 
+    GameRenderer gameRenderer;
+
     /**
      * this enum is used to manage the phases of the game
      * debug view - used for debugging
-     * placing atoms - atom placement phase
+     * placing atoms - atom placement phae
      * placing rays - ray shooting phase
      * new game - starting new game
      */
@@ -102,6 +103,7 @@ public class Game {
         playerScores = new int[2];
 
         info = new InfoLegend(45,Game.getWindowHeight() - Game.getWindowHeight() * 0.2f);
+        gameRenderer = new GameRenderer(this);
     }
 
     //booleans for correct message displaying
@@ -274,49 +276,7 @@ public class Game {
     }
 
     public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        shape.setProjectionMatrix(camera.combined);
-
-        hexagonGrid.Draw(shape);
-
-        viewToggle.update();
-        viewToggle.Draw(shape);
-
-        info.Draw(shape,batch);
-
-        if (atomConfirmButton != null)
-        {
-            atomConfirmButton.update();
-            atomConfirmButton.Draw(shape);
-        }
-
-        if (guessConfirmButton != null)
-        {
-            guessConfirmButton.update();
-            guessConfirmButton.Draw(shape);
-        }
-
-        if (guessLabel != null) {guessLabel.Draw(shape);}
-
-        if(winLabel != null) {winLabel.Draw(shape);}
-
-        if(guesses != null) {guesses.draw(shape,batch);}
-
-        if (newGameButton != null) {newGameButton.Draw(shape);}
-
-        if (guessResultBoard != null) {
-            guessResultBoard.Draw(shape, batch);
-        }
-
-        if (scoreboard != null) {
-            scoreboard.Draw(shape,batch);
-        }
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
+        gameRenderer.render();
     }
 
     public static int getWindowWidth() {
@@ -325,6 +285,28 @@ public class Game {
 
     public static int getWindowHeight() {
         return Gdx.graphics.getHeight();
+    }
+
+    public List<Object> getEntityObjects() {
+        List<Object> entityObjects = new ArrayList<>();
+        entityObjects.add(hexagonGrid);
+        return entityObjects;
+    }
+
+    public List<Object> getUIObjects() {
+        List<Object> uiObjects = new ArrayList<>();
+        uiObjects.add(info);
+        uiObjects.add(guessResultBoard);
+        uiObjects.add(scoreboard);
+        uiObjects.add(userMessage);
+        uiObjects.add(viewToggle);
+        uiObjects.add(atomConfirmButton);
+        uiObjects.add(guessConfirmButton);
+        uiObjects.add(newGameButton);
+        uiObjects.add(guessLabel);
+        uiObjects.add(winLabel);
+        uiObjects.add(guesses);
+        return uiObjects;
     }
 
     private int calculateScore(boolean[] guesses, List<Ray> rays) {

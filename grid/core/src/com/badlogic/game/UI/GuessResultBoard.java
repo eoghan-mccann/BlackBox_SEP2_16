@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class GuessResultBoard {
+public class GuessResultBoard implements Renderable{
     float xPos;
     float yPos;
     float width;
