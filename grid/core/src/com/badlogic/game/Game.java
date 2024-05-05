@@ -42,7 +42,7 @@ public class Game {
     GameRenderer gameRenderer;
     GameLogic gameLogic;
 
-    /**
+    /*
      * this enum is used to manage the phases of the game
      * debug view - used for debugging
      * placing atoms - atom placement phae
@@ -62,9 +62,11 @@ public class Game {
         return batch;
     }
 
+
     public ShapeRenderer getShapeRenderer() {
         return shape;
     }
+
 
     public Stage getStage() {
         return stage;

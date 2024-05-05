@@ -34,7 +34,7 @@ public class HexUtil {
      * @param x Starting x coordinate
      * @return Array of 6 float coordinates
      */
-    private float[] calculateXpoints(Hexagon hex, float x) {
+    public float[] calculateXpoints(Hexagon hex, float x) {
         float[] tempX = new float[6];
         for (int i = 0; i < 6; i++) {
             tempX[i] = (float)(x + (hex.getRadius() * Math.sin(hex.getAngle() * i)));
@@ -48,7 +48,7 @@ public class HexUtil {
      * @param y Starting y coordinate
      * @return Array of 6 float coordinates
      */
-    private float[] calculateYpoints(Hexagon hex, float y) {
+    public float[] calculateYpoints(Hexagon hex, float y) {
         float[] tempY = new float[6];
         for (int i = 0; i < 6; i++) {
             tempY[i] = (float)(y + (hex.getRadius() * Math.cos(hex.getAngle() * i)));
